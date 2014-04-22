@@ -1,10 +1,11 @@
 {
     "author": "mrodrig",
     "name": "json-2-csv",
-    "description": "Convert JSON to CSV (including sub-documents)",
-    "version": "0.0.19",
+    "description": "A JSON to CSV converter that natively supports sub-documents and auto-generates the heading.",
+    "version": "0.1.0",
     "repository": {
-    	"url": ""
+        "type": "git",
+    	"url": "http://github.com/mrodrig/json-2-csv.git"
     },
     "main": "./lib/json-2-csv.js",
     "keywords": [
@@ -12,7 +13,8 @@
         "csv",
         "converter",
         "json2csv",
-        "json2csvConverter"
+        "json2csv-converter",
+        "json-2-csv"
     ],
     "dependencies": {
     	"underscore": "1.6.0",
