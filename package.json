@@ -1,17 +1,18 @@
 {
     "author": "mrodrig",
-    "name": "json2csv",
+    "name": "json-2-csv",
     "description": "Convert JSON to CSV (including sub-documents)",
-    "version": "0.0.1",
+    "version": "0.0.19",
     "repository": {
     	"url": ""
     },
-    "main": "./lib/main",
+    "main": "./lib/json-2-csv.js",
     "keywords": [
         "json",
         "csv",
         "converter",
-        "json2csv"
+        "json2csv",
+        "json2csvConverter"
     ],
     "dependencies": {
     	"underscore": "1.6.0",
