@@ -1,0 +1,20 @@
+[
+    {
+        "Make": "Nissan",
+        "Model": "Murano",
+        "Year": "2013",
+        "Specifications": {
+            "Mileage": "7106",
+            "Trim": "S AWD"
+        }
+    },
+    {
+        "Make": "BMW",
+        "Model": "X5",
+        "Year": "2014",
+        "Specifications": {
+            "Mileage": "3287",
+            "Trim": "M"
+        }
+    }
+]
