@@ -1,4 +1,4 @@
-# Convert JSON documents to CSV
+# Convert JSON to CSV or CSV to JSON
 
 This node module will convert an array of JSON documents to a CSV string.
 
@@ -13,14 +13,21 @@ $ npm install json-2-csv
 ## Usage
 
 ```javascript
-var json2csv = require('json-2-csv');
+var converter = require('json-2-csv');
 ```
 
-### json2csv Example:
+### API
+
+#### json2csv(array, callback)
+
+* `array` - An array of JSON documents
+* `callback` - A function of the form `function (err, csv)`; This function will receive any errors and/or the CSV generated.
+
+##### json2csv Example:
 
 ```javascript
 
-var json2csv = require('json-2-csv');
+var converter = require('json-2-csv');
 
 var documents = [
     {
@@ -43,12 +50,12 @@ var documents = [
     }
 ];
 
-var json2csvCallback = function (err, res) {
+var json2csvCallback = function (err, csv) {
     if (err) throw err;
-    console.log(res);
+    console.log(csv);
 };
 
-json2csv.json2csv(documents, json2csvCallback);
+converter.json2csv(documents, json2csvCallback);
 
 ```
 
@@ -60,9 +67,53 @@ Nissan,Murano,2013,7106,S AWD
 BMW,X5,2014,3287,M
 ```
 
+#### csv2json(csv, callback)
+
+* `csv` - A string of CSV
+* `callback` - A function of the form `function (err, array)`; This function will receive any errors and/or the array of JSON documents generated.
+
+##### csv2json Example:
+
+```javascript
+var converter = require('json-2-csv');
+
+var csv = "Make,Model,Year,Specifications.Mileage,Specifications.Trim\n" +
+          "Nissan,Murano,2013,7106,S AWD\n" +
+          "BMW,X5,2014,3287,M\n";
+
+var csv2jsonCallback = function (err, json) {
+    if (err) throw err;
+    console.log(typeof json);
+    console.log(json.length);
+    console.log(json);
+}
+
+converter.csv2json(csv, csv2jsonCallback);
+```
+
+The above code prints out:
+
+```text
+object
+2
+[ { Make: 'Nissan',
+    Model: 'Murano',
+    Year: '2013',
+    Specifications: { Mileage: '7106', Trim: 'S AWD' } },
+  { Make: 'BMW',
+    Model: 'X5',
+    Year: '2014',
+    Specifications: { Mileage: '3287', Trim: 'M' } } ]
+```
+
+
 ## Tests
 
-TODO: Add tests
+```bash
+$ npm test
+```
+
+_Note_: This requires `mocha`, `should`, and `async`.
 
 ## Features
 
@@ -75,3 +126,8 @@ TODO: Add tests
 
 - Can the order of the keys be changed in the output?
 __Yes.__ Currently, changing the order of the keys in the JSON document will also change the order of the columns. (Node 10.26)
+
+## TODO
+- Add more tests
+- Get csv2json under test
+- Add more documentation
