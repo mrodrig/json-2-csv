@@ -1,8 +1,10 @@
 # Convert JSON to CSV or CSV to JSON
 
 This node module will convert an array of JSON documents to a CSV string.
-
 Column headings will be automatically generated based on the keys of the JSON documents. Nested documents will have a '.' appended between the keys.
+
+It is also capable of converting CSV of the same form back into the original array of JSON documents.
+The columns headings will be used as the JSON document keys.  All lines must have the same exact number of CSV values.
 
 ## Installation
 
