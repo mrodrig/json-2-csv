@@ -7,7 +7,7 @@
         "type": "git",
     	"url": "http://github.com/mrodrig/json-2-csv.git"
     },
-    "main": "./lib/json-2-csv.js",
+    "main": "./lib/converter.js",
     "scripts": {
         "test": "./node_modules/.bin/mocha --reporter spec"
     },
