@@ -130,6 +130,7 @@ _Note_: This requires `mocha`, `should`, and `async`.
 __Yes.__ Currently, changing the order of the keys in the JSON document will also change the order of the columns. (Node 10.26)
 
 ## TODO
-- Add more tests
-- Get csv2json under test
-- Add more documentation
+- Add more tests for both json2csv and csv2json
+- Test errors
+- Add more comments to code
+- Add ability to pass/set options (delimiter, newline, parseInt, etc)
