@@ -20,10 +20,14 @@ var converter = require('json-2-csv');
 
 ### API
 
-#### json2csv(array, callback)
+#### json2csv(array, callback, options)
 
 * `array` - An array of JSON documents
 * `callback` - A function of the form `function (err, csv)`; This function will receive any errors and/or the CSV generated.
+* `options` - (Optional) A JSON document specifying any of {`DELIMITER`, `EOL`, `PARSE_CSV_NUMBERS`}
+** `DELIMITER` - String - Field Delimiter. Default: `','`
+** `EOL` - String - End of Line Delimiter. Default: `'\n'`
+** `PARSE_CSV_NUMBERS` - Boolean - Should numbers that are found in the CSV be converted to numbers? Default: `false`
 
 ##### json2csv Example:
 
@@ -69,10 +73,14 @@ Nissan,Murano,2013,7106,S AWD
 BMW,X5,2014,3287,M
 ```
 
-#### csv2json(csv, callback)
+#### csv2json(csv, callback, options)
 
 * `csv` - A string of CSV
 * `callback` - A function of the form `function (err, array)`; This function will receive any errors and/or the array of JSON documents generated.
+* `options` - (Optional) A JSON document specifying any of {`DELIMITER`, `EOL`, `PARSE_CSV_NUMBERS`}
+** `DELIMITER` - String - Field Delimiter. Default: `','`
+** `EOL` - String - End of Line Delimiter. Default: `'\n'`
+** `PARSE_CSV_NUMBERS` - Boolean - Should numbers that are found in the CSV be converted to numbers? Default: `false`
 
 ##### csv2json Example:
 
@@ -108,14 +116,13 @@ object
     Specifications: { Mileage: '3287', Trim: 'M' } } ]
 ```
 
-
 ## Tests
 
 ```bash
 $ npm test
 ```
 
-_Note_: This requires `mocha`, `should`, and `async`.
+_Note_: This requires `mocha`, `should`, `async`, and `underscore`.
 
 ## Features
 
@@ -123,6 +130,8 @@ _Note_: This requires `mocha`, `should`, and `async`.
 - Verifies all documents have same schema
 - Supports sub-documents natively
 - Custom ordering of columns (see F.A.Q. for more information)
+- Ability to re-generate the JSON documents that were used to generate the CSV (including nested documents)
+- Allows for custom field delimiters, end of line delimiters, etc.
 
 ## F.A.Q.
 
@@ -130,7 +139,5 @@ _Note_: This requires `mocha`, `should`, and `async`.
 __Yes.__ Currently, changing the order of the keys in the JSON document will also change the order of the columns. (Node 10.26)
 
 ## TODO
-- Add more tests for both json2csv and csv2json
-- Test errors
 - Add more comments to code
-- Add ability to pass/set options (delimiter, newline, parseInt, etc)
+- Use PARSE_CSV_NUMBERS option to actually convert numbers. Not currently implemented.
