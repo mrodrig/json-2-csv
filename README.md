@@ -25,9 +25,9 @@ var converter = require('json-2-csv');
 * `array` - An array of JSON documents
 * `callback` - A function of the form `function (err, csv)`; This function will receive any errors and/or the CSV generated.
 * `options` - (Optional) A JSON document specifying any of {`DELIMITER`, `EOL`, `PARSE_CSV_NUMBERS`}
-..* `DELIMITER` - String - Field Delimiter. Default: `','`
-..* `EOL` - String - End of Line Delimiter. Default: `'\n'`
-..* `PARSE_CSV_NUMBERS` - Boolean - Should numbers that are found in the CSV be converted to numbers? Default: `false`
+  * `DELIMITER` - String - Field Delimiter. Default: `','`
+  * `EOL` - String - End of Line Delimiter. Default: `'\n'`
+  * `PARSE_CSV_NUMBERS` - Boolean - Should numbers that are found in the CSV be converted to numbers? Default: `false`
 
 ##### json2csv Example:
 
@@ -78,9 +78,9 @@ BMW,X5,2014,3287,M
 * `csv` - A string of CSV
 * `callback` - A function of the form `function (err, array)`; This function will receive any errors and/or the array of JSON documents generated.
 * `options` - (Optional) A JSON document specifying any of {`DELIMITER`, `EOL`, `PARSE_CSV_NUMBERS`}
-..* `DELIMITER` - String - Field Delimiter. Default: `','`
-..* `EOL` - String - End of Line Delimiter. Default: `'\n'`
-..* `PARSE_CSV_NUMBERS` - Boolean - Should numbers that are found in the CSV be converted to numbers? Default: `false`
+  * `DELIMITER` - String - Field Delimiter. Default: `','`
+  * `EOL` - String - End of Line Delimiter. Default: `'\n'`
+  * `PARSE_CSV_NUMBERS` - Boolean - Should numbers that are found in the CSV be converted to numbers? Default: `false`
 
 ##### csv2json Example:
 
