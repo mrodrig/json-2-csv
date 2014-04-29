@@ -1,5 +1,8 @@
 # Convert JSON to CSV or CSV to JSON
 
+[![Build Status](https://travis-ci.org/mrodrig/json-2-csv.svg?branch=master)](https://travis-ci.org/mrodrig/json-2-csv)
+![David - Dependency Checker Icon](https://david-dm.org/mrodrig/json-2-csv.png "json-2-csv Dependency Status")
+
 This node module will convert an array of JSON documents to a CSV string.
 Column headings will be automatically generated based on the keys of the JSON documents. Nested documents will have a '.' appended between the keys.
 
