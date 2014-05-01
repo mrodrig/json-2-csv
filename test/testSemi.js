@@ -291,14 +291,14 @@ var csv2jsonTests = function () {
 
             it('should throw an error about not having been passed data - 1', function (done) {
                 converter.csv2json(null, function (err, json) {
-                    err.message.should.equal('Cannot call csv2json on null');
+                    err.message.should.equal('Cannot call csv2json on null.');
                     done();
                 }, options);
             });
 
             it('should throw an error about not having been passed data - 2', function (done) {
                 converter.csv2json(undefined, function (err, json) {
-                    err.message.should.equal('Cannot call csv2json on undefined');
+                    err.message.should.equal('Cannot call csv2json on undefined.');
                     done();
                 }, options);
             });
@@ -391,14 +391,14 @@ var csv2jsonTests = function () {
 
             it('should throw an error about not having been passed data - 1', function (done) {
                 converter.csv2json(null, function (err, json) {
-                    err.message.should.equal('Cannot call csv2json on null');
+                    err.message.should.equal('Cannot call csv2json on null.');
                     done();
                 });
             });
 
             it('should throw an error about not having been passed data - 2', function (done) {
                 converter.csv2json(undefined, function (err, json) {
-                    err.message.should.equal('Cannot call csv2json on undefined');
+                    err.message.should.equal('Cannot call csv2json on undefined.');
                     done();
                 });
             });
