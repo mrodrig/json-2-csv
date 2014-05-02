@@ -142,5 +142,5 @@ _Note_: This requires `mocha`, `should`, `async`, and `underscore`.
 __Yes.__ Currently, changing the order of the keys in the JSON document will also change the order of the columns. (Node 10.26)
 
 ## TODO
-- Add more comments to code
 - Use PARSE_CSV_NUMBERS option to actually convert numbers. Not currently implemented.
+- Add test cases (& fix potential issues) where data is an array of values
