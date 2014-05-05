@@ -5,9 +5,12 @@ var should = require('should'),
   async = require('async');
 
 var options = {
-    DELIMITER         : ',',
+    DELIMITER         : {
+        FIELD  :  ',',
+        ARRAY  :  '/'
+    },
     EOL               : '\n',
-    PARSE_CSV_NUMBERS : false // Only used by csv2json
+    PARSE_CSV_NUMBERS : false
 };
 
 var json_regularJson    = require('./JSON/regularJson'),
@@ -16,12 +19,14 @@ var json_regularJson    = require('./JSON/regularJson'),
     json_nestedQuotes   = require('./JSON/nestedQuotes'),
     json_noData         = require('./JSON/noData.json'),
     json_singleDoc      = require('./JSON/singleDoc.json'),
+    json_arrayValue     = require('./JSON/arrayValueDocs.json'),
     csv_regularJson     = '',
     csv_nestedJson      = '',
     csv_nestedJson2     = '',
     csv_nestedQuotes    = '',
     csv_noData          = '',
-    csv_singleDoc       = '';
+    csv_singleDoc       = '',
+    csv_arrayValue      = '';
 
 var json2csvTests = function () {
     describe('json2csv', function (done) {
@@ -70,6 +75,14 @@ var json2csvTests = function () {
                 converter.json2csv(json_singleDoc, function (err, csv) {
                     csv.should.equal(csv_singleDoc);
                     csv.split(options.EOL).length.should.equal(3);
+                    done();
+                }, options);
+            });
+
+            it('should parse a single JSON document to CSV', function (done) {
+                converter.json2csv(json_arrayValue, function (err, csv) {
+                    csv.should.equal(csv_arrayValue);
+                    csv.split(options.EOL).length.should.equal(5);
                     done();
                 }, options);
             });
@@ -170,6 +183,14 @@ var json2csvTests = function () {
                 converter.json2csv(json_singleDoc, function (err, csv) {
                     csv.should.equal(csv_singleDoc);
                     csv.split(options.EOL).length.should.equal(3);
+                    done();
+                });
+            });
+
+            it('should parse a single JSON document to CSV', function (done) {
+                converter.json2csv(json_arrayValue, function (err, csv) {
+                    csv.should.equal(csv_arrayValue.replace(/\//g, ';'));
+                    csv.split(options.EOL).length.should.equal(5);
                     done();
                 });
             });
@@ -287,6 +308,14 @@ var csv2jsonTests = function () {
                 }, options);
             });
 
+            it('should parse a CSV with a nested array to the correct JSON representation', function (done) {
+                converter.csv2json(csv_arrayValue, function (err, json) {
+                    var isEqual = _.isEqual(json, json_arrayValue);
+                    true.should.equal(isEqual);
+                    done();
+                }, options);
+            });
+
             it('should throw an error about not having been passed data - 1', function (done) {
                 converter.csv2json(null, function (err, json) {
                     err.message.should.equal('Cannot call csv2json on null.');
@@ -384,7 +413,15 @@ var csv2jsonTests = function () {
                     var isEqual = _.isEqual(json, [json_singleDoc]);
                     true.should.equal(isEqual);
                     done();
-                }, options);
+                });
+            });
+
+            it('should parse a CSV with a nested array to the correct JSON representation', function (done) {
+                converter.csv2json(csv_arrayValue.replace(/\//g, ';'), function (err, json) {
+                    var isEqual = _.isEqual(json, json_arrayValue);
+                    true.should.equal(isEqual);
+                    done();
+                });
             });
 
             it('should throw an error about not having been passed data - 1', function (done) {
@@ -493,6 +530,13 @@ module.exports = {
                         fs.readFile('test/CSV/singleDoc.csv', function (err, data) {
                             if (err) callback(err);
                             csv_singleDoc = data.toString();
+                            callback(null);
+                        });
+                    },
+                    function(callback) {
+                        fs.readFile('test/CSV/arrayValueDocs.csv', function (err, data) {
+                            if (err) callback(err);
+                            csv_arrayValue = data.toString();
                             callback(null);
                         });
                     }

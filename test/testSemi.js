@@ -4,11 +4,13 @@ var should = require('should'),
   _ = require('underscore'),
   async = require('async');
 
-var
-options = {
-    DELIMITER         : ';',
+var options = {
+    DELIMITER         : {
+        FIELD  :  ';',
+        ARRAY  :  '/'
+    },
     EOL               : '\n',
-    PARSE_CSV_NUMBERS : false // Only used by csv2json
+    PARSE_CSV_NUMBERS : false
 };
 
 var json_regularJson    = require('./JSON/regularJson'),
@@ -17,19 +19,21 @@ var json_regularJson    = require('./JSON/regularJson'),
     json_nestedQuotes   = require('./JSON/nestedQuotes'),
     json_noData         = require('./JSON/noData.json'),
     json_singleDoc      = require('./JSON/singleDoc.json'),
+    json_arrayValue     = require('./JSON/arrayValueDocs.json'),
     csv_regularJson     = '',
     csv_nestedJson      = '',
     csv_nestedJson2     = '',
     csv_nestedQuotes    = '',
     csv_noData          = '',
-    csv_singleDoc       = '';
+    csv_singleDoc       = '',
+    csv_arrayValue      = '';
 
 var json2csvTests = function () {
     describe('json2csv', function (done) {
         describe('Options Specified', function (done) {
             it('should convert plain JSON to CSV', function(done) {
                 converter.json2csv(json_regularJson, function(err, csv) {
-                    csv.should.equal(csv_regularJson.replace(/,/g, ';'));
+                    csv.should.equal(csv_regularJson.replace(/,/g, options.DELIMITER.FIELD));
                     csv.split(options.EOL).length.should.equal(6);
                     done();
                 }, options);
@@ -37,7 +41,7 @@ var json2csvTests = function () {
 
             it('should parse nested JSON to CSV - 1', function(done) {
                 converter.json2csv(json_nestedJson, function(err, csv) {
-                    csv.should.equal(csv_nestedJson.replace(/,/g, ';'));
+                    csv.should.equal(csv_nestedJson.replace(/,/g, options.DELIMITER.FIELD));
                     csv.split(options.EOL).length.should.equal(6);
                     done();
                 }, options);
@@ -45,7 +49,7 @@ var json2csvTests = function () {
 
             it('should parse nested JSON to CSV - 2', function(done) {
                 converter.json2csv(json_nestedJson2, function(err, csv) {
-                    csv.should.equal(csv_nestedJson2.replace(/,/g, ';'));
+                    csv.should.equal(csv_nestedJson2.replace(/,/g, options.DELIMITER.FIELD));
                     csv.split(options.EOL).length.should.equal(4);
                     done();
                 }, options);
@@ -53,7 +57,7 @@ var json2csvTests = function () {
 
             it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
                 converter.json2csv(json_nestedQuotes, function(err, csv) {
-                    csv.should.equal(csv_nestedQuotes.replace(/,/g, ';'));
+                    csv.should.equal(csv_nestedQuotes.replace(/,/g, options.DELIMITER.FIELD));
                     csv.split(options.EOL).length.should.equal(4);
                     done();
                 }, options);
@@ -61,7 +65,7 @@ var json2csvTests = function () {
 
             it('should parse an empty array to an empty CSV', function(done) {
                 converter.json2csv(json_noData, function(err, csv) {
-                    csv.should.equal(csv_noData.replace(/,/g, ';'));
+                    csv.should.equal(csv_noData.replace(/,/g, options.DELIMITER.FIELD));
                     csv.split(options.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
                     done();
                 }, options);
@@ -69,8 +73,16 @@ var json2csvTests = function () {
 
             it('should parse a single JSON document to CSV', function (done) {
                 converter.json2csv(json_singleDoc, function (err, csv) {
-                    csv.should.equal(csv_singleDoc.replace(/,/g, ';'));
+                    csv.should.equal(csv_singleDoc.replace(/,/g, options.DELIMITER.FIELD));
                     csv.split(options.EOL).length.should.equal(3);
+                    done();
+                }, options);
+            });
+
+            it('should parse a single JSON document to CSV', function (done) {
+                converter.json2csv(json_arrayValue, function (err, csv) {
+                    csv.should.equal(csv_arrayValue.replace(/,/g, options.DELIMITER.FIELD));
+                    csv.split(options.EOL).length.should.equal(5);
                     done();
                 }, options);
             });
@@ -176,6 +188,14 @@ var json2csvTests = function () {
                 });
             });
 
+            it('should parse a single JSON document to CSV', function (done) {
+                converter.json2csv(json_arrayValue, function (err, csv) {
+                    csv.should.equal(csv_arrayValue.replace(/\//g, options.DELIMITER.FIELD));
+                    csv.split(options.EOL).length.should.equal(5);
+                    done();
+                });
+            });
+
             it('should throw an error about not having been passed data - 1', function (done) {
                 converter.json2csv(null, function (err, csv) {
                     err.message.should.equal('Cannot call json2csv on null.');
@@ -242,7 +262,7 @@ var csv2jsonTests = function () {
     describe('csv2json', function (done) {
         describe('Options Specified', function (done) {
             it('should convert a basic CSV to JSON', function(done) {
-                converter.csv2json(csv_regularJson.replace(/,/g, ';'), function(err, json) {
+                converter.csv2json(csv_regularJson.replace(/,/g, options.DELIMITER.FIELD), function(err, json) {
                     var isEqual = _.isEqual(json, json_regularJson);
                     true.should.equal(isEqual);
                     done();
@@ -250,7 +270,7 @@ var csv2jsonTests = function () {
             });
 
             it('should parse a CSV representing nested objects to JSON - 1', function(done) {
-                converter.csv2json(csv_nestedJson.replace(/,/g, ';'), function(err, json) {
+                converter.csv2json(csv_nestedJson.replace(/,/g, options.DELIMITER.FIELD), function(err, json) {
                     var isEqual = _.isEqual(json, json_nestedJson);
                     true.should.equal(isEqual);
                     done();
@@ -258,7 +278,7 @@ var csv2jsonTests = function () {
             });
 
             it('should parse a CSV representing nested objects to JSON - 2', function(done) {
-                converter.csv2json(csv_nestedJson2.replace(/,/g, ';'), function(err, json) {
+                converter.csv2json(csv_nestedJson2.replace(/,/g, options.DELIMITER.FIELD), function(err, json) {
                     var isEqual = _.isEqual(json, json_nestedJson2);
                     true.should.equal(isEqual);
                     done();
@@ -266,7 +286,7 @@ var csv2jsonTests = function () {
             });
 
             it('should parse nested quotes in a CSV to have nested quotes in JSON', function(done) {
-                converter.csv2json(csv_nestedQuotes.replace(/,/g, ';'), function(err, json) {
+                converter.csv2json(csv_nestedQuotes.replace(/,/g, options.DELIMITER.FIELD), function(err, json) {
                     var isEqual = _.isEqual(json, json_nestedQuotes);
                     true.should.equal(isEqual);
                     done();
@@ -274,7 +294,7 @@ var csv2jsonTests = function () {
             });
 
             it('should parse an empty CSV to an empty JSON array', function(done) {
-                converter.csv2json(csv_noData.replace(/,/g, ';'), function(err, json) {
+                converter.csv2json(csv_noData.replace(/,/g, options.DELIMITER.FIELD), function(err, json) {
                     var isEqual = _.isEqual(json, json_noData);
                     true.should.equal(isEqual);
                     done();
@@ -283,8 +303,16 @@ var csv2jsonTests = function () {
 
             it('should parse a single JSON document to CSV', function (done) {
                 converter.json2csv(json_singleDoc, function (err, csv) {
-                    csv.should.equal(csv_singleDoc.replace(/,/g, ';'));
+                    csv.should.equal(csv_singleDoc.replace(/,/g, options.DELIMITER.FIELD));
                     csv.split(options.EOL).length.should.equal(3);
+                    done();
+                }, options);
+            });
+
+            it('should parse a CSV with a nested array to the correct JSON representation', function (done) {
+                converter.csv2json(csv_arrayValue.replace(/,/g, options.DELIMITER.FIELD), function (err, json) {
+                    var isEqual = _.isEqual(json, json_arrayValue);
+                    true.should.equal(isEqual);
                     done();
                 }, options);
             });
@@ -342,7 +370,7 @@ var csv2jsonTests = function () {
 
         describe('Options Un-specified', function (done) {
             it('should convert a basic CSV to JSON', function(done) {
-                converter.csv2json(csv_regularJson.replace(/,/g, ';'), function(err, json) {
+                converter.csv2json(csv_regularJson.replace(/,/g, options.DELIMITER.FIELD), function(err, json) {
                     var isEqual = _.isEqual(json, json_regularJson);
                     false.should.equal(isEqual);
                     done();
@@ -350,7 +378,7 @@ var csv2jsonTests = function () {
             });
 
             it('should parse a CSV representing nested objects to JSON - 1', function(done) {
-                converter.csv2json(csv_nestedJson.replace(/,/g, ';'), function(err, json) {
+                converter.csv2json(csv_nestedJson.replace(/,/g, options.DELIMITER.FIELD), function(err, json) {
                     var isEqual = _.isEqual(json, json_nestedJson);
                     false.should.equal(isEqual);
                     done();
@@ -358,7 +386,7 @@ var csv2jsonTests = function () {
             });
 
             it('should parse a CSV representing nested objects to JSON - 2', function(done) {
-                converter.csv2json(csv_nestedJson2.replace(/,/g, ';'), function(err, json) {
+                converter.csv2json(csv_nestedJson2.replace(/,/g, options.DELIMITER.FIELD), function(err, json) {
                     var isEqual = _.isEqual(json, json_nestedJson2);
                     false.should.equal(isEqual);
                     done();
@@ -366,7 +394,7 @@ var csv2jsonTests = function () {
             });
 
             it('should parse nested quotes in a CSV to have nested quotes in JSON', function(done) {
-                converter.csv2json(csv_nestedQuotes.replace(/,/g, ';'), function(err, json) {
+                converter.csv2json(csv_nestedQuotes.replace(/,/g, options.DELIMITER.FIELD), function(err, json) {
                     var isEqual = _.isEqual(json, json_nestedQuotes); // This should be equal because there are no delimiters in the file
                     true.should.equal(isEqual);
                     done();
@@ -374,7 +402,7 @@ var csv2jsonTests = function () {
             });
 
             it('should parse an empty CSV to an empty JSON array', function(done) {
-                converter.csv2json(csv_noData.replace(/,/g, ';'), function(err, json) {
+                converter.csv2json(csv_noData.replace(/,/g, options.DELIMITER.FIELD), function(err, json) {
                     var isEqual = _.isEqual(json, json_noData);
                     true.should.equal(isEqual);
                     done();
@@ -385,6 +413,14 @@ var csv2jsonTests = function () {
                 converter.json2csv(json_singleDoc, function (err, csv) {
                     csv.should.equal(csv_singleDoc);
                     csv.split(options.EOL).length.should.equal(3);
+                    done();
+                });
+            });
+
+            it('should parse a CSV with a nested array to the correct JSON representation', function (done) {
+                converter.csv2json(csv_arrayValue.replace(/\//g, options.DELIMITER.FIELD), function (err, json) {
+                    var isEqual = _.isEqual(json, json_arrayValue);
+                    true.should.equal(isEqual);
                     done();
                 });
             });
@@ -495,6 +531,13 @@ module.exports = {
                         fs.readFile('test/CSV/singleDoc.csv', function (err, data) {
                             if (err) callback(err);
                             csv_singleDoc = data.toString();
+                            callback(null);
+                        });
+                    },
+                    function(callback) {
+                        fs.readFile('test/CSV/arrayValueDocs.csv', function (err, data) {
+                            if (err) callback(err);
+                            csv_arrayValue = data.toString();
                             callback(null);
                         });
                     }

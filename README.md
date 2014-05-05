@@ -27,10 +27,12 @@ var converter = require('json-2-csv');
 
 #### json2csv(array, callback, options)
 
-* `array` - An array of JSON documents
-* `callback` - A function of the form `function (err, csv)`; This function will receive any errors and/or the CSV generated.
+* `csv` - A string of CSV
+* `callback` - A function of the form `function (err, array)`; This function will receive any errors and/or the array of JSON documents generated.
 * `options` - (Optional) A JSON document specifying any of {`DELIMITER`, `EOL`, `PARSE_CSV_NUMBERS`}
-  * `DELIMITER` - String - Field Delimiter. Default: `','`
+  * `DELIMITER` - Document - Specifies the different types of delimiters
+    * `FIELD` - String - Field Delimiter. Default: `','`
+    * `ARRAY` - String - Array Value Delimiter. Default: `';'`
   * `EOL` - String - End of Line Delimiter. Default: `'\n'`
   * `PARSE_CSV_NUMBERS` - Boolean - Should numbers that are found in the CSV be converted to numbers? Default: `false`
 
@@ -42,21 +44,21 @@ var converter = require('json-2-csv');
 
 var documents = [
     {
-        'Make': 'Nissan',
-        'Model': 'Murano',
-        'Year': '2013'
-        'Specifications': {
-            'Mileage': '7106',
-            'Trim': 'S AWD'
+        Make: 'Nissan',
+        Model: 'Murano',
+        Year: '2013'
+        Specifications: {
+            Mileage: '7106',
+            Trim: 'S AWD'
         }
     },
     {
-        'Make': 'BMW',
-        'Model' 'X5',
-        'Year': '2014',
-        'Specifications': {
-            'Mileage': '3287',
-            'Trim': 'M'
+        Make: 'BMW',
+        Model' 'X5',
+        Year: '2014',
+        Specifications: {
+            Mileage: '3287',
+            Trim: 'M'
         }
     }
 ];
@@ -83,7 +85,9 @@ BMW,X5,2014,3287,M
 * `csv` - A string of CSV
 * `callback` - A function of the form `function (err, array)`; This function will receive any errors and/or the array of JSON documents generated.
 * `options` - (Optional) A JSON document specifying any of {`DELIMITER`, `EOL`, `PARSE_CSV_NUMBERS`}
-  * `DELIMITER` - String - Field Delimiter. Default: `','`
+  * `DELIMITER` - Document - Specifies the different types of delimiters
+    * `FIELD` - String - Field Delimiter. Default: `','`
+    * `ARRAY` - String - Array Value Delimiter. Default: `';'`
   * `EOL` - String - End of Line Delimiter. Default: `'\n'`
   * `PARSE_CSV_NUMBERS` - Boolean - Should numbers that are found in the CSV be converted to numbers? Default: `false`
 
@@ -134,6 +138,7 @@ _Note_: This requires `mocha`, `should`, `async`, and `underscore`.
 - Header Generation (per document keys)
 - Verifies all documents have same schema
 - Supports sub-documents natively
+- Supports arrays as document values for both json2csv and csv2json
 - Custom ordering of columns (see F.A.Q. for more information)
 - Ability to re-generate the JSON documents that were used to generate the CSV (including nested documents)
 - Allows for custom field delimiters, end of line delimiters, etc.
@@ -141,8 +146,9 @@ _Note_: This requires `mocha`, `should`, `async`, and `underscore`.
 ## F.A.Q.
 
 - Can the order of the keys be changed in the output?
-__Yes.__ Currently, changing the order of the keys in the JSON document will also change the order of the columns. (Node 10.26)
+__Yes.__ Currently, changing the order of the keys in the JSON document will also change the order of the columns. (Tested on Node 10.xx)
 
 ## TODO
 - Use PARSE_CSV_NUMBERS option to actually convert numbers. Not currently implemented.
-- Add test cases (& fix potential issues) where data is an array of values
+- Respect nested arrays when in json2csv - Currently flattens them
+- If quotes in CSV header, strip them? Add as an option?
