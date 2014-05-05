@@ -54,7 +54,7 @@ var documents = [
     },
     {
         Make: 'BMW',
-        Model' 'X5',
+        Model: 'X5',
         Year: '2014',
         Specifications: {
             Mileage: '3287',
