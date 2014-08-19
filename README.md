@@ -46,7 +46,7 @@ var documents = [
     {
         Make: 'Nissan',
         Model: 'Murano',
-        Year: '2013'
+        Year: '2013',
         Specifications: {
             Mileage: '7106',
             Trim: 'S AWD'
