@@ -18,6 +18,7 @@ var json_regularJson    = require('./JSON/regularJson'),
     json_nestedJson     = require('./JSON/nestedJson'),
     json_nestedJson2    = require('./JSON/nestedJson2'),
     json_nestedQuotes   = require('./JSON/nestedQuotes'),
+    json_nestedComma    = require('./JSON/nestedComma'),
     json_noData         = require('./JSON/noData.json'),
     json_singleDoc      = require('./JSON/singleDoc.json'),
     json_arrayValue     = require('./JSON/arrayValueDocs.json'),
@@ -25,6 +26,7 @@ var json_regularJson    = require('./JSON/regularJson'),
     csv_nestedJson      = '',
     csv_nestedJson2     = '',
     csv_nestedQuotes    = '',
+    csv_nestedComma     = '',
     csv_noData          = '',
     csv_singleDoc       = '',
     csv_arrayValue      = '';
@@ -60,6 +62,14 @@ var json2csvTests = function () {
                 converter.json2csv(json_nestedQuotes, function(err, csv) {
                     csv.should.equal(csv_nestedQuotes.replace(/,/g, options.DELIMITER.FIELD));
                     csv.split(options.EOL).length.should.equal(4);
+                    done();
+                }, options);
+            });
+
+            it('should parse nested commas in JSON to have commas in CSV ', function(done) {
+                converter.json2csv(json_nestedComma, function(err, csv) {
+                    csv.should.equal(csv_nestedComma.replace(/,/g, options.DELIMITER.FIELD));
+                    csv.split(options.EOL).length.should.equal(3);
                     done();
                 }, options);
             });
@@ -172,6 +182,13 @@ module.exports = {
                         fs.readFile('test/CSV/withQuotes/nestedQuotes.csv', function(err, data) {
                             if (err) callback(err);
                             csv_nestedQuotes = data.toString();
+                            callback(null);
+                        });
+                    },
+                    function(callback) {
+                        fs.readFile('test/CSV/withQuotes/nestedComma.csv', function(err, data) {
+                            if (err) callback(err);
+                            csv_nestedComma = data.toString();
                             callback(null);
                         });
                     },

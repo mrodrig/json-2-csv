@@ -33,7 +33,7 @@ var converter = require('json-2-csv');
   * `DELIMITER` - Document - Specifies the different types of delimiters
     * `FIELD` - String - Field Delimiter. Default: `','`
     * `ARRAY` - String - Array Value Delimiter. Default: `';'`
-    * `WRAP` - String - Wrap values in the delimiter of choice (e.g. wrap values in quotes). Default: `''`
+    * `WRAP` - String - Wrap values in the delimiter of choice (e.g. wrap values in quotes). Default: `null`
   * `EOL` - String - End of Line Delimiter. Default: `'\n'`
   * `PARSE_CSV_NUMBERS` - Boolean - Should numbers that are found in the CSV be converted to numbers? Default: `false`
 
