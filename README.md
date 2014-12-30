@@ -27,8 +27,8 @@ var converter = require('json-2-csv');
 
 #### json2csv(array, callback, options)
 
+* `callback` - A function of the form `function (err, csv)`; This function will receive any errors and/or the array of JSON documents generated.
 * `csv` - A string of CSV
-* `callback` - A function of the form `function (err, array)`; This function will receive any errors and/or the array of JSON documents generated.
 * `options` - (Optional) A JSON document specifying any of {`DELIMITER`, `EOL`, `PARSE_CSV_NUMBERS`}
   * `DELIMITER` - Document - Specifies the different types of delimiters
     * `FIELD` - String - Field Delimiter. Default: `','`
