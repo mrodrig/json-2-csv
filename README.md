@@ -149,6 +149,10 @@ _Note_: This requires `mocha`, `should`, `async`, and `underscore`.
 - Can the order of the keys be changed in the output?
 __Yes.__ Currently, changing the order of the keys in the JSON document will also change the order of the columns. (Tested on Node 10.xx)
 
+## Milestones
+ - Created: May 2014
+ - 1K Downloads/Month: January 15, 2015
+
 ## TODO
 - Use PARSE_CSV_NUMBERS option to actually convert numbers. Not currently implemented.
 - Respect nested arrays when in json2csv - Currently flattens them
