@@ -150,7 +150,7 @@ _Note_: This requires `mocha`, `should`, `async`, and `underscore`.
 __Yes.__ Currently, changing the order of the keys in the JSON document will also change the order of the columns. (Tested on Node 10.xx)
 
 ## Milestones
- - Created: May 2014
+ - Created: Apr 23, 2014
  - 1K Downloads/Month: January 15, 2015
 
 ## TODO
