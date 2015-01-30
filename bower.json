@@ -1,6 +1,6 @@
 {
   "name": "json-2-csv",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "homepage": "https://github.com/mrodrig/json-2-csv",
   "moduleType": [
     "node"
