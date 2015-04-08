@@ -1,8 +1,9 @@
 var should = require('should'),
-  converter = require('.././lib/converter'),
-  fs = require('fs'),
-  _ = require('underscore'),
-  async = require('async');
+    converter = require('.././lib/converter'),
+    fs = require('fs'),
+    _ = require('underscore'),
+    Promise = require('bluebird'),
+    async = require('async');
 
 var options = {
     DELIMITER         : {
@@ -34,7 +35,7 @@ var json_regularJson                 = require('./JSON/regularJson'),
     csv_arrayValue                   = '';
 
 var json2csvTests = function () {
-    describe('json2csv', function (done) {
+    describe('json2csv - non-promisified', function (done) {
         describe('Options Specified', function (done) {
             it('should convert plain JSON to CSV', function(done) {
                 converter.json2csv(json_regularJson, function(err, csv) {
@@ -165,7 +166,120 @@ var json2csvTests = function () {
                 }
             });
         });
+    });
 
+    describe('json2csv - promisified', function (done) {
+        beforeEach(function () {
+            converter = Promise.promisifyAll(converter);
+        });
+
+        describe('Options Specified', function (done) {
+            it('should convert plain JSON to CSV', function(done) {
+                converter.json2csvAsync(json_regularJson, options)
+                    .then(function(csv) {
+                        csv.should.equal(csv_regularJson);
+                        csv.split(options.EOL).length.should.equal(6);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse nested JSON to CSV - 1', function(done) {
+                converter.json2csvAsync(json_nestedJson, options)
+                    .then(function(csv) {
+                        csv.should.equal(csv_nestedJson);
+                        csv.split(options.EOL).length.should.equal(6);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse nested JSON to CSV - 2', function(done) {
+                converter.json2csvAsync(json_nestedJson2, options)
+                    .then(function(csv) {
+                        csv.should.equal(csv_nestedJson2);
+                        csv.split(options.EOL).length.should.equal(4);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
+                converter.json2csvAsync(json_nestedQuotes, options)
+                    .then(function(csv) {
+                        csv.should.equal(csv_nestedQuotes);
+                        csv.split(options.EOL).length.should.equal(4);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse an empty array to an empty CSV', function(done) {
+                converter.json2csvAsync(json_noData, options)
+                    .then(function(csv) {
+                        csv.should.equal(csv_noData);
+                        csv.split(options.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse a single JSON document to CSV', function (done) {
+                converter.json2csvAsync(json_singleDoc, options)
+                    .then(function (csv) {
+                        csv.should.equal(csv_singleDoc);
+                        csv.split(options.EOL).length.should.equal(3);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse a single JSON document to CSV', function (done) {
+                converter.json2csvAsync(json_arrayValue, options)
+                    .then(function (csv) {
+                        csv.should.equal(csv_arrayValue);
+                        csv.split(options.EOL).length.should.equal(5);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should throw an error about not having been passed data - 1', function (done) {
+                converter.json2csvAsync(null, options)
+                    .then(function (csv) {
+                        throw new Error('should not hit');
+                    })
+                    .catch(function (err) {
+                        err.message.should.equal('Cannot call json2csv on null.');
+                        done();
+                    });
+            });
+
+            it('should throw an error about not having been passed data - 2', function (done) {
+                converter.json2csvAsync(undefined, options)
+                    .then(function (csv) {
+                        throw new Error('should not hit');
+                    })
+                    .catch(function (err) {
+                        err.message.should.equal('Cannot call json2csv on undefined.');
+                        done();
+                    });
+            });
+        });
     });
 };
 
@@ -174,67 +288,67 @@ module.exports = {
         describe('Wrapped in Quotes', function() {
             before(function(done) {
                 async.parallel([
-                    function(callback) {
-                        fs.readFile('test/CSV/withQuotes/regularJson.csv', function(err, data) {
-                            if (err) callback(err);
-                            csv_regularJson = data.toString();
-                            callback(null);
-                        });
-                    },
-                    function(callback) {
-                        fs.readFile('test/CSV/withQuotes/nestedJson.csv', function(err, data) {
-                            if (err) callback(err);
-                            csv_nestedJson = data.toString();
-                            callback(null);
-                        });
-                    },
-                    function(callback) {
-                        fs.readFile('test/CSV/withQuotes/nestedJson2.csv', function(err, data) {
-                            if (err) callback(err);
-                            csv_nestedJson2 = data.toString();
-                            callback(null);
-                        });
-                    },
-                    function(callback) {
-                        fs.readFile('test/CSV/withQuotes/nestedQuotes.csv', function(err, data) {
-                            if (err) callback(err);
-                            csv_nestedQuotes = data.toString();
-                            callback(null);
-                        });
-                    },
-                    function(callback) {
-                        fs.readFile('test/CSV/withQuotes/nestedComma.csv', function(err, data) {
-                            if (err) callback(err);
-                            csv_nestedComma = data.toString();
-                            callback(null);
-                        });
-                    },
-                    function(callback) {
-                        fs.readFile('test/CSV/withQuotes/noData.csv', function (err, data) {
-                            if (err) callback(err);
-                            csv_noData = data.toString();
-                            callback(null);
-                        });
-                    },
-                    function(callback) {
-                        fs.readFile('test/CSV/withQuotes/singleDoc.csv', function (err, data) {
-                            if (err) callback(err);
-                            csv_singleDoc = data.toString();
-                            callback(null);
-                        });
-                    },
-                    function(callback) {
-                        fs.readFile('test/CSV/withQuotes/arrayValueDocs.csv', function (err, data) {
-                            if (err) callback(err);
-                            csv_arrayValue = data.toString();
-                            callback(null);
-                        });
-                    }
-                ],
-                function(err, results) {
-                    if (err) console.log(err);
-                    done();
-                });
+                        function(callback) {
+                            fs.readFile('test/CSV/withQuotes/regularJson.csv', function(err, data) {
+                                if (err) callback(err);
+                                csv_regularJson = data.toString();
+                                callback(null);
+                            });
+                        },
+                        function(callback) {
+                            fs.readFile('test/CSV/withQuotes/nestedJson.csv', function(err, data) {
+                                if (err) callback(err);
+                                csv_nestedJson = data.toString();
+                                callback(null);
+                            });
+                        },
+                        function(callback) {
+                            fs.readFile('test/CSV/withQuotes/nestedJson2.csv', function(err, data) {
+                                if (err) callback(err);
+                                csv_nestedJson2 = data.toString();
+                                callback(null);
+                            });
+                        },
+                        function(callback) {
+                            fs.readFile('test/CSV/withQuotes/nestedQuotes.csv', function(err, data) {
+                                if (err) callback(err);
+                                csv_nestedQuotes = data.toString();
+                                callback(null);
+                            });
+                        },
+                        function(callback) {
+                            fs.readFile('test/CSV/withQuotes/nestedComma.csv', function(err, data) {
+                                if (err) callback(err);
+                                csv_nestedComma = data.toString();
+                                callback(null);
+                            });
+                        },
+                        function(callback) {
+                            fs.readFile('test/CSV/withQuotes/noData.csv', function (err, data) {
+                                if (err) callback(err);
+                                csv_noData = data.toString();
+                                callback(null);
+                            });
+                        },
+                        function(callback) {
+                            fs.readFile('test/CSV/withQuotes/singleDoc.csv', function (err, data) {
+                                if (err) callback(err);
+                                csv_singleDoc = data.toString();
+                                callback(null);
+                            });
+                        },
+                        function(callback) {
+                            fs.readFile('test/CSV/withQuotes/arrayValueDocs.csv', function (err, data) {
+                                if (err) callback(err);
+                                csv_arrayValue = data.toString();
+                                callback(null);
+                            });
+                        }
+                    ],
+                    function(err, results) {
+                        if (err) console.log(err);
+                        done();
+                    });
             });
 
             // JSON to CSV
