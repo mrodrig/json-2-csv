@@ -1,6 +1,6 @@
 {
   "name": "json-2-csv",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "homepage": "https://github.com/mrodrig/json-2-csv",
   "moduleType": [
     "node"
@@ -15,6 +15,6 @@
   ],
   "dependencies": {
     "underscore": "1.6.0",
-    "async": "0.2.10"
+    "bluebird": "2.9.24"
   }
 }

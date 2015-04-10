@@ -137,7 +137,7 @@ _Note_: This requires `mocha`, `should`, `async`, and `underscore`.
 ## Features
 
 - Header Generation (per document keys)
-- Verifies all documents have same schema
+- Verifies all documents have same schema (schema field order does not matter as of 1.1.0)
 - Supports sub-documents natively
 - Supports arrays as document values for both json2csv and csv2json
 - Custom ordering of columns (see F.A.Q. for more information)
@@ -152,8 +152,3 @@ __Yes.__ Currently, changing the order of the keys in the JSON document will als
 ## Milestones
  - Created: Apr 23, 2014
  - 1K Downloads/Month: January 15, 2015
-
-## TODO
-- Use PARSE_CSV_NUMBERS option to actually convert numbers. Not currently implemented.
-- Respect nested arrays when in json2csv - Currently flattens them
-- If quotes in CSV header, strip them? Add as an option?

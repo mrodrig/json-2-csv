@@ -1,2 +1,0 @@
-single doc (not in array)
-check errors - no callback, not all same schema

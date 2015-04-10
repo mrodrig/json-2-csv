@@ -13,20 +13,22 @@ var options = {
     PARSE_CSV_NUMBERS : false
 };
 
-var json_regularJson    = require('./JSON/regularJson'),
-    json_nestedJson     = require('./JSON/nestedJson'),
-    json_nestedJson2    = require('./JSON/nestedJson2'),
-    json_nestedQuotes   = require('./JSON/nestedQuotes'),
-    json_noData         = require('./JSON/noData.json'),
-    json_singleDoc      = require('./JSON/singleDoc.json'),
-    json_arrayValue     = require('./JSON/arrayValueDocs.json'),
-    csv_regularJson     = '',
-    csv_nestedJson      = '',
-    csv_nestedJson2     = '',
-    csv_nestedQuotes    = '',
-    csv_noData          = '',
-    csv_singleDoc       = '',
-    csv_arrayValue      = '';
+var json_regularJson                 = require('./JSON/regularJson'),
+    json_nestedJson                  = require('./JSON/nestedJson'),
+    json_nestedJson2                 = require('./JSON/nestedJson2'),
+    json_nestedQuotes                = require('./JSON/nestedQuotes'),
+    json_noData                      = require('./JSON/noData.json'),
+    json_singleDoc                   = require('./JSON/singleDoc.json'),
+    json_arrayValue                  = require('./JSON/arrayValueDocs.json'),
+    json_sameSchemaDifferentOrdering = require('./JSON/sameSchemaDifferentOrdering'),
+    json_differentSchemas            = require('./JSON/differentSchemas'),
+    csv_regularJson                  = '',
+    csv_nestedJson                   = '',
+    csv_nestedJson2                  = '',
+    csv_nestedQuotes                 = '',
+    csv_noData                       = '',
+    csv_singleDoc                    = '',
+    csv_arrayValue                   = '';
 
 var json2csvTests = function () {
     describe('json2csv', function (done) {
@@ -79,10 +81,26 @@ var json2csvTests = function () {
                 }, options);
             });
 
-            it('should parse a single JSON document to CSV', function (done) {
+            it('should parse an array of JSON documents to CSV', function (done) {
                 converter.json2csv(json_arrayValue, function (err, csv) {
                     csv.should.equal(csv_arrayValue.replace(/,/g, options.DELIMITER.FIELD));
                     csv.split(options.EOL).length.should.equal(5);
+                    done();
+                }, options);
+            });
+
+
+            it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
+                converter.json2csv(json_sameSchemaDifferentOrdering, function (err, csv) {
+                    csv.should.equal(csv_regularJson.replace(/,/g, ';'));
+                    csv.split(options.EOL).length.should.equal(6);
+                    done();
+                }, options);
+            });
+
+            it('should throw an error if the documents do not have the same schema', function (done) {
+                converter.json2csv(json_differentSchemas, function (err, csv) {
+                    err.message.should.equal('Not all documents have the same schema.');
                     done();
                 }, options);
             });
@@ -188,10 +206,25 @@ var json2csvTests = function () {
                 });
             });
 
-            it('should parse a single JSON document to CSV', function (done) {
+            it('should parse an array of JSON documents to CSV', function (done) {
                 converter.json2csv(json_arrayValue, function (err, csv) {
                     csv.should.equal(csv_arrayValue.replace(/\//g, options.DELIMITER.FIELD));
                     csv.split(options.EOL).length.should.equal(5);
+                    done();
+                });
+            });
+
+            it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
+                converter.json2csv(json_sameSchemaDifferentOrdering, function (err, csv) {
+                    csv.should.equal(csv_regularJson);
+                    csv.split(options.EOL).length.should.equal(6);
+                    done();
+                });
+            });
+
+            it('should throw an error if the documents do not have the same schema', function (done) {
+                converter.json2csv(json_differentSchemas, function (err, csv) {
+                    err.message.should.equal('Not all documents have the same schema.');
                     done();
                 });
             });
