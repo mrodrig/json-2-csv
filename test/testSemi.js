@@ -21,6 +21,7 @@ var json_regularJson                 = require('./JSON/regularJson'),
     json_noData                      = require('./JSON/noData.json'),
     json_singleDoc                   = require('./JSON/singleDoc.json'),
     json_arrayValue                  = require('./JSON/arrayValueDocs.json'),
+    json_arrayValue_specificKeys     = require('./JSON/arrayValueDocs_specificKeys.json'),
     json_sameSchemaDifferentOrdering = require('./JSON/sameSchemaDifferentOrdering'),
     json_differentSchemas            = require('./JSON/differentSchemas'),
     csv_regularJson                  = '',
@@ -29,7 +30,8 @@ var json_regularJson                 = require('./JSON/regularJson'),
     csv_nestedQuotes                 = '',
     csv_noData                       = '',
     csv_singleDoc                    = '',
-    csv_arrayValue                   = '';
+    csv_arrayValue                   = '',
+    csv_arrayValue_specificKeys      = '';
 
 var json2csvTests = function () {
     describe('json2csv - non-promisified', function (done) {
@@ -89,11 +91,20 @@ var json2csvTests = function () {
                     done();
                 }, options);
             });
-
+            
+            it('should parse the specified keys to CSV', function (done) {
+                // Create a copy so we don't modify the actual options object
+                var opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS: ['info.name', 'year']});
+                converter.json2csv(json_arrayValue, function (err, csv) {
+                    csv.should.equal(csv_arrayValue_specificKeys.replace(/,/g, opts.DELIMITER.FIELD));
+                    csv.split(options.EOL).length.should.equal(5);
+                    done();
+                }, opts);
+            });
 
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
                 converter.json2csv(json_sameSchemaDifferentOrdering, function (err, csv) {
-                    csv.should.equal(csv_regularJson.replace(/,/g, ';'));
+                    csv.should.equal(csv_regularJson.replace(/,/g, options.DELIMITER.FIELD));
                     csv.split(options.EOL).length.should.equal(6);
                     done();
                 }, options);
@@ -381,6 +392,19 @@ var json2csvTests = function () {
                     });
             });
 
+            it('should parse the specified keys to CSV', function (done) {
+                // Create a copy so we don't modify the actual options object
+                var opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS: ['info.name', 'year']});
+                converter.json2csvAsync(json_arrayValue, opts)
+                    .then(function (csv) {
+                        csv.should.equal(csv_arrayValue_specificKeys.replace(/,/g, opts.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(5);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
 
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
                 converter.json2csvAsync(json_sameSchemaDifferentOrdering, options)
@@ -563,7 +587,7 @@ var json2csvTests = function () {
 };
 
 var csv2jsonTests = function () {
-    describe('csv2json', function (done) {
+    describe('csv2json - non-promisified', function (done) {
         describe('Options Specified', function (done) {
             it('should convert a basic CSV to JSON', function(done) {
                 converter.csv2json(csv_regularJson.replace(/,/g, options.DELIMITER.FIELD), function(err, json) {
@@ -619,6 +643,15 @@ var csv2jsonTests = function () {
                     true.should.equal(isEqual);
                     done();
                 }, options);
+            });
+            
+            it('should parse the specified keys to JSON', function (done) {
+                var opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS : ['info.name', 'year']});
+                converter.csv2json(csv_arrayValue.replace(/,/g, options.DELIMITER.FIELD), function (err, json) {
+                    var isEqual = _.isEqual(json, json_arrayValue_specificKeys);
+                    true.should.equal(isEqual);
+                    done();
+                }, opts);
             });
 
             it('should throw an error about not having been passed data - 1', function (done) {
@@ -789,6 +822,133 @@ var csv2jsonTests = function () {
             });
         });
     });
+
+    describe('csv2json - promisified', function (done) {
+        beforeEach(function () {
+            converter = Promise.promisifyAll(converter);
+        });
+
+        describe('Options Specified', function (done) {
+            it('should convert a basic CSV to JSON', function(done) {
+                converter.csv2jsonAsync(csv_regularJson.replace(/,/g, options.DELIMITER.FIELD), options)
+                    .then(function(json) {
+                        var isEqual = _.isEqual(json, json_regularJson);
+                        true.should.equal(isEqual);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse a CSV representing nested objects to JSON - 1', function(done) {
+                converter.csv2jsonAsync(csv_nestedJson.replace(/,/g, options.DELIMITER.FIELD), options)
+                    .then(function(json) {
+                        var isEqual = _.isEqual(json, json_nestedJson);
+                        true.should.equal(isEqual);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse a CSV representing nested objects to JSON - 2', function(done) {
+                converter.csv2jsonAsync(csv_nestedJson2.replace(/,/g, options.DELIMITER.FIELD), options)
+                    .then(function(json) {
+                        var isEqual = _.isEqual(json, json_nestedJson2);
+                        true.should.equal(isEqual);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse nested quotes in a CSV to have nested quotes in JSON', function(done) {
+                converter.csv2jsonAsync(csv_nestedQuotes.replace(/,/g, options.DELIMITER.FIELD), options)
+                    .then(function(json) {
+                        var isEqual = _.isEqual(json, json_nestedQuotes);
+                        true.should.equal(isEqual);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse an empty CSV to an empty JSON array', function(done) {
+                converter.csv2jsonAsync(csv_noData.replace(/,/g, options.DELIMITER.FIELD), options)
+                    .then(function(json) {
+                        var isEqual = _.isEqual(json, json_noData);
+                        true.should.equal(isEqual);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse a single JSON document to CSV', function (done) {
+                converter.json2csvAsync(json_singleDoc, options)
+                    .then(function (csv) {
+                        csv.should.equal(csv_singleDoc.replace(/,/g, options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(3);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse a CSV with a nested array to the correct JSON representation', function (done) {
+                converter.csv2jsonAsync(csv_arrayValue.replace(/,/g, options.DELIMITER.FIELD), options)
+                    .then(function (json) {
+                        var isEqual = _.isEqual(json, json_arrayValue);
+                        true.should.equal(isEqual);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse the specified keys to JSON', function (done) {
+                var opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS : ['info.name', 'year']});
+                converter.csv2jsonAsync(csv_arrayValue.replace(/,/g, options.DELIMITER.FIELD), opts)
+                    .then(function (json) {
+                        var isEqual = _.isEqual(json, json_arrayValue_specificKeys);
+                        true.should.equal(isEqual);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should throw an error about not having been passed data - 1', function (done) {
+                converter.csv2jsonAsync(null, options)
+                    .then(function (json) {
+                        throw new Error('should not hit');
+                    })
+                    .catch(function (err) {
+                        err.message.should.equal('Cannot call csv2json on null.');
+                        done();
+                    });
+            });
+
+            it('should throw an error about not having been passed data - 2', function (done) {
+                converter.csv2jsonAsync(undefined, options)
+                    .then(function (json) {
+                        throw new Error('should not hit');
+                    })
+                    .catch(function (err) {
+                        err.message.should.equal('Cannot call csv2json on undefined.');
+                        done();
+                    });
+            });
+        });
+    });
 };
 
 module.exports = {
@@ -844,10 +1004,17 @@ module.exports = {
                                 csv_arrayValue = data.toString();
                                 callback(null);
                             });
+                        },
+                        function(callback) {
+                            fs.readFile('test/CSV/arrayValueDocs_specificKeys.csv', function (err, data) {
+                                if (err) callback(err);
+                                csv_arrayValue_specificKeys = data.toString();
+                                callback(null);
+                            });
                         }
                     ],
                     function(err, results) {
-                        if (err) console.log(err);
+                        if (err) throw err;
                         done();
                     });
             });
