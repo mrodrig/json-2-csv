@@ -143,6 +143,7 @@ _Note_: This requires `mocha`, `should`, `async`, and `underscore`.
 - Custom ordering of columns (see F.A.Q. for more information)
 - Ability to re-generate the JSON documents that were used to generate the CSV (including nested documents)
 - Allows for custom field delimiters, end of line delimiters, etc.
+- Promisifiable via bluebird's .promisify(<function) and .promisifyAll() (as of 1.1.1)
 
 ## F.A.Q.
 

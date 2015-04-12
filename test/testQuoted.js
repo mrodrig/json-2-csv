@@ -246,15 +246,38 @@ var json2csvTests = function () {
                     });
             });
 
-            it('should parse a single JSON document to CSV', function (done) {
+            it('should parse an array of JSON documents to CSV', function (done) {
                 converter.json2csvAsync(json_arrayValue, options)
                     .then(function (csv) {
-                        csv.should.equal(csv_arrayValue);
+                        csv.should.equal(csv_arrayValue.replace(/,/g, options.DELIMITER.FIELD));
                         csv.split(options.EOL).length.should.equal(5);
                         done();
                     })
                     .catch(function (err) {
                         throw err;
+                    });
+            });
+
+            it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
+                converter.json2csvAsync(json_sameSchemaDifferentOrdering, options)
+                    .then(function (csv) {
+                        csv.should.equal(csv_regularJson);
+                        csv.split(options.EOL).length.should.equal(6);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should throw an error if the documents do not have the same schema', function (done) {
+                converter.json2csvAsync(json_differentSchemas, options)
+                    .then(function (csv) {
+                        throw new Error('should not hit');
+                    })
+                    .catch(function (err) {
+                        err.message.should.equal('Not all documents have the same schema.');
+                        done();
                     });
             });
 
