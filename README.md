@@ -35,7 +35,9 @@ var converter = require('json-2-csv');
     * `ARRAY` - String - Array Value Delimiter. Default: `';'`
     * `WRAP` - String - Wrap values in the delimiter of choice (e.g. wrap values in quotes). Default: `null`
   * `EOL` - String - End of Line Delimiter. Default: `'\n'`
-  * `PARSE_CSV_NUMBERS` - Boolean - Should numbers that are found in the CSV be converted to numbers? Default: `false`
+  * `KEYS` - Array - Specify the keys (as strings) that should be converted. Default: `null`
+    * If you have a nested object (ie. {info : {name: 'Mike'}}), then set options.KEYS to ['info.name']
+    * If you want all keys to be converted, then specify ```null``` or don't specify the option to utilize the default.
 
 ##### json2csv Example:
 
