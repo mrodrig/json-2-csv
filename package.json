@@ -23,13 +23,13 @@
         "csv-2-json"
     ],
     "dependencies": {
-    	"underscore": "1.6.0",
+    	"underscore": "~1.8.3",
         "bluebird": "~2.9.24"
     },
     "devDependencies": {
         "mocha": "~2.2.4",
         "should": "~5.2.0",
-        "async": "~0.2.10"
+        "async": "~0.9.0"
     },
     "engines": {
     	"node": "*"
