@@ -21,6 +21,7 @@ var json_regularJson                 = require('./JSON/regularJson'),
     json_noData                      = require('./JSON/noData.json'),
     json_singleDoc                   = require('./JSON/singleDoc.json'),
     json_arrayValue                  = require('./JSON/arrayValueDocs.json'),
+    json_arrayValue_specificKeys     = require('./JSON/arrayValueDocs_specificKeys.json'),
     json_sameSchemaDifferentOrdering = require('./JSON/sameSchemaDifferentOrdering'),
     json_differentSchemas            = require('./JSON/differentSchemas'),
     csv_regularJson                  = '',
@@ -29,7 +30,8 @@ var json_regularJson                 = require('./JSON/regularJson'),
     csv_nestedQuotes                 = '',
     csv_noData                       = '',
     csv_singleDoc                    = '',
-    csv_arrayValue                   = '';
+    csv_arrayValue                   = '',
+    csv_arrayValue_specificKeys      = '';
 
 var json2csvTests = function () {
     describe('json2csv - non-promisified', function (done) {
@@ -88,6 +90,16 @@ var json2csvTests = function () {
                     csv.split(options.EOL).length.should.equal(5);
                     done();
                 }, options);
+            });
+
+            it('should parse the specified keys to CSV', function (done) {
+                // Create a copy so we don't modify the actual options object
+                var opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS: ['info.name', 'year']});
+                converter.json2csv(json_arrayValue, function (err, csv) {
+                    csv.should.equal(csv_arrayValue_specificKeys);
+                    csv.split(options.EOL).length.should.equal(5);
+                    done();
+                }, opts);
             });
 
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
@@ -510,6 +522,20 @@ var json2csvTests = function () {
                     });
             });
 
+            it('should parse the specified keys to CSV', function (done) {
+                // Create a copy so we don't modify the actual options object
+                var opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS: ['info.name', 'year']});
+                converter.json2csvAsync(json_arrayValue, opts)
+                    .then(function (csv) {
+                        csv.should.equal(csv_arrayValue_specificKeys);
+                        csv.split(options.EOL).length.should.equal(5);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
                 converter.json2csvAsync(json_sameSchemaDifferentOrdering)
                     .then(function (csv) {
@@ -615,6 +641,15 @@ var csv2jsonTests = function () {
                     true.should.equal(isEqual);
                     done();
                 }, options);
+            });
+
+            it('should parse the specified keys to JSON', function (done) {
+                var opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS : ['info.name', 'year']});
+                converter.csv2jsonAsync(csv_arrayValue.replace(/,/g, options.DELIMITER.FIELD), function (err, json) {
+                    var isEqual = _.isEqual(json, json_arrayValue_specificKeys);
+                    true.should.equal(isEqual);
+                    done();
+                }, opts);
             });
 
             it('should throw an error about not having been passed data - 1', function (done) {
@@ -876,6 +911,19 @@ var csv2jsonTests = function () {
                     });
             });
 
+            it('should parse the specified keys to JSON', function (done) {
+                var opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS : ['info.name', 'year']});
+                converter.csv2jsonAsync(csv_arrayValue.replace(/,/g, options.DELIMITER.FIELD), opts)
+                    .then(function (json) {
+                        var isEqual = _.isEqual(json, json_arrayValue_specificKeys);
+                        true.should.equal(isEqual);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
             it('should throw an error about not having been passed data - 1', function (done) {
                 converter.csv2jsonAsync(null, options)
                     .then(function (json) {
@@ -1061,6 +1109,13 @@ module.exports = {
                             fs.readFile('test/CSV/arrayValueDocs.csv', function (err, data) {
                                 if (err) callback(err);
                                 csv_arrayValue = data.toString();
+                                callback(null);
+                            });
+                        },
+                        function(callback) {
+                            fs.readFile('test/CSV/arrayValueDocs_specificKeys.csv', function (err, data) {
+                                if (err) callback(err);
+                                csv_arrayValue_specificKeys = data.toString();
                                 callback(null);
                             });
                         }

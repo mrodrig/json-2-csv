@@ -1,0 +1,20 @@
+[
+        {
+                "info": {
+                    "name": "Mike"
+                },
+                "year": "Sophomore"
+        },
+        {
+                "info": {
+                    "name": "John"
+                },
+                "year": "Senior"
+        },
+        {
+                "info": {
+                            "name": "Joe"
+                },
+                "year": "Freshman"
+        }
+]
