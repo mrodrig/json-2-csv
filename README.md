@@ -33,7 +33,7 @@ var converter = require('json-2-csv');
   * `DELIMITER` - Document - Specifies the different types of delimiters
     * `FIELD` - String - Field Delimiter. Default: `','`
     * `ARRAY` - String - Array Value Delimiter. Default: `';'`
-    * `WRAP` - String - Wrap values in the delimiter of choice (e.g. wrap values in quotes). Default: `null`
+    * `WRAP` - String - Wrap values in the delimiter of choice (e.g. wrap values in quotes). Default: `''`
   * `EOL` - String - End of Line Delimiter. Default: `'\n'`
   * `KEYS` - Array - Specify the keys (as strings) that should be converted. Default: `null`
     * If you have a nested object (ie. {info : {name: 'Mike'}}), then set options.KEYS to ['info.name']
