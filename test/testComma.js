@@ -86,7 +86,7 @@ var json2csvTests = function () {
 
             it('should parse an array of JSON documents to CSV', function (done) {
                 converter.json2csv(json_arrayValue, function (err, csv) {
-                    csv.should.equal(csv_arrayValue);
+                    csv.should.equal(csv_arrayValue.replace(/;/g, options.DELIMITER.ARRAY));
                     csv.split(options.EOL).length.should.equal(5);
                     done();
                 }, options);
@@ -382,7 +382,7 @@ var json2csvTests = function () {
             it('should parse an array of JSON documents to CSV', function (done) {
                 converter.json2csvAsync(json_arrayValue, options)
                     .then(function (csv) {
-                        csv.should.equal(csv_arrayValue);
+                        csv.should.equal(csv_arrayValue.replace(/;/g, options.DELIMITER.ARRAY));
                         csv.split(options.EOL).length.should.equal(5);
                         done();
                     })
@@ -636,7 +636,7 @@ var csv2jsonTests = function () {
             });
 
             it('should parse a CSV with a nested array to the correct JSON representation', function (done) {
-                converter.csv2json(csv_arrayValue, function (err, json) {
+                converter.csv2json(csv_arrayValue.replace(/;/g, options.DELIMITER.ARRAY), function (err, json) {
                     var isEqual = _.isEqual(json, json_arrayValue);
                     true.should.equal(isEqual);
                     done();
@@ -900,7 +900,7 @@ var csv2jsonTests = function () {
             });
 
             it('should parse a CSV with a nested array to the correct JSON representation', function (done) {
-                converter.csv2jsonAsync(csv_arrayValue, options)
+                converter.csv2jsonAsync(csv_arrayValue.replace(/;/g, options.DELIMITER.ARRAY), options)
                     .then(function (json) {
                         var isEqual = _.isEqual(json, json_arrayValue);
                         true.should.equal(isEqual);

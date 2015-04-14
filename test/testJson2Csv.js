@@ -1,15 +1,28 @@
 var should = require('should'),
-    converter = require('.././lib/converter'),
+    assert = require('assert'),
+    converter = require('../lib/converter'),
+    constants = require('../lib/constants'),
     fs = require('fs'),
     _ = require('underscore'),
     Promise = require('bluebird'),
     async = require('async');
 
-var options;
+var options,
+    defaultOptions = {
+        DELIMITER         : {
+            FIELD  :  ',',
+            ARRAY  :  ';',
+            WRAP   :  ''
+        },
+        EOL               : '\n',
+        PARSE_CSV_NUMBERS : false,
+        KEYS              : null
+    };
 
 var json = {
         arrayValue: require('./JSON/arrayValueDocs'),
         arrayValue_specificKeys: require('./JSON/arrayValueDocs_specificKeys'),
+        nestedComma: require('./JSON/nestedComma'),
         nestedJson: require('./JSON/nestedJson'),
         nestedJson2: require('./JSON/nestedJson2'),
         nestedQuotes: require('./JSON/nestedQuotes'),
@@ -19,25 +32,58 @@ var json = {
         sameSchemaDifferentOrdering: require('./JSON/sameSchemaDifferentOrdering'),
         differentSchemas: require('./JSON/differentSchemas')
     },
-    csv  = {}, // Document where all csv files will be loaded into
+    csvTestData  = {unQuoted: {}, quoted: {}}, // Document where all csv files will be loaded into
     csvFiles = [
-        {key: 'arrayValue', file: 'test/CSV/arrayValueDocs.csv'},
-        {key: 'arrayValue_specificKeys', file: 'test/CSV/arrayValueDocs_specificKeys.csv'},
-        {key: 'nestedJson', file: 'test/CSV/nestedJson.csv'},
-        {key: 'nestedJson2', file: 'test/CSV/nestedJson2.csv'},
-        {key: 'nestedQuotes', file: 'test/CSV/nestedQuotes.csv'},
-        {key: 'noData', file: 'test/CSV/noData.csv'},
-        {key: 'regularJson', file: 'test/CSV/regularJson.csv'},
-        {key: 'singleDoc', file: 'test/CSV/singleDoc.csv'}
+        {
+            key: 'unQuoted',
+            files: [
+                {key: 'arrayValue', file: 'test/CSV/arrayValueDocs.csv'},
+                {key: 'arrayValue_specificKeys', file: 'test/CSV/arrayValueDocs_specificKeys.csv'},
+                {key: 'nestedJson', file: 'test/CSV/nestedJson.csv'},
+                {key: 'nestedJson2', file: 'test/CSV/nestedJson2.csv'},
+                {key: 'nestedQuotes', file: 'test/CSV/nestedQuotes.csv'},
+                {key: 'noData', file: 'test/CSV/noData.csv'},
+                {key: 'regularJson', file: 'test/CSV/regularJson.csv'},
+                {key: 'singleDoc', file: 'test/CSV/singleDoc.csv'}
+            ]
+        },
+        {
+            key: 'quoted',
+            files: [
+                {key: 'arrayValue', file: 'test/CSV/withQuotes/arrayValueDocs.csv'},
+                {key: 'arrayValue_specificKeys', file: 'test/CSV/withQuotes/arrayValueDocs_specificKeys.csv'},
+                {key: 'nestedComma', file: 'test/CSV/withQuotes/nestedComma.csv'},
+                {key: 'nestedJson', file: 'test/CSV/withQuotes/nestedJson.csv'},
+                {key: 'nestedJson2', file: 'test/CSV/withQuotes/nestedJson2.csv'},
+                {key: 'nestedQuotes', file: 'test/CSV/withQuotes/nestedQuotes.csv'},
+                {key: 'noData', file: 'test/CSV/withQuotes/noData.csv'},
+                {key: 'regularJson', file: 'test/CSV/withQuotes/regularJson.csv'},
+                {key: 'singleDoc', file: 'test/CSV/withQuotes/singleDoc.csv'}
+            ]
+        }
     ];
 
 var json2csvTests = function () {
     describe('Testing Default Usage', function () {
         describe('Default Options', function () {
+            beforeEach(function () {
+                options = {
+                    DELIMITER         : {
+                        FIELD  :  ',',
+                        ARRAY  :  ';',
+                        WRAP   :  ''
+                    },
+                    EOL               : '\n',
+                    PARSE_CSV_NUMBERS : false,
+                    KEYS              : null
+                };
+            });
+
             it('should convert plain JSON to CSV', function(done) {
                 converter.json2csv(json.regularJson, function(err, csv) {
-                    csv.should.equal(csv.regularJson
-                    );
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.regularJson);
                     csv.split(options.EOL).length.should.equal(6);
                     done();
                 });
@@ -45,7 +91,9 @@ var json2csvTests = function () {
 
             it('should parse nested JSON to CSV - 1', function(done) {
                 converter.json2csv(json.nestedJson, function(err, csv) {
-                    csv.should.equal(csv.nestedJson);
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.nestedJson);
                     csv.split(options.EOL).length.should.equal(6);
                     done();
                 });
@@ -53,7 +101,9 @@ var json2csvTests = function () {
 
             it('should parse nested JSON to CSV - 2', function(done) {
                 converter.json2csv(json.nestedJson2, function(err, csv) {
-                    csv.should.equal(csv.nestedJson2);
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.nestedJson2);
                     csv.split(options.EOL).length.should.equal(4);
                     done();
                 });
@@ -61,7 +111,9 @@ var json2csvTests = function () {
 
             it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
                 converter.json2csv(json.nestedQuotes, function(err, csv) {
-                    csv.should.equal(csv.nestedQuotes);
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.nestedQuotes);
                     csv.split(options.EOL).length.should.equal(4);
                     done();
                 });
@@ -69,7 +121,9 @@ var json2csvTests = function () {
 
             it('should parse an empty array to an empty CSV', function(done) {
                 converter.json2csv(json.noData, function(err, csv) {
-                    csv.should.equal(csv.noData);
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.noData);
                     csv.split(options.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
                     done();
                 });
@@ -77,7 +131,9 @@ var json2csvTests = function () {
 
             it('should parse a single JSON document to CSV', function (done) {
                 converter.json2csv(json.singleDoc, function (err, csv) {
-                    csv.should.equal(csv.singleDoc);
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.singleDoc);
                     csv.split(options.EOL).length.should.equal(3);
                     done();
                 });
@@ -85,7 +141,9 @@ var json2csvTests = function () {
 
             it('should parse an array of JSON documents to CSV', function (done) {
                 converter.json2csv(json.arrayValue, function (err, csv) {
-                    csv.should.equal(csv.arrayValue.replace(/\//g, options.DELIMITER.FIELD));
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.arrayValue);
                     csv.split(options.EOL).length.should.equal(5);
                     done();
                 });
@@ -93,7 +151,9 @@ var json2csvTests = function () {
 
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
                 converter.json2csv(json.sameSchemaDifferentOrdering, function (err, csv) {
-                    csv.should.equal(csv.regularJson);
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.regularJson);
                     csv.split(options.EOL).length.should.equal(6);
                     done();
                 });
@@ -101,21 +161,21 @@ var json2csvTests = function () {
 
             it('should throw an error if the documents do not have the same schema', function (done) {
                 converter.json2csv(json.differentSchemas, function (err, csv) {
-                    err.message.should.equal('Not all documents have the same schema.');
+                    err.message.should.equal(constants.Errors.json2csv.notSameSchema);
                     done();
                 });
             });
 
             it('should throw an error about not having been passed data - 1', function (done) {
                 converter.json2csv(null, function (err, csv) {
-                    err.message.should.equal('Cannot call json2csv on null.');
+                    err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'null.');
                     done();
                 });
             });
 
             it('should throw an error about not having been passed data - 2', function (done) {
                 converter.json2csv(undefined, function (err, csv) {
-                    err.message.should.equal('Cannot call json2csv on undefined.');
+                    err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
                     done();
                 });
             });
@@ -124,7 +184,7 @@ var json2csvTests = function () {
                 try {
                     converter.json2csv(undefined, undefined);
                 } catch (err) {
-                    err.message.should.equal('A callback is required!');
+                    err.message.should.equal(constants.Errors.callbackRequired);
                     done();
                 }
             });
@@ -133,7 +193,7 @@ var json2csvTests = function () {
                 try {
                     converter.json2csv(null, undefined);
                 } catch (err) {
-                    err.message.should.equal('A callback is required!');
+                    err.message.should.equal(constants.Errors.callbackRequired);
                     done();
                 }
             });
@@ -142,7 +202,7 @@ var json2csvTests = function () {
                 try {
                     converter.json2csv(null, null);
                 } catch (err) {
-                    err.message.should.equal('A callback is required!');
+                    err.message.should.equal(constants.Errors.callbackRequired);
                     done();
                 }
             });
@@ -151,7 +211,7 @@ var json2csvTests = function () {
                 try {
                     converter.json2csv(undefined, null);
                 } catch (err) {
-                    err.message.should.equal('A callback is required!');
+                    err.message.should.equal(constants.Errors.callbackRequired);
                     done();
                 }
             });
@@ -160,7 +220,7 @@ var json2csvTests = function () {
                 try {
                     converter.json2csv();
                 } catch (err) {
-                    err.message.should.equal('A callback is required!');
+                    err.message.should.equal(constants.Errors.callbackRequired);
                     done();
                 }
             });
@@ -180,7 +240,9 @@ var json2csvTests = function () {
 
             it('should convert plain JSON to CSV', function(done) {
                 converter.json2csv(json.regularJson, function(err, csv) {
-                    csv.should.equal(csv.regularJson);
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.regularJson);
                     csv.split(options.EOL).length.should.equal(6);
                     done();
                 }, options);
@@ -188,7 +250,9 @@ var json2csvTests = function () {
 
             it('should parse nested JSON to CSV - 1', function(done) {
                 converter.json2csv(json.nestedJson, function(err, csv) {
-                    csv.should.equal(csv.nestedJson);
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.nestedJson);
                     csv.split(options.EOL).length.should.equal(6);
                     done();
                 }, options);
@@ -196,7 +260,9 @@ var json2csvTests = function () {
 
             it('should parse nested JSON to CSV - 2', function(done) {
                 converter.json2csv(json.nestedJson2, function(err, csv) {
-                    csv.should.equal(csv.nestedJson2);
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.nestedJson2);
                     csv.split(options.EOL).length.should.equal(4);
                     done();
                 }, options);
@@ -204,7 +270,9 @@ var json2csvTests = function () {
 
             it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
                 converter.json2csv(json.nestedQuotes, function(err, csv) {
-                    csv.should.equal(csv.nestedQuotes);
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.nestedQuotes);
                     csv.split(options.EOL).length.should.equal(4);
                     done();
                 }, options);
@@ -212,7 +280,9 @@ var json2csvTests = function () {
 
             it('should parse an empty array to an empty CSV', function(done) {
                 converter.json2csv(json.noData, function(err, csv) {
-                    csv.should.equal(csv.noData);
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.noData);
                     csv.split(options.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
                     done();
                 }, options);
@@ -220,7 +290,9 @@ var json2csvTests = function () {
 
             it('should parse a single JSON document to CSV', function (done) {
                 converter.json2csv(json.singleDoc, function (err, csv) {
-                    csv.should.equal(csv.singleDoc);
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.singleDoc);
                     csv.split(options.EOL).length.should.equal(3);
                     done();
                 }, options);
@@ -228,7 +300,9 @@ var json2csvTests = function () {
 
             it('should parse an array of JSON documents to CSV', function (done) {
                 converter.json2csv(json.arrayValue, function (err, csv) {
-                    csv.should.equal(csv.arrayValue);
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.arrayValue.replace(new RegExp(defaultOptions.DELIMITER.ARRAY, 'g'), options.DELIMITER.ARRAY));
                     csv.split(options.EOL).length.should.equal(5);
                     done();
                 }, options);
@@ -236,17 +310,21 @@ var json2csvTests = function () {
 
             it('should parse the specified keys to CSV', function (done) {
                 // Create a copy so we don't modify the actual options object
-                var opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS: ['info.name', 'year']});
+                options = _.extend(options, {KEYS: ['info.name', 'year']});
                 converter.json2csv(json.arrayValue, function (err, csv) {
-                    csv.should.equal(csv.arrayValue_specificKeys);
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.arrayValue_specificKeys);
                     csv.split(options.EOL).length.should.equal(5);
                     done();
-                }, opts);
+                }, options);
             });
 
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
                 converter.json2csv(json.sameSchemaDifferentOrdering, function (err, csv) {
-                    csv.should.equal(csv.regularJson);
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.regularJson);
                     csv.split(options.EOL).length.should.equal(6);
                     done();
                 }, options);
@@ -254,21 +332,21 @@ var json2csvTests = function () {
 
             it('should throw an error if the documents do not have the same schema', function (done) {
                 converter.json2csv(json.differentSchemas, function (err, csv) {
-                    err.message.should.equal('Not all documents have the same schema.');
+                    err.message.should.equal(constants.Errors.json2csv.notSameSchema);
                     done();
                 }, options);
             });
 
             it('should throw an error about not having been passed data - 1', function (done) {
                 converter.json2csv(null, function (err, csv) {
-                    err.message.should.equal('Cannot call json2csv on null.');
+                    err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'null.');
                     done();
                 }, options);
             });
 
             it('should throw an error about not having been passed data - 2', function (done) {
                 converter.json2csv(undefined, function (err, csv) {
-                    err.message.should.equal('Cannot call json2csv on undefined.');
+                    err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
                     done();
                 }, options);
             });
@@ -277,7 +355,7 @@ var json2csvTests = function () {
                 try {
                     converter.json2csv(undefined, undefined, options);
                 } catch (err) {
-                    err.message.should.equal('A callback is required!');
+                    err.message.should.equal(constants.Errors.callbackRequired);
                     done();
                 }
             });
@@ -286,7 +364,7 @@ var json2csvTests = function () {
                 try {
                     converter.json2csv(null, undefined, options);
                 } catch (err) {
-                    err.message.should.equal('A callback is required!');
+                    err.message.should.equal(constants.Errors.callbackRequired);
                     done();
                 }
             });
@@ -295,7 +373,7 @@ var json2csvTests = function () {
                 try {
                     converter.json2csv(null, null, options);
                 } catch (err) {
-                    err.message.should.equal('A callback is required!');
+                    err.message.should.equal(constants.Errors.callbackRequired);
                     done();
                 }
             });
@@ -304,7 +382,7 @@ var json2csvTests = function () {
                 try {
                     converter.json2csv(undefined, null, options);
                 } catch (err) {
-                    err.message.should.equal('A callback is required!');
+                    err.message.should.equal(constants.Errors.callbackRequired);
                     done();
                 }
             });
@@ -324,7 +402,9 @@ var json2csvTests = function () {
 
             it('should convert plain JSON to CSV', function(done) {
                 converter.json2csv(json.regularJson, function(err, csv) {
-                    csv.should.equal(csv.regularJson.replace(/,/g, options.DELIMITER.FIELD));
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.regularJson.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
                     csv.split(options.EOL).length.should.equal(6);
                     done();
                 }, options);
@@ -332,7 +412,9 @@ var json2csvTests = function () {
 
             it('should parse nested JSON to CSV - 1', function(done) {
                 converter.json2csv(json.nestedJson, function(err, csv) {
-                    csv.should.equal(csv.nestedJson.replace(/,/g, options.DELIMITER.FIELD));
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.nestedJson.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
                     csv.split(options.EOL).length.should.equal(6);
                     done();
                 }, options);
@@ -340,7 +422,9 @@ var json2csvTests = function () {
 
             it('should parse nested JSON to CSV - 2', function(done) {
                 converter.json2csv(json.nestedJson2, function(err, csv) {
-                    csv.should.equal(csv.nestedJson2.replace(/,/g, options.DELIMITER.FIELD));
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.nestedJson2.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
                     csv.split(options.EOL).length.should.equal(4);
                     done();
                 }, options);
@@ -348,7 +432,9 @@ var json2csvTests = function () {
 
             it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
                 converter.json2csv(json.nestedQuotes, function(err, csv) {
-                    csv.should.equal(csv.nestedQuotes.replace(/,/g, options.DELIMITER.FIELD));
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.nestedQuotes.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
                     csv.split(options.EOL).length.should.equal(4);
                     done();
                 }, options);
@@ -356,7 +442,9 @@ var json2csvTests = function () {
 
             it('should parse an empty array to an empty CSV', function(done) {
                 converter.json2csv(json.noData, function(err, csv) {
-                    csv.should.equal(csv.noData.replace(/,/g, options.DELIMITER.FIELD));
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.noData.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
                     csv.split(options.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
                     done();
                 }, options);
@@ -364,7 +452,9 @@ var json2csvTests = function () {
 
             it('should parse a single JSON document to CSV', function (done) {
                 converter.json2csv(json.singleDoc, function (err, csv) {
-                    csv.should.equal(csv.singleDoc.replace(/,/g, options.DELIMITER.FIELD));
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.singleDoc.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
                     csv.split(options.EOL).length.should.equal(3);
                     done();
                 }, options);
@@ -372,7 +462,10 @@ var json2csvTests = function () {
 
             it('should parse an array of JSON documents to CSV', function (done) {
                 converter.json2csv(json.arrayValue, function (err, csv) {
-                    csv.should.equal(csv.arrayValue.replace(/,/g, options.DELIMITER.FIELD));
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.arrayValue.replace(new RegExp(defaultOptions.DELIMITER.ARRAY, 'g'), options.DELIMITER.ARRAY)
+                            .replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
                     csv.split(options.EOL).length.should.equal(5);
                     done();
                 }, options);
@@ -380,17 +473,21 @@ var json2csvTests = function () {
 
             it('should parse the specified keys to CSV', function (done) {
                 // Create a copy so we don't modify the actual options object
-                var opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS: ['info.name', 'year']});
+                options = _.extend(options, {KEYS: ['info.name', 'year']});
                 converter.json2csv(json.arrayValue, function (err, csv) {
-                    csv.should.equal(csv.arrayValue_specificKeys.replace(/,/g, opts.DELIMITER.FIELD));
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.arrayValue_specificKeys.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
                     csv.split(options.EOL).length.should.equal(5);
                     done();
-                }, opts);
+                }, options);
             });
 
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
                 converter.json2csv(json.sameSchemaDifferentOrdering, function (err, csv) {
-                    csv.should.equal(csv.regularJson.replace(/,/g, options.DELIMITER.FIELD));
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.regularJson.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
                     csv.split(options.EOL).length.should.equal(6);
                     done();
                 }, options);
@@ -398,21 +495,21 @@ var json2csvTests = function () {
 
             it('should throw an error if the documents do not have the same schema', function (done) {
                 converter.json2csv(json.differentSchemas, function (err, csv) {
-                    err.message.should.equal('Not all documents have the same schema.');
+                    err.message.should.equal(constants.Errors.json2csv.notSameSchema);
                     done();
                 }, options);
             });
 
             it('should throw an error about not having been passed data - 1', function (done) {
                 converter.json2csv(null, function (err, csv) {
-                    err.message.should.equal('Cannot call json2csv on null.');
+                    err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'null.');
                     done();
                 }, options);
             });
 
             it('should throw an error about not having been passed data - 2', function (done) {
                 converter.json2csv(undefined, function (err, csv) {
-                    err.message.should.equal('Cannot call json2csv on undefined.');
+                    err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
                     done();
                 }, options);
             });
@@ -421,7 +518,7 @@ var json2csvTests = function () {
                 try {
                     converter.json2csv(undefined, undefined, options);
                 } catch (err) {
-                    err.message.should.equal('A callback is required!');
+                    err.message.should.equal(constants.Errors.callbackRequired);
                     done();
                 }
             });
@@ -430,7 +527,7 @@ var json2csvTests = function () {
                 try {
                     converter.json2csv(null, undefined, options);
                 } catch (err) {
-                    err.message.should.equal('A callback is required!');
+                    err.message.should.equal(constants.Errors.callbackRequired);
                     done();
                 }
             });
@@ -439,7 +536,7 @@ var json2csvTests = function () {
                 try {
                     converter.json2csv(null, null, options);
                 } catch (err) {
-                    err.message.should.equal('A callback is required!');
+                    err.message.should.equal(constants.Errors.callbackRequired);
                     done();
                 }
             });
@@ -448,7 +545,7 @@ var json2csvTests = function () {
                 try {
                     converter.json2csv(undefined, null, options);
                 } catch (err) {
-                    err.message.should.equal('A callback is required!');
+                    err.message.should.equal(constants.Errors.callbackRequired);
                     done();
                 }
             });
@@ -456,9 +553,206 @@ var json2csvTests = function () {
 
         describe('Custom Options - Quote Wrapped Fields', function () {
             beforeEach(function () {
+                options = {
+                    DELIMITER         : {
+                        FIELD  :  ',',
+                        ARRAY  :  '/',
+                        WRAP   :  '\"'
+                    },
+                    EOL               : '\n',
+                    PARSE_CSV_NUMBERS : false
+                }
+            });
 
+            it('should convert plain JSON to CSV', function(done) {
+                converter.json2csv(json.regularJson, function(err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.quoted.regularJson.replace(/,/g, options.DELIMITER.FIELD));
+                    csv.split(options.EOL).length.should.equal(6);
+                    done();
+                }, options);
+            });
+
+            it('should parse nested JSON to CSV - 1', function(done) {
+                converter.json2csv(json.nestedJson, function(err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.quoted.nestedJson.replace(/,/g, options.DELIMITER.FIELD));
+                    csv.split(options.EOL).length.should.equal(6);
+                    done();
+                }, options);
+            });
+
+            it('should parse nested JSON to CSV - 2', function(done) {
+                converter.json2csv(json.nestedJson2, function(err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.quoted.nestedJson2.replace(/,/g, options.DELIMITER.FIELD));
+                    csv.split(options.EOL).length.should.equal(4);
+                    done();
+                }, options);
+            });
+
+            it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
+                converter.json2csv(json.nestedQuotes, function(err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.quoted.nestedQuotes.replace(/,/g, options.DELIMITER.FIELD));
+                    csv.split(options.EOL).length.should.equal(4);
+                    done();
+                }, options);
+            });
+
+            it('should parse nested commas in JSON to have commas in CSV ', function(done) {
+                converter.json2csv(json.nestedComma, function(err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.quoted.nestedComma.replace(/,/g, options.DELIMITER.FIELD));
+                    csv.split(options.EOL).length.should.equal(3);
+                    done();
+                }, options);
+            });
+
+            it('should parse an empty array to an empty CSV', function(done) {
+                converter.json2csv(json.noData, function(err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.quoted.noData.replace(/,/g, options.DELIMITER.FIELD));
+                    csv.split(options.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
+                    done();
+                }, options);
+            });
+
+            it('should parse a single JSON document to CSV', function (done) {
+                converter.json2csv(json.singleDoc, function (err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.quoted.singleDoc.replace(/,/g, options.DELIMITER.FIELD));
+                    csv.split(options.EOL).length.should.equal(3);
+                    done();
+                }, options);
+            });
+
+            it('should parse an array of JSON documents to CSV', function (done) {
+                converter.json2csv(json.arrayValue, function (err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.quoted.arrayValue.replace(/,/g, options.DELIMITER.FIELD));
+                    csv.split(options.EOL).length.should.equal(5);
+                    done();
+                }, options);
+            });
+
+            it('should parse the specified keys to CSV', function (done) {
+                // Create a copy so we don't modify the actual options object
+                var opts = _.extend(options, {KEYS: ['info.name', 'year']});
+                converter.json2csv(json.arrayValue, function (err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.quoted.arrayValue_specificKeys);
+                    csv.split(options.EOL).length.should.equal(5);
+                    done();
+                }, opts);
+            });
+
+            it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
+                converter.json2csv(json.sameSchemaDifferentOrdering, function (err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.quoted.regularJson);
+                    csv.split(options.EOL).length.should.equal(6);
+                    done();
+                }, options);
+            });
+
+            it('should throw an error if the documents do not have the same schema', function (done) {
+                converter.json2csv(json.differentSchemas, function (err, csv) {
+                    err.message.should.equal(constants.Errors.json2csv.notSameSchema);
+                    done();
+                }, options);
+            });
+
+            it('should throw an error about not having been passed data - 1', function (done) {
+                converter.json2csv(null, function (err, csv) {
+                    err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'null.');
+                    done();
+                }, options);
+            });
+
+            it('should throw an error about not having been passed data - 2', function (done) {
+                converter.json2csv(undefined, function (err, csv) {
+                    err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
+                    done();
+                }, options);
+            });
+
+            it('should throw an error about not being provided a callback - 1', function (done) {
+                try {
+                    converter.json2csv(undefined, undefined, options);
+                } catch (err) {
+                    err.message.should.equal(constants.Errors.callbackRequired);
+                    done();
+                }
+            });
+
+            it('should throw an error about not being provided a callback - 2', function (done) {
+                try {
+                    converter.json2csv(null, undefined, options);
+                } catch (err) {
+                    err.message.should.equal(constants.Errors.callbackRequired);
+                    done();
+                }
+            });
+
+            it('should throw an error about not being provided a callback - 3', function (done) {
+                try {
+                    converter.json2csv(null, null, options);
+                } catch (err) {
+                    err.message.should.equal(constants.Errors.callbackRequired);
+                    done();
+                }
+            });
+
+            it('should throw an error about not being provided a callback - 4', function (done) {
+                try {
+                    converter.json2csv(undefined, null, options);
+                } catch (err) {
+                    err.message.should.equal(constants.Errors.callbackRequired);
+                    done();
+                }
             });
         });
+
+        describe('Testing other errors', function () {
+            beforeEach(function () {
+                options = {
+                    DELIMITER         : {
+                        FIELD  :  ',',
+                        ARRAY  :  ';',
+                        WRAP   :  ''
+                    },
+                    EOL               : '\n',
+                    PARSE_CSV_NUMBERS : false,
+                    KEYS              : null
+                };
+            });
+
+            it('should throw an error about the field and array delimiters being the same', function (done) {
+                options.DELIMITER.FIELD = options.DELIMITER.ARRAY = ',';
+                converter.json2csv(json.arrayValue, function (err, csv) {
+                    err.message.should.equal(constants.Errors.delimitersMustDiffer);
+                    done();
+                }, options);
+            });
+            
+            it('should throw an error if the data is of the wrong type', function (done) {
+                converter.json2csv(new Date().toString(), function (err, csv) {
+                    err.message.should.equal(constants.Errors.json2csv.dataNotArrayOfDocuments);
+                    done();
+                }, options);
+            });
+        })
     });
 
     describe('Testing Promisified Usage', function () {
@@ -467,10 +761,23 @@ var json2csvTests = function () {
         });
 
         describe('Default Options', function () {
+            beforeEach(function () {
+                options = {
+                    DELIMITER         : {
+                        FIELD  :  ',',
+                        ARRAY  :  ';',
+                        WRAP   :  ''
+                    },
+                    EOL               : '\n',
+                    PARSE_CSV_NUMBERS : false,
+                    KEYS              : null
+                };
+            });
+
             it('should convert plain JSON to CSV', function(done) {
                 converter.json2csvAsync(json.regularJson)
                     .then(function(csv) {
-                        csv.should.equal(csv.regularJson);
+                        csv.should.equal(csvTestData.unQuoted.regularJson);
                         csv.split(options.EOL).length.should.equal(6);
                         done();
                     })
@@ -482,7 +789,7 @@ var json2csvTests = function () {
             it('should parse nested JSON to CSV - 1', function(done) {
                 converter.json2csvAsync(json.nestedJson)
                     .then(function(csv) {
-                        csv.should.equal(csv.nestedJson);
+                        csv.should.equal(csvTestData.unQuoted.nestedJson);
                         csv.split(options.EOL).length.should.equal(6);
                         done();
                     })
@@ -494,7 +801,7 @@ var json2csvTests = function () {
             it('should parse nested JSON to CSV - 2', function(done) {
                 converter.json2csvAsync(json.nestedJson2)
                     .then(function(csv) {
-                        csv.should.equal(csv.nestedJson2);
+                        csv.should.equal(csvTestData.unQuoted.nestedJson2);
                         csv.split(options.EOL).length.should.equal(4);
                         done();
                     })
@@ -506,7 +813,7 @@ var json2csvTests = function () {
             it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
                 converter.json2csvAsync(json.nestedQuotes)
                     .then(function(csv) {
-                        csv.should.equal(csv.nestedQuotes);
+                        csv.should.equal(csvTestData.unQuoted.nestedQuotes);
                         csv.split(options.EOL).length.should.equal(4);
                         done();
                     })
@@ -518,7 +825,7 @@ var json2csvTests = function () {
             it('should parse an empty array to an empty CSV', function(done) {
                 converter.json2csvAsync(json.noData)
                     .then(function(csv) {
-                        csv.should.equal(csv.noData);
+                        csv.should.equal(csvTestData.unQuoted.noData);
                         csv.split(options.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
                         done();
                     })
@@ -530,7 +837,7 @@ var json2csvTests = function () {
             it('should parse a single JSON document to CSV', function (done) {
                 converter.json2csvAsync(json.singleDoc)
                     .then(function (csv) {
-                        csv.should.equal(csv.singleDoc);
+                        csv.should.equal(csvTestData.unQuoted.singleDoc);
                         csv.split(options.EOL).length.should.equal(3);
                         done();
                     })
@@ -542,7 +849,7 @@ var json2csvTests = function () {
             it('should parse an array of JSON documents to CSV', function (done) {
                 converter.json2csvAsync(json.arrayValue)
                     .then(function (csv) {
-                        csv.should.equal(csv.arrayValue.replace(/\//g, options.DELIMITER.FIELD));
+                        csv.should.equal(csvTestData.unQuoted.arrayValue);
                         csv.split(options.EOL).length.should.equal(5);
                         done();
                     })
@@ -551,11 +858,10 @@ var json2csvTests = function () {
                     });
             });
 
-
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
                 converter.json2csvAsync(json.sameSchemaDifferentOrdering)
                     .then(function (csv) {
-                        csv.should.equal(csv.regularJson);
+                        csv.should.equal(csvTestData.unQuoted.regularJson);
                         csv.split(options.EOL).length.should.equal(6);
                         done();
                     })
@@ -570,7 +876,7 @@ var json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal('Not all documents have the same schema.');
+                        err.message.should.equal(constants.Errors.json2csv.notSameSchema);
                         done();
                     });
             });
@@ -581,7 +887,7 @@ var json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal('Cannot call json2csv on null.');
+                        err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'null.');
                         done();
                     });
             });
@@ -592,7 +898,7 @@ var json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal('Cannot call json2csv on undefined.');
+                        err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
                         done();
                     });
             });
@@ -611,9 +917,9 @@ var json2csvTests = function () {
             });
 
             it('should convert plain JSON to CSV', function(done) {
-                converter.json2csvAsync(json_regularJson, options)
+                converter.json2csvAsync(json.regularJson, options)
                     .then(function(csv) {
-                        csv.should.equal(csv_regularJson);
+                        csv.should.equal(csvTestData.unQuoted.regularJson);
                         csv.split(options.EOL).length.should.equal(6);
                         done();
                     })
@@ -623,9 +929,9 @@ var json2csvTests = function () {
             });
 
             it('should parse nested JSON to CSV - 1', function(done) {
-                converter.json2csvAsync(json_nestedJson, options)
+                converter.json2csvAsync(json.nestedJson, options)
                     .then(function(csv) {
-                        csv.should.equal(csv_nestedJson);
+                        csv.should.equal(csvTestData.unQuoted.nestedJson);
                         csv.split(options.EOL).length.should.equal(6);
                         done();
                     })
@@ -635,9 +941,9 @@ var json2csvTests = function () {
             });
 
             it('should parse nested JSON to CSV - 2', function(done) {
-                converter.json2csvAsync(json_nestedJson2, options)
+                converter.json2csvAsync(json.nestedJson2, options)
                     .then(function(csv) {
-                        csv.should.equal(csv_nestedJson2);
+                        csv.should.equal(csvTestData.unQuoted.nestedJson2);
                         csv.split(options.EOL).length.should.equal(4);
                         done();
                     })
@@ -647,9 +953,9 @@ var json2csvTests = function () {
             });
 
             it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
-                converter.json2csvAsync(json_nestedQuotes, options)
+                converter.json2csvAsync(json.nestedQuotes, options)
                     .then(function(csv) {
-                        csv.should.equal(csv_nestedQuotes);
+                        csv.should.equal(csvTestData.unQuoted.nestedQuotes);
                         csv.split(options.EOL).length.should.equal(4);
                         done();
                     })
@@ -659,9 +965,9 @@ var json2csvTests = function () {
             });
 
             it('should parse an empty array to an empty CSV', function(done) {
-                converter.json2csvAsync(json_noData, options)
+                converter.json2csvAsync(json.noData, options)
                     .then(function(csv) {
-                        csv.should.equal(csv_noData);
+                        csv.should.equal(csvTestData.unQuoted.noData);
                         csv.split(options.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
                         done();
                     })
@@ -671,9 +977,9 @@ var json2csvTests = function () {
             });
 
             it('should parse a single JSON document to CSV', function (done) {
-                converter.json2csvAsync(json_singleDoc, options)
+                converter.json2csvAsync(json.singleDoc, options)
                     .then(function (csv) {
-                        csv.should.equal(csv_singleDoc);
+                        csv.should.equal(csvTestData.unQuoted.singleDoc);
                         csv.split(options.EOL).length.should.equal(3);
                         done();
                     })
@@ -683,9 +989,23 @@ var json2csvTests = function () {
             });
 
             it('should parse an array of JSON documents to CSV', function (done) {
-                converter.json2csvAsync(json_arrayValue, options)
+                converter.json2csvAsync(json.arrayValue, options)
                     .then(function (csv) {
-                        csv.should.equal(csv_arrayValue);
+                        csv.should.equal(csvTestData.unQuoted.arrayValue.replace(new RegExp(defaultOptions.DELIMITER.ARRAY, 'g'), options.DELIMITER.ARRAY));
+                        csv.split(options.EOL).length.should.equal(5);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse the specified keys to CSV', function (done) {
+                // Create a copy so we don't modify the actual options object
+                options = _.extend(options, {KEYS: ['info.name', 'year']});
+                converter.json2csvAsync(json.arrayValue, options)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.unQuoted.arrayValue_specificKeys);
                         csv.split(options.EOL).length.should.equal(5);
                         done();
                     })
@@ -695,9 +1015,9 @@ var json2csvTests = function () {
             });
 
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
-                converter.json2csvAsync(json_sameSchemaDifferentOrdering, options)
+                converter.json2csvAsync(json.sameSchemaDifferentOrdering, options)
                     .then(function (csv) {
-                        csv.should.equal(csv_regularJson);
+                        csv.should.equal(csvTestData.unQuoted.regularJson);
                         csv.split(options.EOL).length.should.equal(6);
                         done();
                     })
@@ -707,12 +1027,12 @@ var json2csvTests = function () {
             });
 
             it('should throw an error if the documents do not have the same schema', function (done) {
-                converter.json2csvAsync(json_differentSchemas, options)
+                converter.json2csvAsync(json.differentSchemas, options)
                     .then(function (csv) {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal('Not all documents have the same schema.');
+                        err.message.should.equal(constants.Errors.json2csv.notSameSchema);
                         done();
                     });
             });
@@ -723,7 +1043,7 @@ var json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal('Cannot call json2csv on null.');
+                        err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'null.');
                         done();
                     });
             });
@@ -734,7 +1054,7 @@ var json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal('Cannot call json2csv on undefined.');
+                        err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
                         done();
                     });
             });
@@ -752,140 +1072,374 @@ var json2csvTests = function () {
                 };
             });
 
-            it('should convert a basic CSV to JSON', function(done) {
-                converter.csv2json(csv.regularJson.replace(/,/g, options.DELIMITER.FIELD), function(err, json) {
-                    var isEqual = _.isEqual(json, json.regularJson);
-                    true.should.equal(isEqual);
-                    done();
-                }, options);
+            it('should convert plain JSON to CSV', function(done) {
+                converter.json2csvAsync(json.regularJson, options)
+                    .then(function(csv) {
+                        csv.should.equal(csvTestData.unQuoted.regularJson.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(6);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
             });
 
-            it('should parse a CSV representing nested objects to JSON - 1', function(done) {
-                converter.csv2json(csv.nestedJson.replace(/,/g, options.DELIMITER.FIELD), function(err, json) {
-                    var isEqual = _.isEqual(json, json.nestedJson);
-                    true.should.equal(isEqual);
-                    done();
-                }, options);
+            it('should parse nested JSON to CSV - 1', function(done) {
+                converter.json2csvAsync(json.nestedJson, options)
+                    .then(function(csv) {
+                        csv.should.equal(csvTestData.unQuoted.nestedJson.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(6);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
             });
 
-            it('should parse a CSV representing nested objects to JSON - 2', function(done) {
-                converter.csv2json(csv.nestedJson2.replace(/,/g, options.DELIMITER.FIELD), function(err, json) {
-                    var isEqual = _.isEqual(json, json.nestedJson2);
-                    true.should.equal(isEqual);
-                    done();
-                }, options);
+            it('should parse nested JSON to CSV - 2', function(done) {
+                converter.json2csvAsync(json.nestedJson2, options)
+                    .then(function(csv) {
+                        csv.should.equal(csvTestData.unQuoted.nestedJson2.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(4);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
             });
 
-            it('should parse nested quotes in a CSV to have nested quotes in JSON', function(done) {
-                converter.csv2json(csv.nestedQuotes.replace(/,/g, options.DELIMITER.FIELD), function(err, json) {
-                    var isEqual = _.isEqual(json, json.nestedQuotes);
-                    true.should.equal(isEqual);
-                    done();
-                }, options);
+            it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
+                converter.json2csvAsync(json.nestedQuotes, options)
+                    .then(function(csv) {
+                        csv.should.equal(csvTestData.unQuoted.nestedQuotes.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(4);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
             });
 
-            it('should parse an empty CSV to an empty JSON array', function(done) {
-                converter.csv2json(csv.noData.replace(/,/g, options.DELIMITER.FIELD), function(err, json) {
-                    var isEqual = _.isEqual(json, json.noData);
-                    true.should.equal(isEqual);
-                    done();
-                }, options);
+            it('should parse an empty array to an empty CSV', function(done) {
+                converter.json2csvAsync(json.noData, options)
+                    .then(function(csv) {
+                        csv.should.equal(csvTestData.unQuoted.noData.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
             });
 
             it('should parse a single JSON document to CSV', function (done) {
-                converter.json2csv(json.singleDoc, function (err, csv) {
-                    csv.should.equal(csv.singleDoc.replace(/,/g, options.DELIMITER.FIELD));
-                    csv.split(options.EOL).length.should.equal(3);
-                    done();
-                }, options);
+                converter.json2csvAsync(json.singleDoc, options)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.unQuoted.singleDoc.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(3);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
             });
 
-            it('should parse a CSV with a nested array to the correct JSON representation', function (done) {
-                converter.csv2json(csv.arrayValue.replace(/,/g, options.DELIMITER.FIELD), function (err, json) {
-                    var isEqual = _.isEqual(json, json.arrayValue);
-                    true.should.equal(isEqual);
-                    done();
-                }, options);
+            it('should parse an array of JSON documents to CSV', function (done) {
+                converter.json2csvAsync(json.arrayValue, options)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.unQuoted.arrayValue.replace(new RegExp(defaultOptions.DELIMITER.ARRAY, 'g'), options.DELIMITER.ARRAY)
+                            .replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(5);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
             });
 
-            it('should parse the specified keys to JSON', function (done) {
-                var opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS : ['info.name', 'year']});
-                converter.csv2json(csv.arrayValue.replace(/,/g, options.DELIMITER.FIELD), function (err, json) {
-                    var isEqual = _.isEqual(json, json.arrayValue_specificKeys);
-                    true.should.equal(isEqual);
-                    done();
-                }, opts);
+            it('should parse the specified keys to CSV', function (done) {
+                // Create a copy so we don't modify the actual options object
+                options = _.extend(options, {KEYS: ['info.name', 'year']});
+                converter.json2csvAsync(json.arrayValue, options)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.unQuoted.arrayValue_specificKeys.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(5);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
+                converter.json2csvAsync(json.sameSchemaDifferentOrdering, options)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.unQuoted.regularJson.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(6);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should throw an error if the documents do not have the same schema', function (done) {
+                converter.json2csvAsync(json.differentSchemas, options)
+                    .then(function (csv) {
+                        throw new Error('should not hit');
+                    })
+                    .catch(function (err) {
+                        err.message.should.equal(constants.Errors.json2csv.notSameSchema);
+                        done();
+                    });
             });
 
             it('should throw an error about not having been passed data - 1', function (done) {
-                converter.csv2json(null, function (err, json) {
-                    err.message.should.equal('Cannot call csv2json on null.');
-                    done();
-                }, options);
+                converter.json2csvAsync(null, options)
+                    .then(function (csv) {
+                        throw new Error('should not hit');
+                    })
+                    .catch(function (err) {
+                        err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'null.');
+                        done();
+                    });
             });
 
             it('should throw an error about not having been passed data - 2', function (done) {
-                converter.csv2json(undefined, function (err, json) {
-                    err.message.should.equal('Cannot call csv2json on undefined.');
-                    done();
-                }, options);
-            });
-
-            it('should throw an error about not being provided a callback - 1', function (done) {
-                try {
-                    converter.csv2json(undefined, undefined, options);
-                } catch (err) {
-                    err.message.should.equal('A callback is required!');
-                    done();
-                }
-            });
-
-            it('should throw an error about not being provided a callback - 2', function (done) {
-                try {
-                    converter.csv2json(null, undefined, options);
-                } catch (err) {
-                    err.message.should.equal('A callback is required!');
-                    done();
-                }
-            });
-
-            it('should throw an error about not being provided a callback - 3', function (done) {
-                try {
-                    converter.csv2json(null, null, options);
-                } catch (err) {
-                    err.message.should.equal('A callback is required!');
-                    done();
-                }
-            });
-
-            it('should throw an error about not being provided a callback - 4', function (done) {
-                try {
-                    converter.csv2json(undefined, null, options);
-                } catch (err) {
-                    err.message.should.equal('A callback is required!');
-                    done();
-                }
+                converter.json2csvAsync(undefined, options)
+                    .then(function (csv) {
+                        throw new Error('should not hit');
+                    })
+                    .catch(function (err) {
+                        err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
+                        done();
+                    });
             });
         });
 
         describe('Custom Options - Quote Wrapped Fields', function () {
             beforeEach(function () {
+                options = {
+                    DELIMITER         : {
+                        FIELD  :  ',',
+                        ARRAY  :  '/',
+                        WRAP   :  '\"'
+                    },
+                    EOL               : '\n',
+                    PARSE_CSV_NUMBERS : false
+                }
+            });
 
+            it('should convert plain JSON to CSV', function(done) {
+                converter.json2csvAsync(json.regularJson, options)
+                    .then(function(csv) {
+                        csv.should.equal(csvTestData.quoted.regularJson.replace(/,/g, options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(6);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse nested JSON to CSV - 1', function(done) {
+                converter.json2csvAsync(json.nestedJson, options)
+                    .then(function(csv) {
+                        csv.should.equal(csvTestData.quoted.nestedJson.replace(/,/g, options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(6);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse nested JSON to CSV - 2', function(done) {
+                converter.json2csvAsync(json.nestedJson2, options)
+                    .then(function(csv) {
+                        csv.should.equal(csvTestData.quoted.nestedJson2.replace(/,/g, options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(4);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
+                converter.json2csvAsync(json.nestedQuotes, options)
+                    .then(function(csv) {
+                        csv.should.equal(csvTestData.quoted.nestedQuotes.replace(/,/g, options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(4);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse nested commas in JSON to have commas in CSV ', function(done) {
+                converter.json2csvAsync(json.nestedComma, options)
+                    .then(function(csv) {
+                        csv.should.equal(csvTestData.quoted.nestedComma.replace(/,/g, options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(3);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse an empty array to an empty CSV', function(done) {
+                converter.json2csvAsync(json.noData, options)
+                    .then(function(csv) {
+                        csv.should.equal(csvTestData.quoted.noData.replace(/,/g, options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse a single JSON document to CSV', function (done) {
+                converter.json2csvAsync(json.singleDoc, options)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.quoted.singleDoc.replace(/,/g, options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(3);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse an array of JSON documents to CSV', function (done) {
+                converter.json2csvAsync(json.arrayValue, options)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.quoted.arrayValue.replace(/,/g, options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(5);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse the specified keys to CSV', function (done) {
+                // Create a copy so we don't modify the actual options object
+                var opts = _.extend(options, {KEYS: ['info.name', 'year']});
+                converter.json2csvAsync(json.arrayValue, opts)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.quoted.arrayValue_specificKeys);
+                        csv.split(options.EOL).length.should.equal(5);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
+                converter.json2csvAsync(json.sameSchemaDifferentOrdering, options)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.quoted.regularJson);
+                        csv.split(options.EOL).length.should.equal(6);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should throw an error if the documents do not have the same schema', function (done) {
+                converter.json2csvAsync(json.differentSchemas, options)
+                    .then(function (csv) {
+                        throw new Error('should not hit');
+                    })
+                    .catch(function (err) {
+                        err.message.should.equal(constants.Errors.json2csv.notSameSchema);
+                        done();
+                    });
+            });
+
+            it('should throw an error about not having been passed data - 1', function (done) {
+                converter.json2csvAsync(null, options)
+                    .then(function (csv) {
+                        throw new Error('should not hit');
+                    })
+                    .catch(function (err) {
+                        err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'null.');
+                        done();
+                    });
+            });
+
+            it('should throw an error about not having been passed data - 2', function (done) {
+                converter.json2csvAsync(undefined, options)
+                    .then(function (csv) {
+                        throw new Error('should not hit');
+                    })
+                    .catch(function (err) {
+                        err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
+                        done();
+                    });
             });
         });
+
+        describe('Testing other errors', function () {
+            beforeEach(function () {
+                options = {
+                    DELIMITER         : {
+                        FIELD  :  ',',
+                        ARRAY  :  ';',
+                        WRAP   :  ''
+                    },
+                    EOL               : '\n',
+                    PARSE_CSV_NUMBERS : false,
+                    KEYS              : null
+                };
+            });
+
+            it('should throw an error about the field and array delimiters being the same', function (done) {
+                options.DELIMITER.FIELD = options.DELIMITER.ARRAY = ',';
+                converter.json2csvAsync(json.arrayValue, options)
+                    .then(function (csv) {
+                        throw new Error('should not hit');
+                    })
+                    .catch(function (err) {
+                        err.message.should.equal(constants.Errors.delimitersMustDiffer);
+                        done();
+                    });
+            });
+
+            it('should throw an error if the data is of the wrong type', function (done) {
+                converter.json2csvAsync(new Date().toString(), options)
+                    .then(function (csv) {
+                        throw new Error('should not hit');
+                    })
+                    .catch(function (err) {
+                        err.message.should.equal(constants.Errors.json2csv.dataNotArrayOfDocuments);
+                        done();
+                    });
+            });
+        })
     });
 };
 
-var readCsvFile = function (fileInfo, callback) {
-    csv[fileInfo.key] = fs.readFileSync(fileInfo.file);
-    return callback(null, csv[fileInfo.key]);
+var readCsvFile = function (masterKey, fileInfo, callback) {
+    csvTestData[masterKey][fileInfo.key] = fs.readFileSync(fileInfo.file).toString();
+    return callback(null, csvTestData[masterKey][fileInfo.key]);
 };
 
 (function () {
     describe('json2csv', function() {
         before(function(done) {
             async.parallel(
-                _.map(csvFiles, function (fileInfo) { return _.partial(readCsvFile, fileInfo); }),
+                _.flatten(_.map(csvFiles, function (grouping) {
+                    return _.map(grouping.files, function (fileInfo) {
+                        return _.partial(readCsvFile, grouping.key, fileInfo);
+                    });
+                })),
                 function(err, results) {
                     if (err) throw err;
                     done();

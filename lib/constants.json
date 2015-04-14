@@ -1,0 +1,21 @@
+{
+  "Errors" : {
+
+    "delimitersMustDiffer": "The field and array delimiters must differ.",
+    "callbackRequired": "A callback is required!",
+    "optionsRequired": "Options were not passed and are required.",
+
+    "json2csv": {
+      "cannotCallJson2CsvOn": "Cannot call json2csv on ",
+      "dataNotArrayOfDocuments": "Data provided was not an array of documents.",
+      "notSameSchema": "Not all documents have the same schema."
+    },
+
+    "csv2json": {
+      "cannotCallCsv2JsonOn": "Cannot call csv2json on ",
+      "csvNotString": "CSV is not a string.",
+      "noDataRetrieveHeading": "No data provided to retrieve heading."
+    }
+
+  }
+}
