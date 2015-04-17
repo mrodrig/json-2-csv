@@ -137,6 +137,19 @@ $ npm test
 
 _Note_: This requires `mocha`, `should`, `async`, and `underscore`.
 
+To see test coverage, please run:
+```bash
+$ npm run coverage
+```
+
+Current Coverage is:
+```
+Statements   : 93.63% ( 147/157 )
+Branches     : 87.91% ( 80/91 )
+Functions    : 100% ( 36/36 )
+Lines        : 95.86% ( 139/145 )
+```
+
 ## Features
 
 - Header Generation (per document keys)
