@@ -1,0 +1,29 @@
+[
+  {
+    "key": "unQuoted",
+    "files": [
+      {"key": "arrayValue", "file": "test/CSV/unQuoted/arrayValueDocs.csv"},
+      {"key": "arrayValue_specificKeys", "file": "test/CSV/unQuoted/arrayValueDocs_specificKeys.csv"},
+      {"key": "nestedJson", "file": "test/CSV/unQuoted/nestedJson.csv"},
+      {"key": "nestedJson2", "file": "test/CSV/unQuoted/nestedJson2.csv"},
+      {"key": "nestedQuotes", "file": "test/CSV/unQuoted/nestedQuotes.csv"},
+      {"key": "noData", "file": "test/CSV/unQuoted/noData.csv"},
+      {"key": "regularJson", "file": "test/CSV/unQuoted/regularJson.csv"},
+      {"key": "singleDoc", "file": "test/CSV/unQuoted/singleDoc.csv"}
+    ]
+  },
+  {
+    "key": "quoted",
+    "files": [
+      {"key": "arrayValue", "file": "test/CSV/quoted/arrayValueDocs.csv"},
+      {"key": "arrayValue_specificKeys", "file": "test/CSV/quoted/arrayValueDocs_specificKeys.csv"},
+      {"key": "nestedComma", "file": "test/CSV/quoted/nestedComma.csv"},
+      {"key": "nestedJson", "file": "test/CSV/quoted/nestedJson.csv"},
+      {"key": "nestedJson2", "file": "test/CSV/quoted/nestedJson2.csv"},
+      {"key": "nestedQuotes", "file": "test/CSV/quoted/nestedQuotes.csv"},
+      {"key": "noData", "file": "test/CSV/quoted/noData.csv"},
+      {"key": "regularJson", "file": "test/CSV/quoted/regularJson.csv"},
+      {"key": "singleDoc", "file": "test/CSV/quoted/singleDoc.csv"}
+    ]
+  }
+]
