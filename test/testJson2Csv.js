@@ -5,82 +5,22 @@ var should = require('should'),
     fs = require('fs'),
     _ = require('underscore'),
     Promise = require('bluebird'),
-    async = require('async');
-
-var options,
-    defaultOptions = {
-        DELIMITER         : {
-            FIELD  :  ',',
-            ARRAY  :  ';',
-            WRAP   :  ''
-        },
-        EOL               : '\n',
-        PARSE_CSV_NUMBERS : false,
-        KEYS              : null
-    };
-
-var json = {
-        arrayValue: require('./JSON/arrayValueDocs'),
-        arrayValue_specificKeys: require('./JSON/arrayValueDocs_specificKeys'),
-        nestedComma: require('./JSON/nestedComma'),
-        nestedJson: require('./JSON/nestedJson'),
-        nestedJson2: require('./JSON/nestedJson2'),
-        nestedQuotes: require('./JSON/nestedQuotes'),
-        noData: require('./JSON/noData'),
-        regularJson: require('./JSON/regularJson'),
-        singleDoc: require('./JSON/singleDoc'),
-        sameSchemaDifferentOrdering: require('./JSON/sameSchemaDifferentOrdering'),
-        differentSchemas: require('./JSON/differentSchemas')
-    },
+    async = require('async'),
+    defaultOptions = constants.DefaultOptions,
+    jsonTestData = require('./testJsonFilesList'),
     csvTestData  = {unQuoted: {}, quoted: {}}, // Document where all csv files will be loaded into
-    csvFiles = [
-        {
-            key: 'unQuoted',
-            files: [
-                {key: 'arrayValue', file: 'test/CSV/arrayValueDocs.csv'},
-                {key: 'arrayValue_specificKeys', file: 'test/CSV/arrayValueDocs_specificKeys.csv'},
-                {key: 'nestedJson', file: 'test/CSV/nestedJson.csv'},
-                {key: 'nestedJson2', file: 'test/CSV/nestedJson2.csv'},
-                {key: 'nestedQuotes', file: 'test/CSV/nestedQuotes.csv'},
-                {key: 'noData', file: 'test/CSV/noData.csv'},
-                {key: 'regularJson', file: 'test/CSV/regularJson.csv'},
-                {key: 'singleDoc', file: 'test/CSV/singleDoc.csv'}
-            ]
-        },
-        {
-            key: 'quoted',
-            files: [
-                {key: 'arrayValue', file: 'test/CSV/withQuotes/arrayValueDocs.csv'},
-                {key: 'arrayValue_specificKeys', file: 'test/CSV/withQuotes/arrayValueDocs_specificKeys.csv'},
-                {key: 'nestedComma', file: 'test/CSV/withQuotes/nestedComma.csv'},
-                {key: 'nestedJson', file: 'test/CSV/withQuotes/nestedJson.csv'},
-                {key: 'nestedJson2', file: 'test/CSV/withQuotes/nestedJson2.csv'},
-                {key: 'nestedQuotes', file: 'test/CSV/withQuotes/nestedQuotes.csv'},
-                {key: 'noData', file: 'test/CSV/withQuotes/noData.csv'},
-                {key: 'regularJson', file: 'test/CSV/withQuotes/regularJson.csv'},
-                {key: 'singleDoc', file: 'test/CSV/withQuotes/singleDoc.csv'}
-            ]
-        }
-    ];
+    csvFiles = require('./testCsvFilesList'),
+    options;
 
 var json2csvTests = function () {
     describe('Testing Default Usage', function () {
         describe('Default Options', function () {
             beforeEach(function () {
-                options = {
-                    DELIMITER         : {
-                        FIELD  :  ',',
-                        ARRAY  :  ';',
-                        WRAP   :  ''
-                    },
-                    EOL               : '\n',
-                    PARSE_CSV_NUMBERS : false,
-                    KEYS              : null
-                };
+                options = defaultOptions;
             });
 
             it('should convert plain JSON to CSV', function(done) {
-                converter.json2csv(json.regularJson, function(err, csv) {
+                converter.json2csv(jsonTestData.regularJson, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.regularJson);
@@ -90,7 +30,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested JSON to CSV - 1', function(done) {
-                converter.json2csv(json.nestedJson, function(err, csv) {
+                converter.json2csv(jsonTestData.nestedJson, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.nestedJson);
@@ -100,7 +40,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested JSON to CSV - 2', function(done) {
-                converter.json2csv(json.nestedJson2, function(err, csv) {
+                converter.json2csv(jsonTestData.nestedJson2, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.nestedJson2);
@@ -110,7 +50,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
-                converter.json2csv(json.nestedQuotes, function(err, csv) {
+                converter.json2csv(jsonTestData.nestedQuotes, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.nestedQuotes);
@@ -120,7 +60,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an empty array to an empty CSV', function(done) {
-                converter.json2csv(json.noData, function(err, csv) {
+                converter.json2csv(jsonTestData.noData, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.noData);
@@ -130,7 +70,7 @@ var json2csvTests = function () {
             });
 
             it('should parse a single JSON document to CSV', function (done) {
-                converter.json2csv(json.singleDoc, function (err, csv) {
+                converter.json2csv(jsonTestData.singleDoc, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.singleDoc);
@@ -140,7 +80,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an array of JSON documents to CSV', function (done) {
-                converter.json2csv(json.arrayValue, function (err, csv) {
+                converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.arrayValue);
@@ -150,7 +90,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
-                converter.json2csv(json.sameSchemaDifferentOrdering, function (err, csv) {
+                converter.json2csv(jsonTestData.sameSchemaDifferentOrdering, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.regularJson);
@@ -160,7 +100,7 @@ var json2csvTests = function () {
             });
 
             it('should throw an error if the documents do not have the same schema', function (done) {
-                converter.json2csv(json.differentSchemas, function (err, csv) {
+                converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
                     err.message.should.equal(constants.Errors.json2csv.notSameSchema);
                     done();
                 });
@@ -239,7 +179,7 @@ var json2csvTests = function () {
             });
 
             it('should convert plain JSON to CSV', function(done) {
-                converter.json2csv(json.regularJson, function(err, csv) {
+                converter.json2csv(jsonTestData.regularJson, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.regularJson);
@@ -249,7 +189,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested JSON to CSV - 1', function(done) {
-                converter.json2csv(json.nestedJson, function(err, csv) {
+                converter.json2csv(jsonTestData.nestedJson, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.nestedJson);
@@ -259,7 +199,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested JSON to CSV - 2', function(done) {
-                converter.json2csv(json.nestedJson2, function(err, csv) {
+                converter.json2csv(jsonTestData.nestedJson2, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.nestedJson2);
@@ -269,7 +209,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
-                converter.json2csv(json.nestedQuotes, function(err, csv) {
+                converter.json2csv(jsonTestData.nestedQuotes, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.nestedQuotes);
@@ -279,7 +219,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an empty array to an empty CSV', function(done) {
-                converter.json2csv(json.noData, function(err, csv) {
+                converter.json2csv(jsonTestData.noData, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.noData);
@@ -289,7 +229,7 @@ var json2csvTests = function () {
             });
 
             it('should parse a single JSON document to CSV', function (done) {
-                converter.json2csv(json.singleDoc, function (err, csv) {
+                converter.json2csv(jsonTestData.singleDoc, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.singleDoc);
@@ -299,7 +239,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an array of JSON documents to CSV', function (done) {
-                converter.json2csv(json.arrayValue, function (err, csv) {
+                converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.arrayValue.replace(new RegExp(defaultOptions.DELIMITER.ARRAY, 'g'), options.DELIMITER.ARRAY));
@@ -311,7 +251,7 @@ var json2csvTests = function () {
             it('should parse the specified keys to CSV', function (done) {
                 // Create a copy so we don't modify the actual options object
                 options = _.extend(options, {KEYS: ['info.name', 'year']});
-                converter.json2csv(json.arrayValue, function (err, csv) {
+                converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.arrayValue_specificKeys);
@@ -321,7 +261,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
-                converter.json2csv(json.sameSchemaDifferentOrdering, function (err, csv) {
+                converter.json2csv(jsonTestData.sameSchemaDifferentOrdering, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.regularJson);
@@ -331,7 +271,7 @@ var json2csvTests = function () {
             });
 
             it('should throw an error if the documents do not have the same schema', function (done) {
-                converter.json2csv(json.differentSchemas, function (err, csv) {
+                converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
                     err.message.should.equal(constants.Errors.json2csv.notSameSchema);
                     done();
                 }, options);
@@ -401,7 +341,7 @@ var json2csvTests = function () {
             });
 
             it('should convert plain JSON to CSV', function(done) {
-                converter.json2csv(json.regularJson, function(err, csv) {
+                converter.json2csv(jsonTestData.regularJson, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.regularJson.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
@@ -411,7 +351,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested JSON to CSV - 1', function(done) {
-                converter.json2csv(json.nestedJson, function(err, csv) {
+                converter.json2csv(jsonTestData.nestedJson, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.nestedJson.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
@@ -421,7 +361,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested JSON to CSV - 2', function(done) {
-                converter.json2csv(json.nestedJson2, function(err, csv) {
+                converter.json2csv(jsonTestData.nestedJson2, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.nestedJson2.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
@@ -431,7 +371,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
-                converter.json2csv(json.nestedQuotes, function(err, csv) {
+                converter.json2csv(jsonTestData.nestedQuotes, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.nestedQuotes.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
@@ -441,7 +381,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an empty array to an empty CSV', function(done) {
-                converter.json2csv(json.noData, function(err, csv) {
+                converter.json2csv(jsonTestData.noData, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.noData.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
@@ -451,7 +391,7 @@ var json2csvTests = function () {
             });
 
             it('should parse a single JSON document to CSV', function (done) {
-                converter.json2csv(json.singleDoc, function (err, csv) {
+                converter.json2csv(jsonTestData.singleDoc, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.singleDoc.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
@@ -461,7 +401,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an array of JSON documents to CSV', function (done) {
-                converter.json2csv(json.arrayValue, function (err, csv) {
+                converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.arrayValue.replace(new RegExp(defaultOptions.DELIMITER.ARRAY, 'g'), options.DELIMITER.ARRAY)
@@ -474,7 +414,7 @@ var json2csvTests = function () {
             it('should parse the specified keys to CSV', function (done) {
                 // Create a copy so we don't modify the actual options object
                 options = _.extend(options, {KEYS: ['info.name', 'year']});
-                converter.json2csv(json.arrayValue, function (err, csv) {
+                converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.arrayValue_specificKeys.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
@@ -484,7 +424,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
-                converter.json2csv(json.sameSchemaDifferentOrdering, function (err, csv) {
+                converter.json2csv(jsonTestData.sameSchemaDifferentOrdering, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.regularJson.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
@@ -494,7 +434,7 @@ var json2csvTests = function () {
             });
 
             it('should throw an error if the documents do not have the same schema', function (done) {
-                converter.json2csv(json.differentSchemas, function (err, csv) {
+                converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
                     err.message.should.equal(constants.Errors.json2csv.notSameSchema);
                     done();
                 }, options);
@@ -565,7 +505,7 @@ var json2csvTests = function () {
             });
 
             it('should convert plain JSON to CSV', function(done) {
-                converter.json2csv(json.regularJson, function(err, csv) {
+                converter.json2csv(jsonTestData.regularJson, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.quoted.regularJson.replace(/,/g, options.DELIMITER.FIELD));
@@ -575,7 +515,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested JSON to CSV - 1', function(done) {
-                converter.json2csv(json.nestedJson, function(err, csv) {
+                converter.json2csv(jsonTestData.nestedJson, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.quoted.nestedJson.replace(/,/g, options.DELIMITER.FIELD));
@@ -585,7 +525,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested JSON to CSV - 2', function(done) {
-                converter.json2csv(json.nestedJson2, function(err, csv) {
+                converter.json2csv(jsonTestData.nestedJson2, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.quoted.nestedJson2.replace(/,/g, options.DELIMITER.FIELD));
@@ -595,7 +535,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
-                converter.json2csv(json.nestedQuotes, function(err, csv) {
+                converter.json2csv(jsonTestData.nestedQuotes, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.quoted.nestedQuotes.replace(/,/g, options.DELIMITER.FIELD));
@@ -605,7 +545,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested commas in JSON to have commas in CSV ', function(done) {
-                converter.json2csv(json.nestedComma, function(err, csv) {
+                converter.json2csv(jsonTestData.nestedComma, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.quoted.nestedComma.replace(/,/g, options.DELIMITER.FIELD));
@@ -615,7 +555,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an empty array to an empty CSV', function(done) {
-                converter.json2csv(json.noData, function(err, csv) {
+                converter.json2csv(jsonTestData.noData, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.quoted.noData.replace(/,/g, options.DELIMITER.FIELD));
@@ -625,7 +565,7 @@ var json2csvTests = function () {
             });
 
             it('should parse a single JSON document to CSV', function (done) {
-                converter.json2csv(json.singleDoc, function (err, csv) {
+                converter.json2csv(jsonTestData.singleDoc, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.quoted.singleDoc.replace(/,/g, options.DELIMITER.FIELD));
@@ -635,7 +575,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an array of JSON documents to CSV', function (done) {
-                converter.json2csv(json.arrayValue, function (err, csv) {
+                converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.quoted.arrayValue.replace(/,/g, options.DELIMITER.FIELD));
@@ -647,7 +587,7 @@ var json2csvTests = function () {
             it('should parse the specified keys to CSV', function (done) {
                 // Create a copy so we don't modify the actual options object
                 var opts = _.extend(options, {KEYS: ['info.name', 'year']});
-                converter.json2csv(json.arrayValue, function (err, csv) {
+                converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.quoted.arrayValue_specificKeys);
@@ -657,7 +597,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
-                converter.json2csv(json.sameSchemaDifferentOrdering, function (err, csv) {
+                converter.json2csv(jsonTestData.sameSchemaDifferentOrdering, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.quoted.regularJson);
@@ -667,7 +607,7 @@ var json2csvTests = function () {
             });
 
             it('should throw an error if the documents do not have the same schema', function (done) {
-                converter.json2csv(json.differentSchemas, function (err, csv) {
+                converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
                     err.message.should.equal(constants.Errors.json2csv.notSameSchema);
                     done();
                 }, options);
@@ -740,7 +680,7 @@ var json2csvTests = function () {
 
             it('should throw an error about the field and array delimiters being the same', function (done) {
                 options.DELIMITER.FIELD = options.DELIMITER.ARRAY = ',';
-                converter.json2csv(json.arrayValue, function (err, csv) {
+                converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
                     err.message.should.equal(constants.Errors.delimitersMustDiffer);
                     done();
                 }, options);
@@ -775,7 +715,7 @@ var json2csvTests = function () {
             });
 
             it('should convert plain JSON to CSV', function(done) {
-                converter.json2csvAsync(json.regularJson)
+                converter.json2csvAsync(jsonTestData.regularJson)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.regularJson);
                         csv.split(options.EOL).length.should.equal(6);
@@ -787,7 +727,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested JSON to CSV - 1', function(done) {
-                converter.json2csvAsync(json.nestedJson)
+                converter.json2csvAsync(jsonTestData.nestedJson)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.nestedJson);
                         csv.split(options.EOL).length.should.equal(6);
@@ -799,7 +739,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested JSON to CSV - 2', function(done) {
-                converter.json2csvAsync(json.nestedJson2)
+                converter.json2csvAsync(jsonTestData.nestedJson2)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.nestedJson2);
                         csv.split(options.EOL).length.should.equal(4);
@@ -811,7 +751,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
-                converter.json2csvAsync(json.nestedQuotes)
+                converter.json2csvAsync(jsonTestData.nestedQuotes)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.nestedQuotes);
                         csv.split(options.EOL).length.should.equal(4);
@@ -823,7 +763,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an empty array to an empty CSV', function(done) {
-                converter.json2csvAsync(json.noData)
+                converter.json2csvAsync(jsonTestData.noData)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.noData);
                         csv.split(options.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
@@ -835,7 +775,7 @@ var json2csvTests = function () {
             });
 
             it('should parse a single JSON document to CSV', function (done) {
-                converter.json2csvAsync(json.singleDoc)
+                converter.json2csvAsync(jsonTestData.singleDoc)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.unQuoted.singleDoc);
                         csv.split(options.EOL).length.should.equal(3);
@@ -847,7 +787,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an array of JSON documents to CSV', function (done) {
-                converter.json2csvAsync(json.arrayValue)
+                converter.json2csvAsync(jsonTestData.arrayValue)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.unQuoted.arrayValue);
                         csv.split(options.EOL).length.should.equal(5);
@@ -859,7 +799,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
-                converter.json2csvAsync(json.sameSchemaDifferentOrdering)
+                converter.json2csvAsync(jsonTestData.sameSchemaDifferentOrdering)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.unQuoted.regularJson);
                         csv.split(options.EOL).length.should.equal(6);
@@ -871,7 +811,7 @@ var json2csvTests = function () {
             });
 
             it('should throw an error if the documents do not have the same schema', function (done) {
-                converter.json2csvAsync(json.differentSchemas)
+                converter.json2csvAsync(jsonTestData.differentSchemas)
                     .then(function (csv) {
                         throw new Error('should not hit');
                     })
@@ -917,7 +857,7 @@ var json2csvTests = function () {
             });
 
             it('should convert plain JSON to CSV', function(done) {
-                converter.json2csvAsync(json.regularJson, options)
+                converter.json2csvAsync(jsonTestData.regularJson, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.regularJson);
                         csv.split(options.EOL).length.should.equal(6);
@@ -929,7 +869,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested JSON to CSV - 1', function(done) {
-                converter.json2csvAsync(json.nestedJson, options)
+                converter.json2csvAsync(jsonTestData.nestedJson, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.nestedJson);
                         csv.split(options.EOL).length.should.equal(6);
@@ -941,7 +881,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested JSON to CSV - 2', function(done) {
-                converter.json2csvAsync(json.nestedJson2, options)
+                converter.json2csvAsync(jsonTestData.nestedJson2, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.nestedJson2);
                         csv.split(options.EOL).length.should.equal(4);
@@ -953,7 +893,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
-                converter.json2csvAsync(json.nestedQuotes, options)
+                converter.json2csvAsync(jsonTestData.nestedQuotes, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.nestedQuotes);
                         csv.split(options.EOL).length.should.equal(4);
@@ -965,7 +905,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an empty array to an empty CSV', function(done) {
-                converter.json2csvAsync(json.noData, options)
+                converter.json2csvAsync(jsonTestData.noData, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.noData);
                         csv.split(options.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
@@ -977,7 +917,7 @@ var json2csvTests = function () {
             });
 
             it('should parse a single JSON document to CSV', function (done) {
-                converter.json2csvAsync(json.singleDoc, options)
+                converter.json2csvAsync(jsonTestData.singleDoc, options)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.unQuoted.singleDoc);
                         csv.split(options.EOL).length.should.equal(3);
@@ -989,7 +929,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an array of JSON documents to CSV', function (done) {
-                converter.json2csvAsync(json.arrayValue, options)
+                converter.json2csvAsync(jsonTestData.arrayValue, options)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.unQuoted.arrayValue.replace(new RegExp(defaultOptions.DELIMITER.ARRAY, 'g'), options.DELIMITER.ARRAY));
                         csv.split(options.EOL).length.should.equal(5);
@@ -1003,7 +943,7 @@ var json2csvTests = function () {
             it('should parse the specified keys to CSV', function (done) {
                 // Create a copy so we don't modify the actual options object
                 options = _.extend(options, {KEYS: ['info.name', 'year']});
-                converter.json2csvAsync(json.arrayValue, options)
+                converter.json2csvAsync(jsonTestData.arrayValue, options)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.unQuoted.arrayValue_specificKeys);
                         csv.split(options.EOL).length.should.equal(5);
@@ -1015,7 +955,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
-                converter.json2csvAsync(json.sameSchemaDifferentOrdering, options)
+                converter.json2csvAsync(jsonTestData.sameSchemaDifferentOrdering, options)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.unQuoted.regularJson);
                         csv.split(options.EOL).length.should.equal(6);
@@ -1027,7 +967,7 @@ var json2csvTests = function () {
             });
 
             it('should throw an error if the documents do not have the same schema', function (done) {
-                converter.json2csvAsync(json.differentSchemas, options)
+                converter.json2csvAsync(jsonTestData.differentSchemas, options)
                     .then(function (csv) {
                         throw new Error('should not hit');
                     })
@@ -1073,7 +1013,7 @@ var json2csvTests = function () {
             });
 
             it('should convert plain JSON to CSV', function(done) {
-                converter.json2csvAsync(json.regularJson, options)
+                converter.json2csvAsync(jsonTestData.regularJson, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.regularJson.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
                         csv.split(options.EOL).length.should.equal(6);
@@ -1085,7 +1025,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested JSON to CSV - 1', function(done) {
-                converter.json2csvAsync(json.nestedJson, options)
+                converter.json2csvAsync(jsonTestData.nestedJson, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.nestedJson.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
                         csv.split(options.EOL).length.should.equal(6);
@@ -1097,7 +1037,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested JSON to CSV - 2', function(done) {
-                converter.json2csvAsync(json.nestedJson2, options)
+                converter.json2csvAsync(jsonTestData.nestedJson2, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.nestedJson2.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
                         csv.split(options.EOL).length.should.equal(4);
@@ -1109,7 +1049,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
-                converter.json2csvAsync(json.nestedQuotes, options)
+                converter.json2csvAsync(jsonTestData.nestedQuotes, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.nestedQuotes.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
                         csv.split(options.EOL).length.should.equal(4);
@@ -1121,7 +1061,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an empty array to an empty CSV', function(done) {
-                converter.json2csvAsync(json.noData, options)
+                converter.json2csvAsync(jsonTestData.noData, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.noData.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
                         csv.split(options.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
@@ -1133,7 +1073,7 @@ var json2csvTests = function () {
             });
 
             it('should parse a single JSON document to CSV', function (done) {
-                converter.json2csvAsync(json.singleDoc, options)
+                converter.json2csvAsync(jsonTestData.singleDoc, options)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.unQuoted.singleDoc.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
                         csv.split(options.EOL).length.should.equal(3);
@@ -1145,7 +1085,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an array of JSON documents to CSV', function (done) {
-                converter.json2csvAsync(json.arrayValue, options)
+                converter.json2csvAsync(jsonTestData.arrayValue, options)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.unQuoted.arrayValue.replace(new RegExp(defaultOptions.DELIMITER.ARRAY, 'g'), options.DELIMITER.ARRAY)
                             .replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
@@ -1160,7 +1100,7 @@ var json2csvTests = function () {
             it('should parse the specified keys to CSV', function (done) {
                 // Create a copy so we don't modify the actual options object
                 options = _.extend(options, {KEYS: ['info.name', 'year']});
-                converter.json2csvAsync(json.arrayValue, options)
+                converter.json2csvAsync(jsonTestData.arrayValue, options)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.unQuoted.arrayValue_specificKeys.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
                         csv.split(options.EOL).length.should.equal(5);
@@ -1172,7 +1112,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
-                converter.json2csvAsync(json.sameSchemaDifferentOrdering, options)
+                converter.json2csvAsync(jsonTestData.sameSchemaDifferentOrdering, options)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.unQuoted.regularJson.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
                         csv.split(options.EOL).length.should.equal(6);
@@ -1184,7 +1124,7 @@ var json2csvTests = function () {
             });
 
             it('should throw an error if the documents do not have the same schema', function (done) {
-                converter.json2csvAsync(json.differentSchemas, options)
+                converter.json2csvAsync(jsonTestData.differentSchemas, options)
                     .then(function (csv) {
                         throw new Error('should not hit');
                     })
@@ -1231,7 +1171,7 @@ var json2csvTests = function () {
             });
 
             it('should convert plain JSON to CSV', function(done) {
-                converter.json2csvAsync(json.regularJson, options)
+                converter.json2csvAsync(jsonTestData.regularJson, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.quoted.regularJson.replace(/,/g, options.DELIMITER.FIELD));
                         csv.split(options.EOL).length.should.equal(6);
@@ -1243,7 +1183,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested JSON to CSV - 1', function(done) {
-                converter.json2csvAsync(json.nestedJson, options)
+                converter.json2csvAsync(jsonTestData.nestedJson, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.quoted.nestedJson.replace(/,/g, options.DELIMITER.FIELD));
                         csv.split(options.EOL).length.should.equal(6);
@@ -1255,7 +1195,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested JSON to CSV - 2', function(done) {
-                converter.json2csvAsync(json.nestedJson2, options)
+                converter.json2csvAsync(jsonTestData.nestedJson2, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.quoted.nestedJson2.replace(/,/g, options.DELIMITER.FIELD));
                         csv.split(options.EOL).length.should.equal(4);
@@ -1267,7 +1207,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
-                converter.json2csvAsync(json.nestedQuotes, options)
+                converter.json2csvAsync(jsonTestData.nestedQuotes, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.quoted.nestedQuotes.replace(/,/g, options.DELIMITER.FIELD));
                         csv.split(options.EOL).length.should.equal(4);
@@ -1279,7 +1219,7 @@ var json2csvTests = function () {
             });
 
             it('should parse nested commas in JSON to have commas in CSV ', function(done) {
-                converter.json2csvAsync(json.nestedComma, options)
+                converter.json2csvAsync(jsonTestData.nestedComma, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.quoted.nestedComma.replace(/,/g, options.DELIMITER.FIELD));
                         csv.split(options.EOL).length.should.equal(3);
@@ -1291,7 +1231,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an empty array to an empty CSV', function(done) {
-                converter.json2csvAsync(json.noData, options)
+                converter.json2csvAsync(jsonTestData.noData, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.quoted.noData.replace(/,/g, options.DELIMITER.FIELD));
                         csv.split(options.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
@@ -1303,7 +1243,7 @@ var json2csvTests = function () {
             });
 
             it('should parse a single JSON document to CSV', function (done) {
-                converter.json2csvAsync(json.singleDoc, options)
+                converter.json2csvAsync(jsonTestData.singleDoc, options)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.quoted.singleDoc.replace(/,/g, options.DELIMITER.FIELD));
                         csv.split(options.EOL).length.should.equal(3);
@@ -1315,7 +1255,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an array of JSON documents to CSV', function (done) {
-                converter.json2csvAsync(json.arrayValue, options)
+                converter.json2csvAsync(jsonTestData.arrayValue, options)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.quoted.arrayValue.replace(/,/g, options.DELIMITER.FIELD));
                         csv.split(options.EOL).length.should.equal(5);
@@ -1329,7 +1269,7 @@ var json2csvTests = function () {
             it('should parse the specified keys to CSV', function (done) {
                 // Create a copy so we don't modify the actual options object
                 var opts = _.extend(options, {KEYS: ['info.name', 'year']});
-                converter.json2csvAsync(json.arrayValue, opts)
+                converter.json2csvAsync(jsonTestData.arrayValue, opts)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.quoted.arrayValue_specificKeys);
                         csv.split(options.EOL).length.should.equal(5);
@@ -1341,7 +1281,7 @@ var json2csvTests = function () {
             });
 
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
-                converter.json2csvAsync(json.sameSchemaDifferentOrdering, options)
+                converter.json2csvAsync(jsonTestData.sameSchemaDifferentOrdering, options)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.quoted.regularJson);
                         csv.split(options.EOL).length.should.equal(6);
@@ -1353,7 +1293,7 @@ var json2csvTests = function () {
             });
 
             it('should throw an error if the documents do not have the same schema', function (done) {
-                converter.json2csvAsync(json.differentSchemas, options)
+                converter.json2csvAsync(jsonTestData.differentSchemas, options)
                     .then(function (csv) {
                         throw new Error('should not hit');
                     })
@@ -1402,7 +1342,7 @@ var json2csvTests = function () {
 
             it('should throw an error about the field and array delimiters being the same', function (done) {
                 options.DELIMITER.FIELD = options.DELIMITER.ARRAY = ',';
-                converter.json2csvAsync(json.arrayValue, options)
+                converter.json2csvAsync(jsonTestData.arrayValue, options)
                     .then(function (csv) {
                         throw new Error('should not hit');
                     })
@@ -1431,26 +1371,28 @@ var readCsvFile = function (masterKey, fileInfo, callback) {
     return callback(null, csvTestData[masterKey][fileInfo.key]);
 };
 
-(function () {
-    describe('json2csv', function() {
-        before(function(done) {
-            async.parallel(
-                _.flatten(_.map(csvFiles, function (grouping) {
-                    return _.map(grouping.files, function (fileInfo) {
-                        return _.partial(readCsvFile, grouping.key, fileInfo);
+module.exports = {
+    runTests: function () {
+        describe('json2csv', function() {
+            before(function(done) {
+                async.parallel(
+                    _.flatten(_.map(csvFiles, function (grouping) {
+                        return _.map(grouping.files, function (fileInfo) {
+                            return _.partial(readCsvFile, grouping.key, fileInfo);
+                        });
+                    })),
+                    function(err, results) {
+                        if (err) throw err;
+                        done();
                     });
-                })),
-                function(err, results) {
-                    if (err) throw err;
-                    done();
-                });
-        });
+            });
 
-        beforeEach(function () {
-            options = null;
-        });
+            beforeEach(function () {
+                options = null;
+            });
 
-        // Run JSON to CSV Tests
-        json2csvTests();
-    });
-})();
+            // Run JSON to CSV Tests
+            json2csvTests();
+        });
+    }
+};

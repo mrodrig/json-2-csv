@@ -17,5 +17,16 @@
       "noDataRetrieveHeading": "No data provided to retrieve heading."
     }
 
+  },
+
+  "DefaultOptions" : {
+    "DELIMITER" : {
+      "FIELD" : ",",
+      "ARRAY" : ";",
+      "WRAP" : ""
+    },
+    "EOL" : "\n",
+    "PARSE_CSV_NUMBERS" : false,
+    "KEYS" : null
   }
 }
