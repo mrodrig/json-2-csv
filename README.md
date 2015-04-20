@@ -144,10 +144,10 @@ $ npm run coverage
 
 Current Coverage is:
 ```
-Statements   : 93.63% ( 147/157 )
-Branches     : 87.91% ( 80/91 )
-Functions    : 100% ( 36/36 )
-Lines        : 95.86% ( 139/145 )
+Statements   : 94.49% ( 120/127 )
+Branches     : 90.24% ( 74/82 )
+Functions    : 100% ( 30/30 )
+Lines        : 97.39% ( 112/115 )
 ```
 
 ## Features
