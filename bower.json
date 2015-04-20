@@ -5,6 +5,7 @@
   "moduleType": [
     "node"
   ],
+  "main": "lib/converter.js",
   "license": "MIT",
   "ignore": [
     "**/.*",
