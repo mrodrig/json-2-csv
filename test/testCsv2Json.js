@@ -541,7 +541,8 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.quoted.nestedSomeFieldsWrappedJson, function (err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.nestedJson);
+                    // Stringify the JSON since these libraries don't say they are equal due to a null field
+                    var isEqual = _.isEqual(JSON.stringify(json), JSON.stringify(jsonTestData.nestedSomeFieldsWrappedJson));
                     true.should.equal(isEqual);
                     done();
                 }, options);
@@ -605,6 +606,23 @@ var csv2jsonTests = function () {
                     err.message.should.equal(constants.Errors.callbackRequired);
                     done();
                 }
+            });
+        });
+
+        describe('Custom Options - No Delimiters Specified', function () {
+            beforeEach(function () {
+                options = JSON.parse(JSON.stringify(defaultOptions));
+            });
+
+            it('should still work when no delimiters specified', function (done) {
+                delete options.DELIMITER;
+                converter.csv2json(csvTestData.unQuoted.regularJson, function (err, json) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    var isEqual = _.isEqual(json, jsonTestData.regularJson);
+                    true.should.equal(isEqual);
+                    done();
+                }, options);
             });
         });
 
@@ -1148,8 +1166,8 @@ var csv2jsonTests = function () {
             it('should parse a CSV with some fields wrapped and others unwrapped', function (done) {
                 converter.csv2jsonAsync(csvTestData.quoted.nestedSomeFieldsWrappedJson, options)
                     .then(function (json) {
-                        var isEqual = _.isEqual(json, jsonTestData.nestedJson);
-                        true.should.equal(isEqual);
+                        // Stringify the JSON since these libraries don't say they are equal due to a null field
+                        var isEqual = _.isEqual(JSON.stringify(json), JSON.stringify(jsonTestData.nestedSomeFieldsWrappedJson));                        true.should.equal(isEqual);
                         done();
                     })
                     .catch(function (err) {
@@ -1188,6 +1206,25 @@ var csv2jsonTests = function () {
                     .catch(function (err) {
                         err.message.should.equal(constants.Errors.csv2json.cannotCallCsv2JsonOn + 'undefined.');
                         done();
+                    });
+            });
+        });
+
+        describe('Custom Options - No Delimiters Specified', function () {
+            beforeEach(function () {
+                options = JSON.parse(JSON.stringify(defaultOptions));
+            });
+
+            it('should still work when no delimiters specified', function (done) {
+                delete options.DELIMITER;
+                converter.csv2jsonAsync(csvTestData.unQuoted.regularJson, options)
+                    .then(function (json) {
+                        var isEqual = _.isEqual(json, jsonTestData.regularJson);
+                        true.should.equal(isEqual);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
                     });
             });
         });
