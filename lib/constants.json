@@ -26,6 +26,7 @@
       "WRAP" : ""
     },
     "EOL" : "\n",
+    "PREPEND_HEADER" : true,
     "PARSE_CSV_NUMBERS" : false,
     "KEYS" : null
   }
