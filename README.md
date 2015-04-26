@@ -90,11 +90,12 @@ BMW,X5,2014,3287,M
   * `DELIMITER` - Document - Specifies the different types of delimiters
     * `FIELD` - String - Field Delimiter. Default: `','`
     * `ARRAY` - String - Array Value Delimiter. Default: `';'`
+    * `WRAP` - String - The character that field values are wrapped in. Default: `''`
   * `EOL` - String - End of Line Delimiter. Default: `'\n'`
   * `PARSE_CSV_NUMBERS` - Boolean - (TODO) Should numbers that are found in the CSV be converted to numbers? Default: `false`
   * `KEYS` - Array - Specify the keys (as strings) that should be converted. Default: `null`
     * If you have a nested object (ie. {info : {name: 'Mike'}}), then set options.KEYS to ['info.name']
-    * If you want all keys to be converted, then specify ```null``` or don't specify the option to utilize the default.
+    * If you want all keys to be converted, then specify `null` or don't specify the option to utilize the default.
 
 ##### csv2json Example:
 
@@ -145,10 +146,10 @@ $ npm run coverage
 
 Current Coverage is:
 ```
-Statements   : 94.49% ( 120/127 )
-Branches     : 90.24% ( 74/82 )
-Functions    : 100% ( 30/30 )
-Lines        : 97.39% ( 112/115 )
+Statements   : 96.88% ( 155/160 )
+Branches     : 93.55% ( 116/124 )
+Functions    : 100% ( 31/31 )
+Lines        : 97.99% ( 146/149 )
 ```
 
 ## Features
@@ -162,6 +163,7 @@ Lines        : 97.39% ( 112/115 )
 - Ability to re-generate the JSON documents that were used to generate the CSV (including nested documents)
 - Allows for custom field delimiters, end of line delimiters, etc.
 - Promisifiable via bluebird's .promisify(<function>) and .promisifyAll(<object>) (as of 1.1.1)
+- Wrapped value support for json2csv and csv2json (as of 1.3.0)
 
 ## F.A.Q.
 

@@ -2,14 +2,11 @@ var should = require('should'),
     assert = require('assert'),
     converter = require('../lib/converter'),
     constants = require('../lib/constants'),
-    fs = require('fs'),
     _ = require('underscore'),
     Promise = require('bluebird'),
-    async = require('async'),
     defaultOptions = constants.DefaultOptions,
-    jsonTestData = require('./testJsonFilesList'),
-    csvTestData  = {unQuoted: {}, quoted: {}}, // Document where all csv files will be loaded into
-    csvFiles = require('./testCsvFilesList'),
+    jsonTestData,
+    csvTestData,
     options;
 
 var json2csvTests = function () {
@@ -1450,27 +1447,12 @@ var json2csvTests = function () {
     });
 };
 
-var readCsvFile = function (masterKey, fileInfo, callback) {
-    csvTestData[masterKey][fileInfo.key] = fs.readFileSync(fileInfo.file).toString();
-    return callback(null, csvTestData[masterKey][fileInfo.key]);
-};
-
 module.exports = {
-    runTests: function () {
-        describe('json2csv', function() {
-            before(function(done) {
-                async.parallel(
-                    _.flatten(_.map(csvFiles, function (grouping) {
-                        return _.map(grouping.files, function (fileInfo) {
-                            return _.partial(readCsvFile, grouping.key, fileInfo);
-                        });
-                    })),
-                    function(err, results) {
-                        if (err) throw err;
-                        done();
-                    });
-            });
+    runTests: function (testData) {
+        jsonTestData = testData.jsonTestData;
+        csvTestData  = testData.csvTestData;
 
+        describe('json2csv', function() {
             beforeEach(function () {
                 options = null;
             });
