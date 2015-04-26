@@ -459,7 +459,156 @@ var csv2jsonTests = function () {
                 };
             });
 
-            // TODO: implement csv2json quote handling and test it
+            it('should convert a basic quoted CSV to JSON', function(done) {
+                converter.csv2json(csvTestData.quoted.regularJson, function(err, json) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    var isEqual = _.isEqual(json, jsonTestData.regularJson);
+                    true.should.equal(isEqual);
+                    done();
+                }, options);
+            });
+
+            it('should parse a quoted CSV representing nested objects to JSON - 1', function(done) {
+                converter.csv2json(csvTestData.quoted.nestedJson, function(err, json) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    var isEqual = _.isEqual(json, jsonTestData.nestedJson);
+                    true.should.equal(isEqual);
+                    done();
+                }, options);
+            });
+
+            it('should parse a quoted CSV representing nested objects to JSON - 2', function(done) {
+                converter.csv2json(csvTestData.quoted.nestedJson2, function(err, json) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    var isEqual = _.isEqual(json, jsonTestData.nestedJson2);
+                    true.should.equal(isEqual);
+                    done();
+                }, options);
+            });
+
+            it('should parse nested quotes in a CSV to have nested quotes in JSON', function(done) {
+                converter.csv2json(csvTestData.quoted.nestedQuotes, function(err, json) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    var isEqual = _.isEqual(json, jsonTestData.nestedQuotes);
+                    true.should.equal(isEqual);
+                    done();
+                }, options);
+            });
+
+            it('should parse an empty CSV to an empty JSON array', function(done) {
+                converter.csv2json(csvTestData.quoted.noData, function(err, json) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    var isEqual = _.isEqual(json, jsonTestData.noData);
+                    true.should.equal(isEqual);
+                    done();
+                }, options);
+            });
+
+            it('should parse a single quoted CSV entry to an array of a single JSON document', function (done) {
+                converter.csv2json(csvTestData.quoted.singleDoc, function (err, json) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    var isEqual = _.isEqual(json, [jsonTestData.singleDoc]);
+                    true.should.equal(isEqual);
+                    done();
+                }, options);
+            });
+
+            it('should parse a quoted CSV with a nested array to the correct JSON representation', function (done) {
+                converter.csv2json(csvTestData.quoted.arrayValue.replace(/;/g, options.DELIMITER.ARRAY), function (err, json) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    var isEqual = _.isEqual(json, jsonTestData.arrayValue);
+                    true.should.equal(isEqual);
+                    done();
+                }, options);
+            });
+
+            it('should parse the specified keys to JSON from a quoted CSV', function (done) {
+                var opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS : ['info.name', 'year']});
+                converter.csv2json(csvTestData.quoted.arrayValue.replace(/,/g, options.DELIMITER.FIELD), function (err, json) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    var isEqual = _.isEqual(json, jsonTestData.arrayValue_specificKeys);
+                    true.should.equal(isEqual);
+                    done();
+                }, opts);
+            });
+            
+            it('should parse a CSV with some fields wrapped and others unwrapped', function (done) {
+                converter.csv2json(csvTestData.quoted.nestedSomeFieldsWrappedJson, function (err, json) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    var isEqual = _.isEqual(json, jsonTestData.nestedJson);
+                    true.should.equal(isEqual);
+                    done();
+                }, options);
+            });
+
+            it('should parse an unquoted CSV without any issues while a DELIMITER is set', function (done) {
+                converter.csv2json(csvTestData.unQuoted.arrayValue.replace(/;/g, '/'), function (err, json) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    var isEqual = _.isEqual(json, jsonTestData.arrayValue);
+                    true.should.equal(isEqual);
+                    done();
+                }, options);
+            });
+
+            it('should throw an error about not having been passed data - 1', function (done) {
+                converter.csv2json(null, function (err, json) {
+                    err.message.should.equal(constants.Errors.csv2json.cannotCallCsv2JsonOn + 'null.');
+                    done();
+                }, options);
+            });
+
+            it('should throw an error about not having been passed data - 2', function (done) {
+                converter.csv2json(undefined, function (err, json) {
+                    err.message.should.equal(constants.Errors.csv2json.cannotCallCsv2JsonOn + 'undefined.');
+                    done();
+                }, options);
+            });
+
+            it('should throw an error about not being provided a callback - 1', function (done) {
+                try {
+                    converter.csv2json(undefined, undefined, options);
+                } catch (err) {
+                    err.message.should.equal(constants.Errors.callbackRequired);
+                    done();
+                }
+            });
+
+            it('should throw an error about not being provided a callback - 2', function (done) {
+                try {
+                    converter.csv2json(null, undefined, options);
+                } catch (err) {
+                    err.message.should.equal(constants.Errors.callbackRequired);
+                    done();
+                }
+            });
+
+            it('should throw an error about not being provided a callback - 3', function (done) {
+                try {
+                    converter.csv2json(null, null, options);
+                } catch (err) {
+                    err.message.should.equal(constants.Errors.callbackRequired);
+                    done();
+                }
+            });
+
+            it('should throw an error about not being provided a callback - 4', function (done) {
+                try {
+                    converter.csv2json(undefined, null, options);
+                } catch (err) {
+                    err.message.should.equal(constants.Errors.callbackRequired);
+                    done();
+                }
+            });
         });
 
         describe('Testing other errors', function () {
@@ -902,7 +1051,148 @@ var csv2jsonTests = function () {
                 };
             });
 
-            // TODO: implement csv2json quote handling and test it
+            it('should convert a basic quoted CSV to JSON', function(done) {
+                converter.csv2jsonAsync(csvTestData.quoted.regularJson, options)
+                    .then(function(json) {
+                        var isEqual = _.isEqual(json, jsonTestData.regularJson);
+                        true.should.equal(isEqual);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse a quoted CSV representing nested objects to JSON - 1', function(done) {
+                converter.csv2jsonAsync(csvTestData.quoted.nestedJson, options)
+                    .then(function(json) {
+                        var isEqual = _.isEqual(json, jsonTestData.nestedJson);
+                        true.should.equal(isEqual);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse a quoted CSV representing nested objects to JSON - 2', function(done) {
+                converter.csv2jsonAsync(csvTestData.quoted.nestedJson2, options)
+                    .then(function(json) {
+                        var isEqual = _.isEqual(json, jsonTestData.nestedJson2);
+                        true.should.equal(isEqual);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse nested quotes in a CSV to have nested quotes in JSON', function(done) {
+                converter.csv2jsonAsync(csvTestData.quoted.nestedQuotes, options)
+                    .then(function(json) {
+                        var isEqual = _.isEqual(json, jsonTestData.nestedQuotes);
+                        true.should.equal(isEqual);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse an empty CSV to an empty JSON array', function(done) {
+                converter.csv2jsonAsync(csvTestData.quoted.noData, options)
+                    .then(function(json) {
+                        var isEqual = _.isEqual(json, jsonTestData.noData);
+                        true.should.equal(isEqual);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse a single quoted CSV entry to an array of a single JSON document', function (done) {
+                converter.csv2jsonAsync(csvTestData.quoted.singleDoc, options)
+                    .then(function (json) {
+                        var isEqual = _.isEqual(json, [jsonTestData.singleDoc]);
+                        true.should.equal(isEqual);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse a quoted CSV with a nested array to the correct JSON representation', function (done) {
+                converter.csv2jsonAsync(csvTestData.quoted.arrayValue, options)
+                    .then(function (json) {
+                        var isEqual = _.isEqual(json, jsonTestData.arrayValue);
+                        true.should.equal(isEqual);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse the specified keys to JSON from a quoted CSV', function (done) {
+                var opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS : ['info.name', 'year']});
+                converter.csv2jsonAsync(csvTestData.quoted.arrayValue, opts)
+                    .then(function (json) {
+                        var isEqual = _.isEqual(json, jsonTestData.arrayValue_specificKeys);
+                        true.should.equal(isEqual);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse a CSV with some fields wrapped and others unwrapped', function (done) {
+                converter.csv2jsonAsync(csvTestData.quoted.nestedSomeFieldsWrappedJson, options)
+                    .then(function (json) {
+                        var isEqual = _.isEqual(json, jsonTestData.nestedJson);
+                        true.should.equal(isEqual);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+            
+            it('should parse an unquoted CSV without any issues while a DELIMITER is set', function (done) {
+                converter.csv2jsonAsync(csvTestData.unQuoted.arrayValue.replace(/;/g, '/'), options)
+                    .then(function (json) {
+                        var isEqual = _.isEqual(json, jsonTestData.arrayValue);
+                        true.should.equal(isEqual);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should throw an error about not having been passed data - 1', function (done) {
+                converter.csv2jsonAsync(null, options)
+                    .then(function (json) {
+                        throw new Error('should not hit');
+                    })
+                    .catch(function (err) {
+                        err.message.should.equal(constants.Errors.csv2json.cannotCallCsv2JsonOn + 'null.');
+                        done();
+                    });
+            });
+
+            it('should throw an error about not having been passed data - 2', function (done) {
+                converter.csv2jsonAsync(undefined, options)
+                    .then(function (json) {
+                        throw new Error('should not hit');
+                    })
+                    .catch(function (err) {
+                        err.message.should.equal(constants.Errors.csv2json.cannotCallCsv2JsonOn + 'undefined.');
+                        done();
+                    });
+            });
         });
 
         describe('Testing other errors', function () {

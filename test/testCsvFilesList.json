@@ -20,6 +20,7 @@
       {"key": "nestedComma", "file": "test/CSV/quoted/nestedComma.csv"},
       {"key": "nestedJson", "file": "test/CSV/quoted/nestedJson.csv"},
       {"key": "nestedJson2", "file": "test/CSV/quoted/nestedJson2.csv"},
+      {"key": "nestedSomeFieldsWrappedJson", "file": "test/CSV/quoted/nestedSomeFieldsWrappedJson.csv"},
       {"key": "nestedQuotes", "file": "test/CSV/quoted/nestedQuotes.csv"},
       {"key": "noData", "file": "test/CSV/quoted/noData.csv"},
       {"key": "regularJson", "file": "test/CSV/quoted/regularJson.csv"},
