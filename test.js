@@ -1,6 +1,3 @@
-/**
- * Created by mrodrigues on 2/17/15.
- */
 var Promise = require('bluebird'),
     converter = Promise.promisifyAll(require('./lib/converter'));
 
@@ -29,22 +26,23 @@ var csv = 'Make,Model,Year,Specifications.Mileage,Specifications.Trim\n' +
     'Nissan,Murano,2013,7106,S AWD\n' +
     'BMW,X5,2014,3287,M';
 
-//converter.json2csv(documents, function (err, csv) {
-//        if (!err) {
-//            return console.log('csv', csv);
-//        }
-//        return console.log('err', err);
-//    },
-//    {
-//        DELIMITER         : {
-//            FIELD  :  ',',
-//            ARRAY  :  '/',
-//            WRAP   :  '\"'
-//        },
-//        EOL               : '\n',
-//        PARSE_CSV_NUMBERS : false,
-//        KEYS: ['Make', 'Model', 'Specifications.Mileage']
-//    });
+converter.json2csv(documents, function (err, csv) {
+        if (!err) {
+            return console.log('csv', csv);
+        }
+        return console.log('err', err);
+    },
+    {
+        DELIMITER         : {
+            FIELD  :  ',',
+            ARRAY  :  '/',
+            WRAP   :  '\"'
+        },
+        EOL               : '\n',
+        PREPEND_HEADER    : false,
+        PARSE_CSV_NUMBERS : false,
+        KEYS: ['Make', 'Model', 'Specifications.Mileage']
+    });
 
 //converter.json2csvAsync(documents, {})
 //    .then(function (csv) {
@@ -54,12 +52,12 @@ var csv = 'Make,Model,Year,Specifications.Mileage,Specifications.Trim\n' +
 //        console.log(err.stack);
 //    });
 
-converter.csv2json(csv, function (err, json) {
-    if (!err) {
-        return console.log('json', json);
-    }
-    return console.log('err', err);
-}, {KEYS: ['Model', 'Specifications.Mileage']});
+//converter.csv2json(csv, function (err, json) {
+//    if (!err) {
+//        return console.log('json', json);
+//    }
+//    return console.log('err', err);
+//}, {KEYS: ['Model', 'Specifications.Mileage']});
 
 //converter.csv2jsonAsync(csv, {})
 //    .then(function (json) {
