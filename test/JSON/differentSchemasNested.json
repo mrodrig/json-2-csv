@@ -1,0 +1,7 @@
+[
+    { "carModel" : "Audi",      "nestedInfo":   { "price" : "10000", "mileage" : "7200" }, "sold" : "yes" },
+    { "carModel" : "BMW",       "nestedInfo":   { "price" : "10000", "color" : "red", "mileage" : "2430", "weight" : "1027" } },
+    { "carModel" : "Mercedes",  "nestedInfo":   { "price" : "20000", "color" : "yellow" } },
+    { "carModel" : "Porsche",   "nestedInfo":   { "price" : "30000", "color" : "green" } },
+    { "carModel" : "Buick",     "nestedInfo":   null }
+]

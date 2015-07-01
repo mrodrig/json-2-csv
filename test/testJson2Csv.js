@@ -96,6 +96,7 @@ var json2csvTests = function () {
                 });
             });
 
+            // simon
             it('should throw an error if the documents do not have the same schema', function (done) {
                 converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
                     err.message.should.equal(constants.Errors.json2csv.notSameSchema);
@@ -267,9 +268,41 @@ var json2csvTests = function () {
                 }, options);
             });
 
+            it('should parse different schemas when requested', function (done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
+                converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.differentSchemas);
+                    csv.split(options.EOL).length.should.equal(6);
+                    done();
+                }, options);
+            });
+
+            it('should parse different schemas (only at nesting level) when requested', function (done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
+                converter.json2csv(jsonTestData.differentSchemasNested, function (err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.differentSchemasNested);
+                    csv.split(options.EOL).length.should.equal(7);
+                    done();
+                }, options);
+            });
+
+            it("should parse different schemas that 'upgrade' from a null value to an nested object.", function (done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
+                converter.json2csv(jsonTestData.differentSchemasNullUpgrade, function (err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.differentSchemasNullUpgrade);
+                    csv.split(options.EOL).length.should.equal(4);
+                    done();
+                }, options);
+            });
+
             it('should repress the heading', function (done) {
-                opts = JSON.parse(JSON.stringify(options));
-                opts.PREPEND_HEADER = false;
+                options.PREPEND_HEADER = false;
 
                 converter.json2csv(jsonTestData.sameSchemaDifferentOrdering, function (err, csv) {
                     if (err) { throw err; }
@@ -277,9 +310,10 @@ var json2csvTests = function () {
                     csv.should.equal(csvTestData.unQuoted.regularJson.split(options.EOL).slice(1).join(options.EOL));
                     csv.split(options.EOL).length.should.equal(5);
                     done();
-                }, opts);
+                }, options);
             });
 
+            // simon
             it('should throw an error if the documents do not have the same schema', function (done) {
                 converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
                     err.message.should.equal(constants.Errors.json2csv.notSameSchema);
@@ -443,9 +477,41 @@ var json2csvTests = function () {
                 }, options);
             });
 
+            it('should parse different schemas when requested', function(done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
+                converter.json2csv(jsonTestData.differentSchemas, function(err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.differentSchemas.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
+                    csv.split(options.EOL).length.should.equal(6);
+                    done();
+                }, options)
+            });
+
+            it('should parse different schemas (only at nesting level) when requested', function(done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
+                converter.json2csv(jsonTestData.differentSchemasNested, function(err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.differentSchemasNested.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
+                    csv.split(options.EOL).length.should.equal(7);
+                    done();
+                }, options)
+            });
+
+            it("should parse different schemas that 'upgrade' from a null value to an nested object.", function(done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
+                converter.json2csv(jsonTestData.differentSchemasNullUpgrade, function(err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.differentSchemasNullUpgrade.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
+                    csv.split(options.EOL).length.should.equal(4);
+                    done();
+                }, options)
+            });
+
             it('should repress the heading', function (done) {
-                opts = JSON.parse(JSON.stringify(options));
-                opts.PREPEND_HEADER = false;
+                options.PREPEND_HEADER = false;
 
                 converter.json2csv(jsonTestData.sameSchemaDifferentOrdering, function (err, csv) {
                     if (err) { throw err; }
@@ -453,10 +519,18 @@ var json2csvTests = function () {
                     csv.should.equal(csvTestData.unQuoted.regularJson.replace(/,/g, options.DELIMITER.FIELD).split(options.EOL).slice(1).join(options.EOL));
                     csv.split(options.EOL).length.should.equal(5);
                     done();
-                }, opts);
+                }, options);
+            });
+
+            it('should throw an error if the documents are not the same by default', function (done) {
+                converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
+                    err.message.should.equal(constants.Errors.json2csv.notSameSchema);
+                    done();
+                }, options);
             });
 
             it('should throw an error if the documents do not have the same schema', function (done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = false;
                 converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
                     err.message.should.equal(constants.Errors.json2csv.notSameSchema);
                     done();
@@ -625,6 +699,39 @@ var json2csvTests = function () {
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.quoted.regularJson);
                     csv.split(options.EOL).length.should.equal(6);
+                    done();
+                }, options);
+            });
+
+            it('should parse different schemas when requested', function (done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
+                converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.quoted.differentSchemas);
+                    csv.split(options.EOL).length.should.equal(6);
+                    done();
+                }, options);
+            });
+
+            it('should parse different schemas (only at nesting level) when requested', function (done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
+                converter.json2csv(jsonTestData.differentSchemasNested, function (err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.quoted.differentSchemasNested);
+                    csv.split(options.EOL).length.should.equal(7);
+                    done();
+                }, options);
+            });
+
+            it("should parse different schemas that 'upgrade' from a null value to an nested object.", function (done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
+                converter.json2csv(jsonTestData.differentSchemasNullUpgrade, function (err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.quoted.differentSchemasNullUpgrade);
+                    csv.split(options.EOL).length.should.equal(4);
                     done();
                 }, options);
             });
@@ -1002,6 +1109,45 @@ var json2csvTests = function () {
                     });
             });
 
+            it('should parse different schemas when requested', function (done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
+                converter.json2csvAsync(jsonTestData.differentSchemas, options)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.unQuoted.differentSchemas);
+                        csv.split(options.EOL).length.should.equal(6);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse different schemas (only at nesting level) when requested', function (done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
+                converter.json2csvAsync(jsonTestData.differentSchemasNested, options)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.unQuoted.differentSchemasNested);
+                        csv.split(options.EOL).length.should.equal(7);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it("should parse different schemas that 'upgrade' from a null value to an nested object.", function (done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
+                converter.json2csvAsync(jsonTestData.differentSchemasNullUpgrade, options)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.unQuoted.differentSchemasNullUpgrade);
+                        csv.split(options.EOL).length.should.equal(4);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
             it('should repress the heading', function (done) {
                 opts = JSON.parse(JSON.stringify(options));
                 opts.PREPEND_HEADER = false;
@@ -1167,6 +1313,45 @@ var json2csvTests = function () {
                     .then(function (csv) {
                         csv.should.equal(csvTestData.unQuoted.regularJson.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
                         csv.split(options.EOL).length.should.equal(6);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse different schemas when requested', function (done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
+                converter.json2csvAsync(jsonTestData.differentSchemas, options)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.unQuoted.differentSchemas.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(6);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse different schemas (only at nesting level) when requested', function (done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
+                converter.json2csvAsync(jsonTestData.differentSchemasNested, options)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.unQuoted.differentSchemasNested.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(7);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it("should parse different schemas that 'upgrade' from a null value to an nested object.", function (done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
+                converter.json2csvAsync(jsonTestData.differentSchemasNullUpgrade, options)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.unQuoted.differentSchemasNullUpgrade.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
+                        csv.split(options.EOL).length.should.equal(4);
                         done();
                     })
                     .catch(function (err) {
@@ -1347,10 +1532,50 @@ var json2csvTests = function () {
             });
 
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
                 converter.json2csvAsync(jsonTestData.sameSchemaDifferentOrdering, options)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.quoted.regularJson);
                         csv.split(options.EOL).length.should.equal(6);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse different schemas when requested', function (done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
+                converter.json2csvAsync(jsonTestData.differentSchemas, options)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.quoted.differentSchemas);
+                        csv.split(options.EOL).length.should.equal(6);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should parse different schemas (only at nesting level) when requested', function (done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
+                converter.json2csvAsync(jsonTestData.differentSchemasNested, options)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.quoted.differentSchemasNested);
+                        csv.split(options.EOL).length.should.equal(7);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it("should parse different schemas that 'upgrade' from a null value to an nested object.", function (done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
+                converter.json2csvAsync(jsonTestData.differentSchemasNullUpgrade, options)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.quoted.differentSchemasNullUpgrade);
+                        csv.split(options.EOL).length.should.equal(4);
                         done();
                     })
                     .catch(function (err) {
