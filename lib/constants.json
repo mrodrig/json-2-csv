@@ -8,9 +8,7 @@
     "json2csv": {
       "cannotCallJson2CsvOn": "Cannot call json2csv on ",
       "dataNotArrayOfDocuments": "Data provided was not an array of documents.",
-      "notSameSchema": "Not all documents have the same schema.",
-      "propertyLeafExpected": "The field used to contain a property leaf (object with nested properties) in previous documents. Types of fields must be the same.",
-      "valueExpected": "The field used to contain a value in previous document(s). Types of fields must be the same."
+      "notSameSchema": "Not all documents have the same schema."
     },
 
     "csv2json": {

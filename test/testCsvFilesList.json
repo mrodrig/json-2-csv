@@ -29,6 +29,7 @@
       {"key": "regularJson", "file": "test/CSV/quoted/regularJson.csv"},
       {"key": "singleDoc", "file": "test/CSV/quoted/singleDoc.csv"},
       {"key": "differentSchemas", "file": "test/CSV/quoted/differentSchemas.csv"},
+      {"key": "differentSchemasFieldTypes", "file": "test/CSV/quoted/differentSchemasFieldTypes.csv"},
       {"key": "differentSchemasNested", "file": "test/CSV/quoted/differentSchemasNested.csv"},
       {"key": "differentSchemasNullUpgrade", "file": "test/CSV/quoted/differentSchemasNullUpgrade.csv"}
     ]

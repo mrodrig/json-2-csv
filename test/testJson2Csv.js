@@ -96,7 +96,6 @@ var json2csvTests = function () {
                 });
             });
 
-            // simon
             it('should throw an error if the documents do not have the same schema', function (done) {
                 converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
                     err.message.should.equal(constants.Errors.json2csv.notSameSchema);
@@ -300,6 +299,32 @@ var json2csvTests = function () {
                     done();
                 }, options);
             });
+
+
+            /**
+             * Replace all occurences inside a string, instead of only the first one as str.replace does...
+             * http://stackoverflow.com/a/1144788/619465
+             * @param find
+             * @param replace
+             * @param str
+             * @returns {void|string|XML}
+             */
+            function replaceAll(find, replace, str) {
+                return str.replace(new RegExp(find, 'g'), replace);
+            }
+
+            it("Should parse different schemas, even when the different data types are used for the same field name.", function(done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
+                converter.json2csv(jsonTestData.differentSchemasFieldTypes, function (err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    var quoted = csvTestData.quoted.differentSchemasFieldTypes;
+                    var unquoted = replaceAll('"','', quoted);
+                    csv.should.equal(unquoted);
+                    csv.split(options.EOL).length.should.equal(4);
+                    done();
+                }, options);
+            })
 
             it('should repress the heading', function (done) {
                 options.PREPEND_HEADER = false;
