@@ -10,5 +10,9 @@ module.exports = {
     regularJson: require('./JSON/regularJson'),
     singleDoc: require('./JSON/singleDoc'),
     sameSchemaDifferentOrdering: require('./JSON/sameSchemaDifferentOrdering'),
-    differentSchemas: require('./JSON/differentSchemas')
+    differentSchemas: require('./JSON/differentSchemas'),
+    differentSchemasFieldTypes: require('./JSON/differentSchemasFieldTypes.json'),
+    differentSchemasNested: require('./JSON/differentSchemasNested'),
+    differentSchemasNullUpgrade: require('./JSON/differentSchemasNullUpgrade'),
+    false0null: require('./JSON/false0null.json')
 };

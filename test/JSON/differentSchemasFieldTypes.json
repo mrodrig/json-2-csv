@@ -1,0 +1,4 @@
+[
+    { "carModel" : "VW",                     "price":   {"currency" : "USD", "amount": 8000}, "rating": "C" },
+    { "carModel" : {"manufacturer": "Audi"}, "price":   17600,                                "rating": 8   }
+]

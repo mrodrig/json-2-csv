@@ -1,0 +1,4 @@
+[
+    { "carModel" : "VW",        "nestedInfo":   null },
+    { "carModel" : "Audi",      "nestedInfo":   { "price" : "10000", "mileage" : "7200" }}
+]

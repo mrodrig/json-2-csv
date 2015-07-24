@@ -39,6 +39,7 @@ var converter = require('json-2-csv');
   * `KEYS` - Array - Specify the keys (as strings) that should be converted. Default: `null`
     * If you have a nested object (ie. {info : {name: 'Mike'}}), then set options.KEYS to ['info.name']
     * If you want all keys to be converted, then specify ```null``` or don't specify the option to utilize the default.
+  * `ALLOW_DIFFERENT_SCHEMAS` - Boolean - The parser first checks all documents on schema differences, it can accept missing or different fields and just add them as null values. Set this value to true to enable this behaviour. Default: false 
 
 ##### json2csv Example:
 

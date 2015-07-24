@@ -1,0 +1,6 @@
+carModel,nestedInfo.price,nestedInfo.mileage,nestedInfo.color,nestedInfo.weight,sold
+Audi,10000,7200,,,yes
+BMW,10000,2430,red,1027,
+Mercedes,20000,,yellow,,
+Porsche,30000,,green,,
+Buick,,,,,
