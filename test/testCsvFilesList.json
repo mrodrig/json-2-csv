@@ -31,7 +31,8 @@
       {"key": "differentSchemas", "file": "test/CSV/quoted/differentSchemas.csv"},
       {"key": "differentSchemasFieldTypes", "file": "test/CSV/quoted/differentSchemasFieldTypes.csv"},
       {"key": "differentSchemasNested", "file": "test/CSV/quoted/differentSchemasNested.csv"},
-      {"key": "differentSchemasNullUpgrade", "file": "test/CSV/quoted/differentSchemasNullUpgrade.csv"}
+      {"key": "differentSchemasNullUpgrade", "file": "test/CSV/quoted/differentSchemasNullUpgrade.csv"},
+      {"key": "false0null", "file": "test/CSV/quoted/false0null.csv"}
     ]
   }
 ]

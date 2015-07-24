@@ -326,6 +326,19 @@ var json2csvTests = function () {
                 }, options);
             })
 
+            it("Should convert false, 0 and null values to their expected value.", function(done) {
+                options.ALLOW_DIFFERENT_SCHEMAS = true;
+                converter.json2csv(jsonTestData.false0null, function (err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    var quoted = csvTestData.quoted.false0null;
+                    var unquoted = replaceAll('"','', quoted);
+                    csv.should.equal(unquoted);
+                    csv.split(options.EOL).length.should.equal(3);
+                    done();
+                }, options);
+            })
+
             it('should repress the heading', function (done) {
                 options.PREPEND_HEADER = false;
 
