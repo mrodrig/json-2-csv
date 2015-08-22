@@ -34,6 +34,7 @@ var converter = require('json-2-csv');
     * `FIELD` - String - Field Delimiter. Default: `','`
     * `ARRAY` - String - Array Value Delimiter. Default: `';'`
     * `WRAP` - String - Wrap values in the delimiter of choice (e.g. wrap values in quotes). Default: `''`
+  * `CHECK_SCHEMA_DIFFERENCES` - Boolean - Should we require all documents to have the same schema? Default: `true`
   * `PREPEND_HEADER` - Boolean - Should the auto-generated header be prepended as the first line in the CSV? Default: `true`
   * `EOL` - String - End of Line Delimiter. Default: `'\n'`
   * `KEYS` - Array - Specify the keys (as strings) that should be converted. Default: `null`
@@ -164,6 +165,7 @@ Lines        : 97.99% ( 146/149 )
 - Allows for custom field delimiters, end of line delimiters, etc.
 - Promisifiable via bluebird's .promisify(<function>) and .promisifyAll(<object>) (as of 1.1.1)
 - Wrapped value support for json2csv and csv2json (as of 1.3.0)
+- Support for multiple different schemas (as of 1.4.0)
 
 ## F.A.Q.
 
