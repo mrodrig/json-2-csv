@@ -96,6 +96,19 @@ var json2csvTests = function () {
                 });
             });
 
+            it('should convert two documents with different schemas properly', function (done) {
+                opts = JSON.parse(JSON.stringify(options));
+                opts.CHECK_SCHEMA_DIFFERENCES = false;
+
+                converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.differentSchemas);
+                    csv.split(options.EOL).length.should.equal(6);
+                    done();
+                }, opts);
+            });
+
             it('should throw an error if the documents do not have the same schema', function (done) {
                 converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
                     err.message.should.equal(constants.Errors.json2csv.notSameSchema);
@@ -280,6 +293,19 @@ var json2csvTests = function () {
                 }, opts);
             });
 
+            it('should convert two documents with different schemas properly', function (done) {
+                opts = JSON.parse(JSON.stringify(options));
+                opts.CHECK_SCHEMA_DIFFERENCES = false;
+
+                converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.differentSchemas);
+                    csv.split(options.EOL).length.should.equal(6);
+                    done();
+                }, opts);
+            });
+
             it('should throw an error if the documents do not have the same schema', function (done) {
                 converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
                     err.message.should.equal(constants.Errors.json2csv.notSameSchema);
@@ -444,7 +470,7 @@ var json2csvTests = function () {
             });
 
             it('should repress the heading', function (done) {
-                opts = JSON.parse(JSON.stringify(options));
+                var opts = JSON.parse(JSON.stringify(options));
                 opts.PREPEND_HEADER = false;
 
                 converter.json2csv(jsonTestData.sameSchemaDifferentOrdering, function (err, csv) {
@@ -452,6 +478,20 @@ var json2csvTests = function () {
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.regularJson.replace(/,/g, options.DELIMITER.FIELD).split(options.EOL).slice(1).join(options.EOL));
                     csv.split(options.EOL).length.should.equal(5);
+                    done();
+                }, opts);
+            });
+
+            it('should convert two documents with different schemas properly', function (done) {
+                var opts = JSON.parse(JSON.stringify(options));
+                opts.PREPEND_HEADER = true;
+                opts.CHECK_SCHEMA_DIFFERENCES = false;
+
+                converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.differentSchemas.replace(/,/g, options.DELIMITER.FIELD).split(options.EOL).join(options.EOL));
+                    csv.split(options.EOL).length.should.equal(6);
                     done();
                 }, opts);
             });
@@ -638,6 +678,19 @@ var json2csvTests = function () {
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.quoted.regularJson.split(options.EOL).slice(1).join(options.EOL));
                     csv.split(options.EOL).length.should.equal(5);
+                    done();
+                }, opts);
+            });
+
+            it('should convert two documents with different schemas properly', function (done) {
+                var opts = JSON.parse(JSON.stringify(options));
+                opts.CHECK_SCHEMA_DIFFERENCES = false;
+
+                converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.quoted.differentSchemas);
+                    csv.split(options.EOL).length.should.equal(6);
                     done();
                 }, opts);
             });
@@ -846,6 +899,21 @@ var json2csvTests = function () {
                     });
             });
 
+            it('should convert two documents with different schemas properly', function (done) {
+                var opts = JSON.parse(JSON.stringify(options));
+                opts.CHECK_SCHEMA_DIFFERENCES = false;
+
+                converter.json2csvAsync(jsonTestData.differentSchemas, opts)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.unQuoted.differentSchemas);
+                        csv.split(options.EOL).length.should.equal(6);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
             it('should throw an error if the documents do not have the same schema', function (done) {
                 converter.json2csvAsync(jsonTestData.differentSchemas)
                     .then(function (csv) {
@@ -1010,6 +1078,21 @@ var json2csvTests = function () {
                     .then(function (csv) {
                         csv.should.equal(csvTestData.unQuoted.regularJson.split(options.EOL).slice(1).join(options.EOL));
                         csv.split(options.EOL).length.should.equal(5);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should convert two documents with different schemas properly', function (done) {
+                var opts = JSON.parse(JSON.stringify(options));
+                opts.CHECK_SCHEMA_DIFFERENCES = false;
+
+                converter.json2csvAsync(jsonTestData.differentSchemas, opts)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.unQuoted.differentSchemas);
+                        csv.split(options.EOL).length.should.equal(6);
                         done();
                     })
                     .catch(function (err) {
@@ -1182,6 +1265,21 @@ var json2csvTests = function () {
                     .then(function (csv) {
                         csv.should.equal(csvTestData.unQuoted.regularJson.replace(/,/g, options.DELIMITER.FIELD).split(options.EOL).slice(1).join(options.EOL));
                         csv.split(options.EOL).length.should.equal(5);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should convert two documents with different schemas properly', function (done) {
+                var opts = JSON.parse(JSON.stringify(options));
+                opts.CHECK_SCHEMA_DIFFERENCES = false;
+
+                converter.json2csvAsync(jsonTestData.differentSchemas, opts)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.unQuoted.differentSchemas.replace(/,/g, options.DELIMITER.FIELD).split(options.EOL).join(options.EOL));
+                        csv.split(options.EOL).length.should.equal(6);
                         done();
                     })
                     .catch(function (err) {
@@ -1366,6 +1464,21 @@ var json2csvTests = function () {
                     .then(function (csv) {
                         csv.should.equal(csvTestData.quoted.regularJson.split(options.EOL).slice(1).join(options.EOL));
                         csv.split(options.EOL).length.should.equal(5);
+                        done();
+                    })
+                    .catch(function (err) {
+                        throw err;
+                    });
+            });
+
+            it('should convert two documents with different schemas properly', function (done) {
+                var opts = JSON.parse(JSON.stringify(options));
+                opts.CHECK_SCHEMA_DIFFERENCES = false;
+
+                converter.json2csvAsync(jsonTestData.differentSchemas, opts)
+                    .then(function (csv) {
+                        csv.should.equal(csvTestData.quoted.differentSchemas);
+                        csv.split(options.EOL).length.should.equal(6);
                         done();
                     })
                     .catch(function (err) {

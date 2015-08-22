@@ -9,7 +9,8 @@
       {"key": "nestedQuotes", "file": "test/CSV/unQuoted/nestedQuotes.csv"},
       {"key": "noData", "file": "test/CSV/unQuoted/noData.csv"},
       {"key": "regularJson", "file": "test/CSV/unQuoted/regularJson.csv"},
-      {"key": "singleDoc", "file": "test/CSV/unQuoted/singleDoc.csv"}
+      {"key": "singleDoc", "file": "test/CSV/unQuoted/singleDoc.csv"},
+      {"key": "differentSchemas", "file": "test/CSV/unQuoted/differentSchemas.csv"}
     ]
   },
   {
@@ -24,7 +25,8 @@
       {"key": "nestedQuotes", "file": "test/CSV/quoted/nestedQuotes.csv"},
       {"key": "noData", "file": "test/CSV/quoted/noData.csv"},
       {"key": "regularJson", "file": "test/CSV/quoted/regularJson.csv"},
-      {"key": "singleDoc", "file": "test/CSV/quoted/singleDoc.csv"}
+      {"key": "singleDoc", "file": "test/CSV/quoted/singleDoc.csv"},
+      {"key": "differentSchemas", "file": "test/CSV/quoted/differentSchemas.csv"}
     ]
   }
 ]
