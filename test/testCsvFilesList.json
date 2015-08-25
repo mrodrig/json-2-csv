@@ -10,7 +10,8 @@
       {"key": "noData", "file": "test/CSV/unQuoted/noData.csv"},
       {"key": "regularJson", "file": "test/CSV/unQuoted/regularJson.csv"},
       {"key": "singleDoc", "file": "test/CSV/unQuoted/singleDoc.csv"},
-      {"key": "differentSchemas", "file": "test/CSV/unQuoted/differentSchemas.csv"}
+      {"key": "differentSchemas", "file": "test/CSV/unQuoted/differentSchemas.csv"},
+      {"key": "differentSchemasEmptyValues", "file": "test/CSV/unQuoted/differentSchemasEmptyValues.csv"}
     ]
   },
   {

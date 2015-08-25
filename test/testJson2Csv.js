@@ -306,6 +306,20 @@ var json2csvTests = function () {
                 }, opts);
             });
 
+            it('should convert two documents with different schemas properly and use a custom empty field value', function (done) {
+                opts = JSON.parse(JSON.stringify(options));
+                opts.CHECK_SCHEMA_DIFFERENCES = false;
+                opts.EMPTY_FIELD_VALUE = '';
+
+                converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.differentSchemasEmptyValues);
+                    csv.split(options.EOL).length.should.equal(6);
+                    done();
+                }, opts);
+            });
+
             it('should throw an error if the documents do not have the same schema', function (done) {
                 converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
                     err.message.should.equal(constants.Errors.json2csv.notSameSchema);

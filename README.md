@@ -35,6 +35,7 @@ var converter = require('json-2-csv');
     * `ARRAY` - String - Array Value Delimiter. Default: `';'`
     * `WRAP` - String - Wrap values in the delimiter of choice (e.g. wrap values in quotes). Default: `''`
   * `CHECK_SCHEMA_DIFFERENCES` - Boolean - Should we require all documents to have the same schema? Default: `true`
+  * `EMPTY_FIELD_VALUE` - String - The value of an empty field which might occur when using different schemas? Default: `"null"`
   * `PREPEND_HEADER` - Boolean - Should the auto-generated header be prepended as the first line in the CSV? Default: `true`
   * `EOL` - String - End of Line Delimiter. Default: `'\n'`
   * `KEYS` - Array - Specify the keys (as strings) that should be converted. Default: `null`
