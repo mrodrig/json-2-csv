@@ -9,6 +9,7 @@ module.exports = {
     noData: require('./JSON/noData'),
     regularJson: require('./JSON/regularJson'),
     singleDoc: require('./JSON/singleDoc'),
+    singleDocWithBoolean: require('./JSON/singleDocWithBoolean'),
     sameSchemaDifferentOrdering: require('./JSON/sameSchemaDifferentOrdering'),
     differentSchemas: require('./JSON/differentSchemas')
 };

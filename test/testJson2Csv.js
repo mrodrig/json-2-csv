@@ -76,6 +76,16 @@ var json2csvTests = function () {
                 });
             });
 
+            it('should parse a single JSON document with Boolean to CSV', function (done) {
+                converter.json2csv(jsonTestData.singleDocWithBoolean, function (err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.singleDocWithBoolean);
+                    csv.split(options.EOL).length.should.equal(3);
+                    done();
+                });
+            });
+
             it('should parse an array of JSON documents to CSV', function (done) {
                 converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
                     if (err) { throw err; }
