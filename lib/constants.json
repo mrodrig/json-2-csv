@@ -27,6 +27,7 @@
     },
     "EOL" : "\n",
     "PREPEND_HEADER" : true,
+    "SORT_HEADER" : false,
     "PARSE_CSV_NUMBERS" : false,
     "KEYS" : null,
     "CHECK_SCHEMA_DIFFERENCES": true

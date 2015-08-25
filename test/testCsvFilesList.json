@@ -9,6 +9,7 @@
       {"key": "nestedQuotes", "file": "test/CSV/unQuoted/nestedQuotes.csv"},
       {"key": "noData", "file": "test/CSV/unQuoted/noData.csv"},
       {"key": "regularJson", "file": "test/CSV/unQuoted/regularJson.csv"},
+      {"key": "regularJsonSorted", "file": "test/CSV/unQuoted/regularJsonSorted.csv"},
       {"key": "singleDoc", "file": "test/CSV/unQuoted/singleDoc.csv"},
       {"key": "differentSchemas", "file": "test/CSV/unQuoted/differentSchemas.csv"}
     ]

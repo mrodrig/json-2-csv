@@ -26,6 +26,16 @@ var json2csvTests = function () {
                 });
             });
 
+            it('should convert plain JSON to CSV and sort the header', function(done) {
+                converter.json2csv(jsonTestData.regularJson, function(err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.regularJsonSorted);
+                    csv.split(options.EOL).length.should.equal(6);
+                    done();
+                }, {SORT_HEADER: true});
+            });
+
             it('should parse nested JSON to CSV - 1', function(done) {
                 converter.json2csv(jsonTestData.nestedJson, function(err, csv) {
                     if (err) { throw err; }
