@@ -1,5 +1,6 @@
 module.exports = {
     arrayValue: require('./JSON/arrayValueDocs'),
+    arrayValueDocsWithObjects: require('./JSON/arrayValueDocsWithObjects'),
     arrayValue_specificKeys: require('./JSON/arrayValueDocs_specificKeys'),
     nestedComma: require('./JSON/nestedComma'),
     nestedJson: require('./JSON/nestedJson'),
