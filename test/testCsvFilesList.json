@@ -6,6 +6,7 @@
       {"key": "arrayValue_specificKeys", "file": "test/CSV/unQuoted/arrayValueDocs_specificKeys.csv"},
       {"key": "nestedJson", "file": "test/CSV/unQuoted/nestedJson.csv"},
       {"key": "nestedJson2", "file": "test/CSV/unQuoted/nestedJson2.csv"},
+      {"key": "nestedJson3", "file": "test/CSV/unQuoted/nestedJson3.csv"},
       {"key": "nestedQuotes", "file": "test/CSV/unQuoted/nestedQuotes.csv"},
       {"key": "noData", "file": "test/CSV/unQuoted/noData.csv"},
       {"key": "regularJson", "file": "test/CSV/unQuoted/regularJson.csv"},

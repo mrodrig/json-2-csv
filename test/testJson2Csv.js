@@ -46,6 +46,16 @@ var json2csvTests = function () {
                 });
             });
 
+            it('should parse nested JSON to CSV - 3', function(done) {
+                converter.json2csv(jsonTestData.nestedJson3, function(err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.nestedJson3);
+                    csv.split(options.EOL).length.should.equal(6);
+                    done();
+                }, {CHECK_SCHEMA_DIFFERENCES: false});
+            });
+
             it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
                 converter.json2csv(jsonTestData.nestedQuotes, function(err, csv) {
                     if (err) { throw err; }
