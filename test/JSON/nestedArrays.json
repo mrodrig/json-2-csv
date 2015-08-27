@@ -1,0 +1,48 @@
+[
+    {
+        "carModel": "Audi",
+        "priceRange": {
+            "min": "9000",
+            "max": "11000"
+        },
+        "featuresA": [
+            "doors",
+            "radio",
+            {
+                "tires": [1, 2, 3, 4],
+                "wayne": [],
+                "oo": {}
+            }
+        ]
+    },
+    {
+        "carModel": "BMW",
+        "priceRange": {
+            "min": "14000",
+            "max": "16000"
+        },
+        "featuresB": [
+            ["L", "R"],
+            [10, 20],
+            []
+        ]
+    },
+    {
+        "carModel": "Mercedes",
+        "priceRange": {
+            "min": "19000",
+            "max": "21000"
+        },
+        "featuresC": [
+            [{"a":1, "b":2}],
+            []
+        ]
+    },
+    {
+        "carModel": "Porsche",
+        "priceRange": {
+            "min": "29000",
+            "max": "31000"
+        }
+    }
+]
