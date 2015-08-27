@@ -106,6 +106,16 @@ var json2csvTests = function () {
                 });
             });
 
+            it('should parse an array of JSON documents which includes arrays with objects to CSV', function (done) {
+                converter.json2csv(jsonTestData.arrayValueDocsWithObjects, function (err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.arrayValueDocsWithObjects);
+                    csv.split(options.EOL).length.should.equal(5);
+                    done();
+                });
+            });
+
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
                 converter.json2csv(jsonTestData.sameSchemaDifferentOrdering, function (err, csv) {
                     if (err) { throw err; }

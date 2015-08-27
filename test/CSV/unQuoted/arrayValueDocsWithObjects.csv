@@ -1,0 +1,4 @@
+info.name,coursesTaken,year
+Mike,[CS2500;CS2510],Sophomore
+John,[ANTH1101;POL2312;MATH2142;POL3305;LAW2100],Senior
+Joe,[{"name":"CS2500","students":100};{"name":"CS2510","students":78}],Freshman
