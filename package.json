@@ -1,41 +1,42 @@
 {
-    "author": "mrodrig",
-    "name": "json-2-csv",
-    "description": "A JSON to CSV and CSV to JSON converter that natively supports sub-documents and auto-generates the CSV heading.",
-    "version": "1.4.0",
-    "repository": {
-        "type": "git",
-    	"url": "http://github.com/mrodrig/json-2-csv.git"
-    },
-    "main": "./lib/converter.js",
-    "scripts": {
-        "test": "./node_modules/.bin/mocha test/tests.js",
-        "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -R spec"
-    },
-    "keywords": [
-        "json",
-        "csv",
-        "converter",
-        "json2csv",
-        "csv2json",
-        "json2csv-converter",
-        "csv2json-converter",
-        "json-2-csv",
-        "csv-2-json"
-    ],
-    "dependencies": {
-    	"underscore": "~1.8.3",
-        "doc-path": "~1.0.0",
-        "bluebird": "~2.9.24"
-    },
-    "devDependencies": {
-        "mocha": "~2.2.4",
-        "istanbul": "~0.3.13",
-        "should": "~5.2.0",
-        "async": "~0.9.0"
-    },
-    "engines": {
-    	"node": "*"
-    },
-    "license": "MIT"
+  "author": "mrodrig",
+  "name": "json-2-csv",
+  "description": "A JSON to CSV and CSV to JSON converter that natively supports sub-documents and auto-generates the CSV heading.",
+  "version": "1.4.0",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/mrodrig/json-2-csv.git"
+  },
+  "main": "./lib/converter.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha test/tests.js",
+    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -R spec"
+  },
+  "keywords": [
+    "json",
+    "csv",
+    "converter",
+    "json2csv",
+    "csv2json",
+    "json2csv-converter",
+    "csv2json-converter",
+    "json-2-csv",
+    "csv-2-json"
+  ],
+  "dependencies": {
+    "bluebird": "~2.9.24",
+    "doc-path": "~1.0.0",
+    "lodash.get": "^3.7.0",
+    "underscore": "~1.8.3"
+  },
+  "devDependencies": {
+    "mocha": "~2.2.4",
+    "istanbul": "~0.3.13",
+    "should": "~5.2.0",
+    "async": "~0.9.0"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "license": "MIT"
 }

@@ -1,0 +1,5 @@
+carModel,priceRange.min,priceRange.max,featuresA[0],featuresA[1],featuresA[2].tires[0],featuresA[2].tires[1],featuresA[2].tires[2],featuresA[2].tires[3],featuresA[2].wayne,featuresA[2].oo,featuresB[0][0],featuresB[0][1],featuresB[1][0],featuresB[1][1],featuresB[2],featuresC[0][0].a,featuresC[0][0].b,featuresC[1]
+Audi,9000,11000,doors,radio,1,2,3,4,[],{},null,null,null,null,null,null,null,null
+BMW,14000,16000,null,null,null,null,null,null,null,null,L,R,10,20,[],null,null,null
+Mercedes,19000,21000,null,null,null,null,null,null,null,null,null,null,null,null,null,1,2,[]
+Porsche,29000,31000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null

@@ -86,6 +86,16 @@ var json2csvTests = function () {
                 });
             });
 
+            it('should parse an array of JSON documents to CSV', function (done) {
+                converter.json2csv(jsonTestData.nestedArrays, function (err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.nestedArrays);
+                    csv.split(options.EOL).length.should.equal(6);
+                    done();
+                }, {CHECK_SCHEMA_DIFFERENCES: false, EXPAND_ARRAYS: true});
+            });
+
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
                 converter.json2csv(jsonTestData.sameSchemaDifferentOrdering, function (err, csv) {
                     if (err) { throw err; }
