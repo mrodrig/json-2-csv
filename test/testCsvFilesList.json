@@ -11,6 +11,7 @@
       {"key": "regularJson", "file": "test/CSV/unQuoted/regularJson.csv"},
       {"key": "regularJsonSorted", "file": "test/CSV/unQuoted/regularJsonSorted.csv"},
       {"key": "singleDoc", "file": "test/CSV/unQuoted/singleDoc.csv"},
+      {"key": "singleDocWithBoolean", "file": "test/CSV/unQuoted/singleDocWithBoolean.csv"},
       {"key": "differentSchemas", "file": "test/CSV/unQuoted/differentSchemas.csv"}
     ]
   },
