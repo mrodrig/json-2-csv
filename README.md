@@ -34,10 +34,8 @@ var converter = require('json-2-csv');
     * `FIELD` - String - Field Delimiter. Default: `','`
     * `ARRAY` - String - Array Value Delimiter. Default: `';'`
     * `WRAP` - String - Wrap values in the delimiter of choice (e.g. wrap values in quotes). Default: `''`
-  * `CHECK_SCHEMA_DIFFERENCES` - Boolean - Should we require all documents to have the same schema? Default: `true`
+    * `EOL` - String - End of Line Delimiter. Default: `'\n'`
   * `PREPEND_HEADER` - Boolean - Should the auto-generated header be prepended as the first line in the CSV? Default: `true`
-  * `SORT_HEADER` - Boolean - Should the auto-generated header be sorted? Default: `false`
-  * `EOL` - String - End of Line Delimiter. Default: `'\n'`
   * `KEYS` - Array - Specify the keys (as strings) that should be converted. Default: `null`
     * If you have a nested object (ie. {info : {name: 'Mike'}}), then set options.KEYS to ['info.name']
     * If you want all keys to be converted, then specify ```null``` or don't specify the option to utilize the default.
@@ -93,7 +91,7 @@ BMW,X5,2014,3287,M
     * `FIELD` - String - Field Delimiter. Default: `','`
     * `ARRAY` - String - Array Value Delimiter. Default: `';'`
     * `WRAP` - String - The character that field values are wrapped in. Default: `''`
-  * `EOL` - String - End of Line Delimiter. Default: `'\n'`
+    * `EOL` - String - End of Line Delimiter. Default: `'\n'`
   * `PARSE_CSV_NUMBERS` - Boolean - (TODO) Should numbers that are found in the CSV be converted to numbers? Default: `false`
   * `KEYS` - Array - Specify the keys (as strings) that should be converted. Default: `null`
     * If you have a nested object (ie. {info : {name: 'Mike'}}), then set options.KEYS to ['info.name']

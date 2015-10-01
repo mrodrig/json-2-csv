@@ -23,9 +23,9 @@
     "DELIMITER" : {
       "FIELD" : ",",
       "ARRAY" : ";",
-      "WRAP" : ""
+      "WRAP"  : "",
+      "EOL"   : "\n"
     },
-    "EOL" : "\n",
     "PREPEND_HEADER" : true,
     "SORT_HEADER" : false,
     "PARSE_CSV_NUMBERS" : false,
