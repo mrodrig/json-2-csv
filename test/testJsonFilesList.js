@@ -6,6 +6,7 @@ module.exports = {
     nestedJson: require('./JSON/nestedJson'),
     nestedSomeFieldsWrappedJson: require('./JSON/nestedSomeFieldsWrappedJson'),
     nestedJson2: require('./JSON/nestedJson2'),
+    nestedJson3: require('./JSON/nestedJson3'),
     nestedQuotes: require('./JSON/nestedQuotes'),
     noData: require('./JSON/noData'),
     regularJson: require('./JSON/regularJson'),

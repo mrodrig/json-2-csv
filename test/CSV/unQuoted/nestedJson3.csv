@@ -1,0 +1,5 @@
+carModel,priceRange.min,priceRange.max,priceRange
+Audi,9000,11000,{"min":"9000","max":"11000"}
+BMW,14000,16000,{"min":"14000","max":"16000"}
+Mercedes,19000,21000,{"min":"19000","max":"21000"}
+Porsche,null,null,wayne
