@@ -36,6 +36,7 @@ var converter = require('json-2-csv');
     * `WRAP` - String - Wrap values in the delimiter of choice (e.g. wrap values in quotes). Default: `''`
     * `EOL` - String - End of Line Delimiter. Default: `'\n'`
   * `PREPEND_HEADER` - Boolean - Should the auto-generated header be prepended as the first line in the CSV? Default: `true`
+  * `SORT_HEADER` - Boolean - Should the header keys be sorted in alphabetical order? Default: `false`
   * `KEYS` - Array - Specify the keys (as strings) that should be converted. Default: `null`
     * If you have a nested object (ie. {info : {name: 'Mike'}}), then set options.KEYS to ['info.name']
     * If you want all keys to be converted, then specify ```null``` or don't specify the option to utilize the default.
