@@ -762,6 +762,18 @@ var json2csvTests = function () {
                     done();
                 }, options);
             });
+            
+            it('should test the empty field value', function (done) {
+                options = {CHECK_SCHEMA_DIFFERENCES: false, EMPTY_FIELD_VALUE : ''};
+                
+                converter.json2csv(jsonTestData.differentSchemas, function(err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.differentSchemasEmptyValue);
+                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    done();
+                }, options);
+            });
         });
             
         describe('Testing other errors', function () {
