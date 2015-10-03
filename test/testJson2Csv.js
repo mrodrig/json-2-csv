@@ -700,6 +700,70 @@ var json2csvTests = function () {
             });
         });
 
+        describe('Testing other functionality', function () {
+            beforeEach(function () {
+                options = defaultOptions;
+            });
+
+            it('should sort sort the headers alphabetically', function(done) {
+                options = {SORT_HEADER : true};
+                
+                converter.json2csv(jsonTestData.regularJson, function(err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.regularJsonSorted);
+                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    done();
+                }, options);
+            });
+            
+            it('should not check for schema differences - same schema', function(done) {
+                options = {CHECK_SCHEMA_DIFFERENCES : false};
+                
+                converter.json2csv(jsonTestData.regularJson, function(err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.regularJson);
+                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    done();
+                }, options);
+            });
+            
+            it('should not check for schema differences - different schema', function(done) {
+                options = {CHECK_SCHEMA_DIFFERENCES : false};
+                
+                converter.json2csv(jsonTestData.differentSchemas, function(err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.differentSchemas);
+                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    done();
+                }, options);
+            });
+            
+            it('should not check for schema differences and sort header', function(done) {
+                options = {CHECK_SCHEMA_DIFFERENCES : false, SORT_HEADER : true};
+                
+                converter.json2csv(jsonTestData.differentSchemas, function(err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.differentSchemasSorted);
+                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    done();
+                }, options);
+            });
+            
+            it('should test the convert field branches', function (done) {
+                converter.json2csv(jsonTestData.convertFieldTestCases, function(err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.convertFieldTestCases);
+                    csv.split(options.DELIMITER.EOL).length.should.equal(4);
+                    done();
+                }, options);
+            });
+        });
+            
         describe('Testing other errors', function () {
             beforeEach(function () {
                 options = {
