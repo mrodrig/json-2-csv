@@ -12,5 +12,6 @@ module.exports = {
     singleDoc: require('./JSON/singleDoc'),
     singleDocWithBoolean: require('./JSON/singleDocWithBoolean'),
     sameSchemaDifferentOrdering: require('./JSON/sameSchemaDifferentOrdering'),
-    differentSchemas: require('./JSON/differentSchemas')
+    differentSchemas: require('./JSON/differentSchemas'),
+    convertFieldTestCases: require('./JSON/convertFieldTestCases.json')
 };

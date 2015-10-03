@@ -1,4 +1,0 @@
-- Sort headers
-- Don't check schema diffs
-- Modify to have else for not checking schema diffs; abstract out the sort commands
-- Data but no lines for csv2json
