@@ -2,8 +2,10 @@
 
 [![Build Status](https://travis-ci.org/mrodrig/json-2-csv.svg?branch=master)](https://travis-ci.org/mrodrig/json-2-csv)
 ![David - Dependency Checker Icon](https://david-dm.org/mrodrig/json-2-csv.png "json-2-csv Dependency Status")
-[![NPM version](http://img.shields.io/npm/dm/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
+[![Downloads](http://img.shields.io/npm/dm/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![NPM version](https://img.shields.io/npm/v/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
+[![bitHound Score](https://www.bithound.io/github/mrodrig/json-2-csv/badges/score.svg)](https://www.bithound.io/github/mrodrig/json-2-csv)
+[![bitHound Dependencies](https://www.bithound.io/github/mrodrig/json-2-csv/badges/dependencies.svg)](https://www.bithound.io/github/mrodrig/json-2-csv/master/dependencies/npm)
 
 This node module will convert an array of JSON documents to a CSV string.
 Column headings will be automatically generated based on the keys of the JSON documents. Nested documents will have a '.' appended between the keys.
