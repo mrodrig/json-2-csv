@@ -3,7 +3,7 @@ var should = require('should'),
     converter = require('../lib/converter'),
     constants = require('../lib/constants'),
     _ = require('underscore'),
-    Promise = require('bluebird'),
+    promise = require('bluebird'),
     defaultOptions = constants.DefaultOptions,
     jsonTestData,
     csvTestData,
@@ -524,7 +524,7 @@ var json2csvTests = function () {
                         EOL    : '\n'
                     },
                     PARSE_CSV_NUMBERS : false
-                }
+                };
             });
 
             it('should convert plain JSON to CSV', function(done) {
@@ -804,12 +804,12 @@ var json2csvTests = function () {
                     done();
                 }, options);
             });
-        })
+        });
     });
 
     describe('Testing Promisified Usage', function () {
         beforeEach(function () {
-            converter = Promise.promisifyAll(converter);
+            converter = promise.promisifyAll(converter);
         });
 
         describe('Default Options', function () {
@@ -1079,7 +1079,7 @@ var json2csvTests = function () {
             });
 
             it('should repress the heading', function (done) {
-                opts = JSON.parse(JSON.stringify(options));
+                var opts = JSON.parse(JSON.stringify(options));
                 opts.PREPEND_HEADER = false;
 
                 converter.json2csvAsync(jsonTestData.sameSchemaDifferentOrdering, opts)
@@ -1251,7 +1251,7 @@ var json2csvTests = function () {
             });
 
             it('should repress the heading', function (done) {
-                opts = JSON.parse(JSON.stringify(options));
+                var opts = JSON.parse(JSON.stringify(options));
                 opts.PREPEND_HEADER = false;
 
                 converter.json2csvAsync(jsonTestData.sameSchemaDifferentOrdering, opts)
@@ -1309,7 +1309,7 @@ var json2csvTests = function () {
                         EOL    : '\n'
                     },
                     PARSE_CSV_NUMBERS : false
-                }
+                };
             });
 
             it('should convert plain JSON to CSV', function(done) {
@@ -1435,7 +1435,7 @@ var json2csvTests = function () {
             });
 
             it('should repress the heading', function (done) {
-                opts = JSON.parse(JSON.stringify(options));
+                var opts = JSON.parse(JSON.stringify(options));
                 opts.PREPEND_HEADER = false;
 
                 converter.json2csvAsync(jsonTestData.sameSchemaDifferentOrdering, opts)
@@ -1519,7 +1519,7 @@ var json2csvTests = function () {
                         done();
                     });
             });
-        })
+        });
     });
 };
 
