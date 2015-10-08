@@ -3,7 +3,7 @@ var should = require('should'),
     converter = require('../lib/converter'),
     constants = require('../lib/constants'),
     _ = require('underscore'),
-    Promise = require('bluebird'),
+    promise = require('bluebird'),
     defaultOptions = constants.DefaultOptions,
     jsonTestData,
     csvTestData,
@@ -645,12 +645,12 @@ var csv2jsonTests = function () {
                     done();
                 }, options);
             });
-        })
+        });
     });
 
     describe('Testing Promisified Usage', function () {
         beforeEach(function () {
-            converter = Promise.promisifyAll(converter);
+            converter = promise.promisifyAll(converter);
         });
 
         describe('Default Options', function () {
@@ -1256,7 +1256,7 @@ var csv2jsonTests = function () {
                         done();
                     });
             });
-        })
+        });
     });
 };
 
