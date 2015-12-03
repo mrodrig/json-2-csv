@@ -13,5 +13,7 @@ module.exports = {
     singleDocWithBoolean: require('./JSON/singleDocWithBoolean'),
     sameSchemaDifferentOrdering: require('./JSON/sameSchemaDifferentOrdering'),
     differentSchemas: require('./JSON/differentSchemas'),
-    convertFieldTestCases: require('./JSON/convertFieldTestCases.json')
+    convertFieldTestCases: require('./JSON/convertFieldTestCases.json'),
+    trimmed: require('./JSON/trimmed.json'),
+    needsTrimming: require('./JSON/needsTrimming.json')
 };

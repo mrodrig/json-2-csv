@@ -625,6 +625,28 @@ var csv2jsonTests = function () {
                 }, options);
             });
         });
+        
+        describe('Testing other features', function () {
+            it('should trim the headers and the fields - 1', function (done) {
+                converter.csv2json(csvTestData.unQuoted.needsTrimming, function (err, json) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    var isEqual = _.isEqual(json, jsonTestData.trimmed);
+                    true.should.equal(isEqual);
+                    done();
+                }, {TRIM_HEADER_FIELDS: true, TRIM_FIELD_VALUES: true});
+            });
+            
+            it('should trim the headers and the fields - 2', function (done) {
+                converter.csv2json(csvTestData.unQuoted.trimmed, function (err, json) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    var isEqual = _.isEqual(json, jsonTestData.trimmed);
+                    true.should.equal(isEqual);
+                    done();
+                }, {TRIM_HEADER_FIELDS: true, TRIM_FIELD_VALUES: true});
+            });
+        });
 
         describe('Testing other errors', function () {
             beforeEach(function () {

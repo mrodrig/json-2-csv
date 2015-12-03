@@ -39,6 +39,8 @@ var converter = require('json-2-csv');
   * `PREPEND_HEADER` - Boolean - Should the auto-generated header be prepended as the first line in the CSV? Default: `true`
   * `SORT_HEADER` - Boolean - Should the header keys be sorted in alphabetical order? Default: `false`
   * `EMPTY_FIELD_VALUE` - String - Value for fields without data when not checking schemas. Default: `'null'`
+  * `TRIM_HEADER_FIELDS` - Boolean - Should the header fields be trimmed? Default: `false`
+  * `TRIM_FIELD_VALUES` - Boolean - Should the field values be trimmed? Default: `false`
   * `KEYS` - Array - Specify the keys (as strings) that should be converted. Default: `null`
     * If you have a nested object (ie. {info : {name: 'Mike'}}), then set options.KEYS to ['info.name']
     * If you want all keys to be converted, then specify ```null``` or don't specify the option to utilize the default.
@@ -96,6 +98,8 @@ BMW,X5,2014,3287,M
     * `WRAP` - String - The character that field values are wrapped in. Default: `''`
     * `EOL` - String - End of Line Delimiter. Default: `'\n'`
   * `PARSE_CSV_NUMBERS` - Boolean - (TODO) Should numbers that are found in the CSV be converted to numbers? Default: `false`
+  * `TRIM_HEADER_FIELDS` - Boolean - Should the header fields be trimmed? Default: `false`
+  * `TRIM_FIELD_VALUES` - Boolean - Should the field values be trimmed? Default: `false`
   * `KEYS` - Array - Specify the keys (as strings) that should be converted. Default: `null`
     * If you have a nested object (ie. {info : {name: 'Mike'}}), then set options.KEYS to ['info.name']
     * If you want all keys to be converted, then specify `null` or don't specify the option to utilize the default.

@@ -774,6 +774,26 @@ var json2csvTests = function () {
                     done();
                 }, options);
             });
+            
+            it('should trim the headers and fields - 1', function (done) {
+                converter.json2csv(jsonTestData.needsTrimming, function(err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.trimmed);
+                    csv.split(options.DELIMITER.EOL).length.should.equal(3);
+                    done();
+                }, {TRIM_HEADER_FIELDS: true, TRIM_FIELD_VALUES: true});
+            });
+            
+            it('should trim the headers and fields - 2', function (done) {
+                converter.json2csv(jsonTestData.trimmed, function(err, csv) {
+                    if (err) { throw err; }
+                    true.should.equal(_.isEqual(err, null));
+                    csv.should.equal(csvTestData.unQuoted.trimmed);
+                    csv.split(options.DELIMITER.EOL).length.should.equal(3);
+                    done();
+                }, {TRIM_HEADER_FIELDS: true, TRIM_FIELD_VALUES: true});
+            });
         });
             
         describe('Testing other errors', function () {

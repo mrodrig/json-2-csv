@@ -27,6 +27,8 @@
       "EOL"   : "\n"
     },
     "PREPEND_HEADER" : true,
+    "TRIM_HEADER_FIELDS": false,
+    "TRIM_FIELD_VALUES" : false,
     "SORT_HEADER" : false,
     "PARSE_CSV_NUMBERS" : false,
     "KEYS" : null,

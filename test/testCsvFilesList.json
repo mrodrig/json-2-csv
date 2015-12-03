@@ -16,7 +16,9 @@
       {"key": "differentSchemas", "file": "test/CSV/unQuoted/differentSchemas.csv"},
       {"key": "differentSchemasSorted", "file": "test/CSV/unQuoted/differentSchemasSorted.csv"},
       {"key": "differentSchemasEmptyValue", "file": "test/CSV/unQuoted/differentSchemasEmptyValue.csv"},
-      {"key": "convertFieldTestCases", "file": "test/CSV/unQuoted/convertFieldTestCases.csv"}
+      {"key": "convertFieldTestCases", "file": "test/CSV/unQuoted/convertFieldTestCases.csv"},
+      {"key": "trimmed", "file": "test/CSV/unQuoted/trimmed.csv"},
+      {"key": "needsTrimming", "file": "test/CSV/unQuoted/needsTrimming.csv"}
     ]
   },
   {
