@@ -106,8 +106,10 @@ Functions    : 100% ( 33/33 )
 Lines        : 97.63% ( 165/169 )
 ```
 
-## Features
+## Frequently Asked Questions (FAQ)
+Please find the updated list (relocated to the Wiki) here: [Frequently Asked Questions (Link)](https://github.com/mrodrig/json-2-csv/wiki/FAQ)
 
+## Features
 - Header Generation (per document keys)
 - Allows for conversion of specific keys in both json2csv and csv2json via the options.KEYS parameter (as of 1.1.2)
 - Verifies all documents have same schema (schema field order does not matter as of 1.1.0)
@@ -119,63 +121,6 @@ Lines        : 97.63% ( 165/169 )
 - Promisifiable via bluebird's .promisify(<function>) and .promisifyAll(<object>) (as of 1.1.1)
 - Wrapped value support for json2csv and csv2json (as of 1.3.0)
 - Support for multiple different schemas (as of 1.4.0)
-
-## F.A.Q.
-
-- Can the order of the keys be changed in the output?
-__Yes.__ Currently, changing the order of the keys in the JSON document will also change the order of the columns. (Tested on Node 10.xx)
-
-- Can I specify the keys that I would like to have converted to CSV or JSON?
-__Yes.__ This is currently supported for both json2csv and csv2json.  Specify the keys in options.KEYS. For example,
-
-```javascript
-var converter = require('json-2-csv');
-
-var options = {
-    KEYS : ['info.name', 'year']
-};
-
-var documents = [
-    {
-        "info": {
-            "name": "Mike"
-        },
-        "coursesTaken": ["CS2500", "CS2510"],
-        "year": "Sophomore"
-    },
-    {
-        "info": {
-            "name": "John"
-        },
-        "coursesTaken": ["ANTH1101", "POL2312", "MATH2142", "POL3305", "LAW2100"],
-        "year": "Senior"
-    },
-    {
-        "info": {
-                    "name": "Joe"
-        },
-        "coursesTaken": [],
-        "year": "Freshman"
-    }
-];
-
-converter.json2csv(documents, function (err, csv) {
-    if (!err) {
-        return console.log(csv);
-    }
-    throw err;
-}, options);
-```
-
-This prints out:
-
-```csv
-info.name,year
-Mike,Sophomore
-John,Senior
-Joe,Freshman
-
-```
 
 ## Milestones
  - Created: Apr 23, 2014
