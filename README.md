@@ -26,66 +26,9 @@ var converter = require('json-2-csv');
 
 ### API
 
-#### json2csv(array, callback, options)
+#### json2csv Documentation (Wiki)
 
-* `array` - An array of JSON documents to be converted to CSV.
-* `callback` - A function of the form `function (err, csv)`; This function will receive any errors and/or the string of CSV generated.
-* `options` - (Optional) A JSON document specifying any of {`DELIMITER`, `EOL`, `PARSE_CSV_NUMBERS`}
-  * `DELIMITER` - Document - Specifies the different types of delimiters
-    * `FIELD` - String - Field Delimiter. Default: `','`
-    * `ARRAY` - String - Array Value Delimiter. Default: `';'`
-    * `WRAP` - String - Wrap values in the delimiter of choice (e.g. wrap values in quotes). Default: `''`
-    * `EOL` - String - End of Line Delimiter. Default: `'\n'`
-  * `PREPEND_HEADER` - Boolean - Should the auto-generated header be prepended as the first line in the CSV? Default: `true`
-  * `SORT_HEADER` - Boolean - Should the header keys be sorted in alphabetical order? Default: `false`
-  * `EMPTY_FIELD_VALUE` - String - Value for fields without data when not checking schemas. Default: `'null'`
-  * `TRIM_HEADER_FIELDS` - Boolean - Should the header fields be trimmed? Default: `false`
-  * `TRIM_FIELD_VALUES` - Boolean - Should the field values be trimmed? Default: `false`
-  * `KEYS` - Array - Specify the keys (as strings) that should be converted. Default: `null`
-    * If you have a nested object (ie. {info : {name: 'Mike'}}), then set options.KEYS to ['info.name']
-    * If you want all keys to be converted, then specify ```null``` or don't specify the option to utilize the default.
-
-##### json2csv Example:
-
-```javascript
-var converter = require('json-2-csv');
-
-var documents = [
-    {
-        Make: 'Nissan',
-        Model: 'Murano',
-        Year: '2013',
-        Specifications: {
-            Mileage: '7106',
-            Trim: 'S AWD'
-        }
-    },
-    {
-        Make: 'BMW',
-        Model: 'X5',
-        Year: '2014',
-        Specifications: {
-            Mileage: '3287',
-            Trim: 'M'
-        }
-    }
-];
-
-var json2csvCallback = function (err, csv) {
-    if (err) throw err;
-    console.log(csv);
-};
-
-converter.json2csv(documents, json2csvCallback);
-```
-
-The above code prints out:
-
-```csv
-Make,Model,Year,Specifications.Mileage,Specifications.Trim
-Nissan,Murano,2013,7106,S AWD
-BMW,X5,2014,3287,M
-```
+[API Documentation Link](https://github.com/mrodrig/json-2-csv/wiki/json2csv-Documentation)
 
 #### csv2json(csv, callback, options)
 
