@@ -28,58 +28,11 @@ var converter = require('json-2-csv');
 
 #### json2csv Documentation (Wiki)
 
-[API Documentation Link](https://github.com/mrodrig/json-2-csv/wiki/json2csv-Documentation)
+[json2csv API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/json2csv-Documentation)
 
 #### csv2json(csv, callback, options)
 
-* `csv` - A string of CSV
-* `callback` - A function of the form `function (err, array)`; This function will receive any errors and/or the array of JSON documents generated.
-* `options` - (Optional) A JSON document specifying any of {`DELIMITER`, `EOL`, `PARSE_CSV_NUMBERS`}
-  * `DELIMITER` - Document - Specifies the different types of delimiters
-    * `FIELD` - String - Field Delimiter. Default: `','`
-    * `ARRAY` - String - Array Value Delimiter. Default: `';'`
-    * `WRAP` - String - The character that field values are wrapped in. Default: `''`
-    * `EOL` - String - End of Line Delimiter. Default: `'\n'`
-  * `PARSE_CSV_NUMBERS` - Boolean - (TODO) Should numbers that are found in the CSV be converted to numbers? Default: `false`
-  * `TRIM_HEADER_FIELDS` - Boolean - Should the header fields be trimmed? Default: `false`
-  * `TRIM_FIELD_VALUES` - Boolean - Should the field values be trimmed? Default: `false`
-  * `KEYS` - Array - Specify the keys (as strings) that should be converted. Default: `null`
-    * If you have a nested object (ie. {info : {name: 'Mike'}}), then set options.KEYS to ['info.name']
-    * If you want all keys to be converted, then specify `null` or don't specify the option to utilize the default.
-
-##### csv2json Example:
-
-```javascript
-var converter = require('json-2-csv');
-
-var csv = "Make,Model,Year,Specifications.Mileage,Specifications.Trim\n" +
-          "Nissan,Murano,2013,7106,S AWD\n" +
-          "BMW,X5,2014,3287,M\n";
-
-var csv2jsonCallback = function (err, json) {
-    if (err) throw err;
-    console.log(typeof json);
-    console.log(json.length);
-    console.log(json);
-}
-
-converter.csv2json(csv, csv2jsonCallback);
-```
-
-The above code prints out:
-
-```text
-object
-2
-[ { Make: 'Nissan',
-    Model: 'Murano',
-    Year: '2013',
-    Specifications: { Mileage: '7106', Trim: 'S AWD' } },
-  { Make: 'BMW',
-    Model: 'X5',
-    Year: '2014',
-    Specifications: { Mileage: '3287', Trim: 'M' } } ]
-```
+[csv2json API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/csv2json-Documentation)
 
 ## Tests
 
