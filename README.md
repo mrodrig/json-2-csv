@@ -110,18 +110,14 @@ Lines        : 97.63% ( 165/169 )
 Please find the updated list (relocated to the Wiki) here: [Frequently Asked Questions (Link)](https://github.com/mrodrig/json-2-csv/wiki/FAQ)
 
 ## Features
-- Header Generation (per document keys)
-- Allows for conversion of specific keys in both json2csv and csv2json via the options.KEYS parameter (as of 1.1.2)
-- Verifies all documents have same schema (schema field order does not matter as of 1.1.0)
-- Supports sub-documents natively
-- Supports arrays as document values for both json2csv and csv2json
-- Custom ordering of columns (see F.A.Q. for more information)
-- Ability to re-generate the JSON documents that were used to generate the CSV (including nested documents)
-- Allows for custom field delimiters, end of line delimiters, etc.
-- Promisifiable via bluebird's .promisify(<function>) and .promisifyAll(<object>) (as of 1.1.1)
-- Wrapped value support for json2csv and csv2json (as of 1.3.0)
-- Support for multiple different schemas (as of 1.4.0)
-
-## Milestones
- - Created: Apr 23, 2014
- - 1K Downloads/Month: January 15, 2015
+* Header Generation (per document keys)
+* Allows for conversion of specific keys in both json2csv and csv2json via the options.KEYS parameter (as of 1.1.2)
+* Verifies all documents have same schema (schema field order does not matter as of 1.1.0)
+* Supports sub-documents natively
+* Supports arrays as document values for both json2csv and csv2json
+* Custom ordering of columns (see F.A.Q. for more information)
+* Ability to re-generate the JSON documents that were used to generate the CSV (including nested documents)
+* Allows for custom field delimiters, end of line delimiters, etc.
+* Promisifiable via bluebird's .promisify(<function>) and .promisifyAll(<object>) (as of 1.1.1)
+* Wrapped value support for json2csv and csv2json (as of 1.3.0)
+* Support for multiple different schemas (as of 1.4.0)
