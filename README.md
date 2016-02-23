@@ -51,6 +51,9 @@ var converter = require('json-2-csv');
     * Default: `false`
   * `TRIM_FIELD_VALUES` - Boolean - Should the field values be trimmed? 
     * Default: `false`
+  * `CHECK_SCHEMA_DIFFERENCES` - Boolean - Should all documents have the same schema?
+    * Default: `true`
+    * Note: Change this to `false` if some documents are missing certain fields and you still want to convert the data.
   * `KEYS` - Array - Specify the keys (as strings) that should be converted. 
     * Default: `null`
     * If you have a nested object (ie. {info : {name: 'Mike'}}), then set options.KEYS to ['info.name']
