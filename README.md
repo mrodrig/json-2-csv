@@ -26,65 +26,71 @@ var converter = require('json-2-csv');
 
 ### API
 
-#### json2csv Documentation (Wiki)
+#### json2csv Documentation
+
+```javascript
+json2csv(array, callback, options)
+```
 
 * `array` - An array of JSON documents to be converted to CSV.
-* `callback` - A function of the form `function (err, csv)`
+* `callback` - A function of the form `function (err, csv)`; 
   * This function will receive any errors and/or the string of CSV generated.
 * `options` - (Optional) A JSON document specifying any of the following key value pairs:
-  * `DELIMITER` - Document - Specifies the different types of delimiters
-    * `FIELD` - String - Field Delimiter. 
+  * `delimiter` - Document - Specifies the different types of delimiters
+    * `field` - String - Field Delimiter. 
       * Default: `','`
-    * `ARRAY` - String - Array Value Delimiter. 
+    * `array` - String - Array Value Delimiter. 
       * Default: `';'`
-    * `WRAP` - String - Wrap values in the delimiter of choice (e.g. wrap values in quotes). 
+    * `wrap` - String - Wrap values in the delimiter of choice (e.g. wrap values in quotes). 
       * Default: `''`
-    * `EOL` - String - End of Line Delimiter. 
+    * `eol` - String - End of Line Delimiter. 
       * Default: `'\n'`
-  * `PREPEND_HEADER` - Boolean - Should the auto-generated header be prepended as the first line in the CSV?
+  * `prependHeader` - Boolean - Should the auto-generated header be prepended as the first line in the CSV?
     * Default: `true`
-  * `SORT_HEADER` - Boolean - Should the header keys be sorted in alphabetical order? 
+  * `sortHeader` - Boolean - Should the header keys be sorted in alphabetical order? 
     * Default: `false`
-  * `EMPTY_FIELD_VALUE` - String - Value for fields without data _when not checking schemas_.
+  * `emptyFieldValue` - String - Value for fields without data _when not checking schemas_.
     * Default: `'null'`
-  * `TRIM_HEADER_FIELDS` - Boolean - Should the header fields be trimmed? 
+  * `trimHeaderFields` - Boolean - Should the header fields be trimmed? 
     * Default: `false`
-  * `TRIM_FIELD_VALUES` - Boolean - Should the field values be trimmed? 
+  * `trimFieldValues` - Boolean - Should the field values be trimmed? 
     * Default: `false`
-  * `CHECK_SCHEMA_DIFFERENCES` - Boolean - Should all documents have the same schema?
+  * `checkSchemaDifferences` - Boolean - Should all documents have the same schema?
     * Default: `true`
     * Note: Change this to `false` if some documents are missing certain fields and you still want to convert the data.
-  * `KEYS` - Array - Specify the keys (as strings) that should be converted. 
+  * `keys` - Array - Specify the keys (as strings) that should be converted. 
     * Default: `null`
-    * If you have a nested object (ie. {info : {name: 'Mike'}}), then set options.KEYS to ['info.name']
+    * If you have a nested object (ie. {info : {name: 'Mike'}}), then set this to ['info.name']
     * If you want all keys to be converted, then specify ```null``` or don't specify the option to utilize the default.
 
 For examples, please refer to the [json2csv API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/json2csv-Documentation)
 
-#### csv2json(csv, callback, options)
+#### csv2json Documentation
+
+```javascript
+csv2json(csv, callback, options)
+```
 
 * `csv` - A string of CSV
-* `callback` - A function of the form `function (err, array)`
-  * This function will receive any errors and/or the array of JSON documents generated.
+* `callback` - A function of the form `function (err, array)`; This function will receive any errors and/or the array of JSON documents generated.
 * `options` - (Optional) A JSON document specifying any of the following key value pairs:
-  * `DELIMITER` - Document - Specifies the different types of delimiters
-    * `FIELD` - String - Field Delimiter. 
+  * `delimiter` - Document - Specifies the different types of delimiters
+    * `field` - String - Field Delimiter. 
       * Default: `','`
-    * `ARRAY` - String - Array Value Delimiter. 
+    * `array` - String - Array Value Delimiter. 
       * Default: `';'`
-    * `WRAP` - String - The character that field values are wrapped in. 
+    * `wrap` - String - The character that field values are wrapped in. 
       * Default: `''`
-    * `EOL` - String - End of Line Delimiter. 
+    * `eol` - String - End of Line Delimiter. 
       * Default: `'\n'`
-  * `TRIM_HEADER_FIELDS` - Boolean - Should the header fields be trimmed? 
+  * `trimHeaderValues` - Boolean - Should the header fields be trimmed? 
     * Default: `false`
-  * `TRIM_FIELD_VALUES` - Boolean - Should the field values be trimmed? 
+  * `trimFieldValues` - Boolean - Should the field values be trimmed? 
     * Default: `false`
-  * `KEYS` - Array - Specify the keys (as strings) that should be converted. 
+  * `keys` - Array - Specify the keys (as strings) that should be converted. 
     * Default: `null`
-    * If you have a nested object (ie. {info : {name: 'Mike'}}), then set options.KEYS to ['info.name']
+    * If you have a nested object (ie. `{info : {name: 'Mike'}}`), then set this to `['info.name']`
     * If you want all keys to be converted, then specify `null` or don't specify the option to utilize the default.
-[//]: # (  * `PARSE_CSV_NUMBERS` - Boolean - (TODO - Not Yet Implemented) Should numbers that are found in the CSV be converted to numbers? Default: `false`)
 
 For examples, please refer to the [csv2json API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/csv2json-Documentation)
 
