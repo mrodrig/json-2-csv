@@ -33,7 +33,6 @@
     "PARSE_CSV_NUMBERS" : false,
     "KEYS" : null,
     "CHECK_SCHEMA_DIFFERENCES": true,
-    "EMPTY_FIELD_VALUE": "null",
-    "LOCALE": "en-US"
+    "EMPTY_FIELD_VALUE": "null"
   }
 }
