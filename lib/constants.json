@@ -23,7 +23,7 @@
     "DELIMITER" : {
       "FIELD" : ",",
       "ARRAY" : ";",
-      "WRAP"  : "",
+      "WRAP"  : "\"",
       "EOL"   : "\n"
     },
     "PREPEND_HEADER" : true,

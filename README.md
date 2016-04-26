@@ -42,7 +42,7 @@ json2csv(array, callback, options)
     * `array` - String - Array Value Delimiter. 
       * Default: `';'`
     * `wrap` - String - Wrap values in the delimiter of choice (e.g. wrap values in quotes). 
-      * Default: `''`
+      * Default: `'"'`
     * `eol` - String - End of Line Delimiter. 
       * Default: `'\n'`
   * `prependHeader` - Boolean - Should the auto-generated header be prepended as the first line in the CSV?
@@ -80,7 +80,7 @@ csv2json(csv, callback, options)
     * `array` - String - Array Value Delimiter. 
       * Default: `';'`
     * `wrap` - String - The character that field values are wrapped in. 
-      * Default: `''`
+      * Default: `'"'`
     * `eol` - String - End of Line Delimiter. 
       * Default: `'\n'`
   * `trimHeaderValues` - Boolean - Should the header fields be trimmed? 
