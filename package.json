@@ -24,15 +24,15 @@
         "csv-2-json"
     ],
     "dependencies": {
-        "underscore": "~1.8.3",
-        "doc-path": "~1.0.7",
-        "bluebird": "~3.1.1"
+        "underscore": "~1.8.x",
+        "doc-path": "~1.0.x",
+        "bluebird": "~3.3.x"
     },
     "devDependencies": {
-        "mocha": "~2.3.4",
-        "istanbul": "~0.4.1",
-        "should": "~8.0.1",
-        "async": "~1.5.0"
+        "mocha": "~2.4.x",
+        "istanbul": "~0.4.x",
+        "should": "~8.2.x",
+        "async": "~1.5.x"
     },
     "engines": {
         "node": "*"
