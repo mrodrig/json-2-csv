@@ -31,7 +31,7 @@
     "devDependencies": {
         "mocha": "~2.4.x",
         "istanbul": "~0.4.x",
-        "should": "~8.2.x",
+        "should": "~8.3.x",
         "async": "~1.5.x"
     },
     "engines": {
