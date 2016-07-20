@@ -1,5 +1,7 @@
 # Convert JSON to CSV or CSV to JSON
 
+[![Join the chat at https://gitter.im/mrodrig/json-2-csv](https://badges.gitter.im/mrodrig/json-2-csv.svg)](https://gitter.im/mrodrig/json-2-csv?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/mrodrig/json-2-csv.svg?branch=master)](https://travis-ci.org/mrodrig/json-2-csv)
 [![bitHound Dependencies](https://www.bithound.io/github/mrodrig/json-2-csv/badges/dependencies.svg)](https://www.bithound.io/github/mrodrig/json-2-csv/master/dependencies/npm)
 [![Downloads](http://img.shields.io/npm/dm/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
