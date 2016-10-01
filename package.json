@@ -2,7 +2,7 @@
     "author": "mrodrig",
     "name": "json-2-csv",
     "description": "A JSON to CSV and CSV to JSON converter that natively supports sub-documents and auto-generates the CSV heading.",
-    "version": "2.0.22",
+    "version": "2.0.23",
     "repository": {
         "type": "git",
         "url": "http://github.com/mrodrig/json-2-csv.git"
