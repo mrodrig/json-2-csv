@@ -53,7 +53,7 @@ json2csv(array, callback, options)
     * Default: `'null'`
   * `trimHeaderFields` - Boolean - Should the header fields be trimmed? 
     * Default: `false`
-  * `trimFieldValues` - Boolean - Should the field values be trimmed? 
+  * `trimFieldValues` - Boolean - Should the field values be trimmed? (*in development*)
     * Default: `false`
   * `checkSchemaDifferences` - Boolean - Should all documents have the same schema?
     * Default: `true`
@@ -83,7 +83,7 @@ csv2json(csv, callback, options)
       * Default: `''`
     * `eol` - String - End of Line Delimiter. 
       * Default: `'\n'`
-  * `trimHeaderValues` - Boolean - Should the header fields be trimmed? 
+  * `trimHeaderFields` - Boolean - Should the header fields be trimmed? 
     * Default: `false`
   * `trimFieldValues` - Boolean - Should the field values be trimmed? 
     * Default: `false`
