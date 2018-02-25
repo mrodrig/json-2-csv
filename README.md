@@ -26,11 +26,7 @@ var converter = require('json-2-csv');
 
 ### API
 
-#### json2csv Documentation
-
-```javascript
-json2csv(array, callback, options)
-```
+#### json2csv(array, callback, options)
 
 * `array` - An array of JSON documents to be converted to CSV.
 * `callback` - A function of the form `function (err, csv)`; 
@@ -65,11 +61,11 @@ json2csv(array, callback, options)
 
 For examples, please refer to the [json2csv API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/json2csv-Documentation)
 
-#### csv2json Documentation
+#### Promisified Version: json2csvPromisified(array, options).then(...).catch(...);
 
-```javascript
-csv2json(csv, callback, options)
-```
+Available in version `2.2.0`, this functionality makes use of promises from the `bluebird` module.
+
+#### csv2json(csv, callback, options)
 
 * `csv` - A string of CSV
 * `callback` - A function of the form `function (err, array)`; This function will receive any errors and/or the array of JSON documents generated.
@@ -93,6 +89,10 @@ csv2json(csv, callback, options)
     * If you want all keys to be converted, then specify `null` or don't specify the option to utilize the default.
 
 For examples, please refer to the [csv2json API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/csv2json-Documentation)
+
+#### Promisified Version: csv2jsonPromisified(csv, options).then(...).catch(...);
+
+Available in version `2.2.0`, this functionality makes use of promises from the `bluebird` module.
 
 ## Tests
 
@@ -130,3 +130,4 @@ Please find the updated list (relocated to the Wiki) here: [Frequently Asked Que
 * Promisifiable via bluebird's .promisify(<function>) and .promisifyAll(<object>) (as of 1.1.1)
 * Wrapped value support for json2csv and csv2json (as of 1.3.0)
 * Support for multiple different schemas (as of 1.4.0)
+* Promisified versions of the functions are now available by default: json2csvPromisified, csv2jsonPromisified (as of 2.2.0)
