@@ -51,7 +51,7 @@ var json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.nestedQuotes);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(4);
+                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
                     done();
                 });
             });
@@ -210,7 +210,7 @@ var json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.nestedQuotes);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(4);
+                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
                     done();
                 }, options);
             });
@@ -385,7 +385,7 @@ var json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.nestedQuotes.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(4);
+                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
                     done();
                 }, options);
             });
@@ -562,7 +562,7 @@ var json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.quoted.nestedQuotes.replace(/,/g, options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(4);
+                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
                     done();
                 }, options);
             });
@@ -882,7 +882,7 @@ var json2csvTests = function () {
                 converter.json2csvPromisified(jsonTestData.nestedQuotes)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.nestedQuotes);
-                        csv.split(options.DELIMITER.EOL).length.should.equal(4);
+                        csv.split(options.DELIMITER.EOL).length.should.equal(5);
                         done();
                     })
                     .catch(function (err) {
@@ -1024,7 +1024,7 @@ var json2csvTests = function () {
                 converter.json2csvPromisified(jsonTestData.nestedQuotes, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.nestedQuotes);
-                        csv.split(options.DELIMITER.EOL).length.should.equal(4);
+                        csv.split(options.DELIMITER.EOL).length.should.equal(5);
                         done();
                     })
                     .catch(function (err) {
@@ -1195,7 +1195,7 @@ var json2csvTests = function () {
                 converter.json2csvPromisified(jsonTestData.nestedQuotes, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.nestedQuotes.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(4);
+                        csv.split(options.DELIMITER.EOL).length.should.equal(5);
                         done();
                     })
                     .catch(function (err) {
@@ -1368,7 +1368,7 @@ var json2csvTests = function () {
                 converter.json2csvPromisified(jsonTestData.nestedQuotes, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.quoted.nestedQuotes.replace(/,/g, options.DELIMITER.FIELD));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(4);
+                        csv.split(options.DELIMITER.EOL).length.should.equal(5);
                         done();
                     })
                     .catch(function (err) {
