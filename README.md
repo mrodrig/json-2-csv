@@ -109,10 +109,10 @@ $ npm run coverage
 
 Current Coverage is:
 ```
-Statements   : 94.84% ( 202/213 )
+Statements   : 94.91% ( 205/216 )
 Branches     : 93.33% ( 154/165 )
 Functions    : 100% ( 37/37 )
-Lines        : 95.52% ( 192/201 )
+Lines        : 95.59% ( 195/204 )
 ```
 
 ## Frequently Asked Questions (FAQ)
@@ -131,3 +131,4 @@ Please find the updated list (relocated to the Wiki) here: [Frequently Asked Que
 * Wrapped value support for json2csv and csv2json (as of 1.3.0)
 * Support for multiple different schemas (as of 1.4.0)
 * Promisified versions of the functions are now available by default: json2csvPromisified, csv2jsonPromisified (as of 2.2.0)
+* Nested quotes are escaped with an additional quote (per [RFC 4180](https://tools.ietf.org/html/rfc4180)) thanks to @eric-thelin (as of 2.3.0)
