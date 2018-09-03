@@ -38,7 +38,7 @@ var converter = require('json-2-csv');
     * `array` - String - Array Value Delimiter. 
       * Default: `';'`
     * `wrap` - String - Wrap values in the delimiter of choice (e.g. wrap values in quotes). 
-      * Default: `''`
+      * Default: `'"'`
     * `eol` - String - End of Line Delimiter. 
       * Default: `'\n'`
   * `prependHeader` - Boolean - Should the auto-generated header be prepended as the first line in the CSV?
@@ -76,7 +76,7 @@ Available in version `2.2.0`, this functionality makes use of promises from the 
     * `array` - String - Array Value Delimiter. 
       * Default: `';'`
     * `wrap` - String - The character that field values are wrapped in. 
-      * Default: `''`
+      * Default: `'"'`
     * `eol` - String - End of Line Delimiter. 
       * Default: `'\n'`
   * `trimHeaderFields` - Boolean - Should the header fields be trimmed? 
