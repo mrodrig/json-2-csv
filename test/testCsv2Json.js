@@ -328,7 +328,7 @@ var csv2jsonTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.nestedQuotes.replace(/,/g, options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(4);
+                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
                     done();
                 }, options);
             });
