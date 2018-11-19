@@ -1,7 +1,7 @@
-var should = require('should'),
+let should = require('should'),
     assert = require('assert'),
-    converter = require('../lib/converter'),
-    constants = require('../lib/constants'),
+    converter = require('../src/converter'),
+    constants = require('../src/constants'),
     _ = require('underscore'),
     promise = require('bluebird'),
     defaultOptions = constants.DefaultOptions,
@@ -9,7 +9,7 @@ var should = require('should'),
     csvTestData,
     options;
 
-var csv2jsonTests = function () {
+let csv2jsonTests = function () {
     describe('Testing Default Usage', function () {
         describe('Default Options', function () {
             beforeEach(function () {
@@ -20,7 +20,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.unQuoted.regularJson, function(err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.regularJson);
+                    let isEqual = _.isEqual(json, jsonTestData.regularJson);
                     true.should.equal(isEqual);
                     done();
                 });
@@ -30,7 +30,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.unQuoted.nestedJson, function(err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.nestedJson);
+                    let isEqual = _.isEqual(json, jsonTestData.nestedJson);
                     true.should.equal(isEqual);
                     done();
                 });
@@ -40,7 +40,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.unQuoted.nestedJson2, function(err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.nestedJson2);
+                    let isEqual = _.isEqual(json, jsonTestData.nestedJson2);
                     true.should.equal(isEqual);
                     done();
                 });
@@ -50,7 +50,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.unQuoted.nestedQuotes, function(err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.nestedQuotes);
+                    let isEqual = _.isEqual(json, jsonTestData.nestedQuotes);
                     true.should.equal(isEqual);
                     done();
                 });
@@ -60,7 +60,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.unQuoted.noData, function(err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.noData);
+                    let isEqual = _.isEqual(json, jsonTestData.noData);
                     true.should.equal(isEqual);
                     done();
                 });
@@ -70,7 +70,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.unQuoted.singleDoc, function (err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, [jsonTestData.singleDoc]);
+                    let isEqual = _.isEqual(json, [jsonTestData.singleDoc]);
                     true.should.equal(isEqual);
                     done();
                 });
@@ -80,7 +80,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.unQuoted.arrayValue, function (err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.arrayValue);
+                    let isEqual = _.isEqual(json, jsonTestData.arrayValue);
                     true.should.equal(isEqual);
                     done();
                 });
@@ -153,7 +153,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.unQuoted.regularJson, function(err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.regularJson);
+                    let isEqual = _.isEqual(json, jsonTestData.regularJson);
                     true.should.equal(isEqual);
                     done();
                 }, options);
@@ -163,7 +163,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.unQuoted.nestedJson, function(err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.nestedJson);
+                    let isEqual = _.isEqual(json, jsonTestData.nestedJson);
                     true.should.equal(isEqual);
                     done();
                 }, options);
@@ -173,7 +173,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.unQuoted.nestedJson2, function(err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.nestedJson2);
+                    let isEqual = _.isEqual(json, jsonTestData.nestedJson2);
                     true.should.equal(isEqual);
                     done();
                 }, options);
@@ -183,7 +183,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.unQuoted.nestedQuotes, function(err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.nestedQuotes);
+                    let isEqual = _.isEqual(json, jsonTestData.nestedQuotes);
                     true.should.equal(isEqual);
                     done();
                 }, options);
@@ -193,7 +193,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.unQuoted.noData, function(err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.noData);
+                    let isEqual = _.isEqual(json, jsonTestData.noData);
                     true.should.equal(isEqual);
                     done();
                 }, options);
@@ -203,7 +203,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.unQuoted.singleDoc, function (err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, [jsonTestData.singleDoc]);
+                    let isEqual = _.isEqual(json, [jsonTestData.singleDoc]);
                     true.should.equal(isEqual);
                     done();
                 }, options);
@@ -213,18 +213,18 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.unQuoted.arrayValue.replace(/;/g, options.DELIMITER.ARRAY), function (err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.arrayValue);
+                    let isEqual = _.isEqual(json, jsonTestData.arrayValue);
                     true.should.equal(isEqual);
                     done();
                 }, options);
             });
 
             it('should parse the specified keys to JSON', function (done) {
-                var opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS : ['info.name', 'year']});
+                let opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS : ['info.name', 'year']});
                 converter.csv2json(csvTestData.unQuoted.arrayValue.replace(/,/g, options.DELIMITER.FIELD), function (err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.arrayValue_specificKeys);
+                    let isEqual = _.isEqual(json, jsonTestData.arrayValue_specificKeys);
                     true.should.equal(isEqual);
                     done();
                 }, opts);
@@ -365,7 +365,7 @@ var csv2jsonTests = function () {
 
             it('should parse the specified keys to CSV', function (done) {
                 // Create a copy so we don't modify the actual options object
-                var opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS: ['info.name', 'year']});
+                let opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS: ['info.name', 'year']});
                 converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
@@ -460,7 +460,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.quoted.regularJson, function(err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.regularJson);
+                    let isEqual = _.isEqual(json, jsonTestData.regularJson);
                     true.should.equal(isEqual);
                     done();
                 }, options);
@@ -470,7 +470,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.quoted.nestedJson, function(err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.nestedJson);
+                    let isEqual = _.isEqual(json, jsonTestData.nestedJson);
                     true.should.equal(isEqual);
                     done();
                 }, options);
@@ -480,7 +480,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.quoted.nestedJson2, function(err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.nestedJson2);
+                    let isEqual = _.isEqual(json, jsonTestData.nestedJson2);
                     true.should.equal(isEqual);
                     done();
                 }, options);
@@ -490,7 +490,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.quoted.nestedQuotes, function(err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.nestedQuotes);
+                    let isEqual = _.isEqual(json, jsonTestData.nestedQuotes);
                     true.should.equal(isEqual);
                     done();
                 }, options);
@@ -500,7 +500,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.quoted.noData, function(err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.noData);
+                    let isEqual = _.isEqual(json, jsonTestData.noData);
                     true.should.equal(isEqual);
                     done();
                 }, options);
@@ -510,7 +510,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.quoted.singleDoc, function (err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, [jsonTestData.singleDoc]);
+                    let isEqual = _.isEqual(json, [jsonTestData.singleDoc]);
                     true.should.equal(isEqual);
                     done();
                 }, options);
@@ -520,18 +520,18 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.quoted.arrayValue.replace(/;/g, options.DELIMITER.ARRAY), function (err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.arrayValue);
+                    let isEqual = _.isEqual(json, jsonTestData.arrayValue);
                     true.should.equal(isEqual);
                     done();
                 }, options);
             });
 
             it('should parse the specified keys to JSON from a quoted CSV', function (done) {
-                var opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS : ['info.name', 'year']});
+                let opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS : ['info.name', 'year']});
                 converter.csv2json(csvTestData.quoted.arrayValue.replace(/,/g, options.DELIMITER.FIELD), function (err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.arrayValue_specificKeys);
+                    let isEqual = _.isEqual(json, jsonTestData.arrayValue_specificKeys);
                     true.should.equal(isEqual);
                     done();
                 }, opts);
@@ -542,7 +542,7 @@ var csv2jsonTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     // Stringify the JSON since these libraries don't say they are equal due to a null field
-                    var isEqual = _.isEqual(JSON.stringify(json), JSON.stringify(jsonTestData.nestedSomeFieldsWrappedJson));
+                    let isEqual = _.isEqual(JSON.stringify(json), JSON.stringify(jsonTestData.nestedSomeFieldsWrappedJson));
                     true.should.equal(isEqual);
                     done();
                 }, options);
@@ -552,7 +552,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.unQuoted.arrayValue.replace(/;/g, '/'), function (err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.arrayValue);
+                    let isEqual = _.isEqual(json, jsonTestData.arrayValue);
                     true.should.equal(isEqual);
                     done();
                 }, options);
@@ -619,7 +619,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.unQuoted.regularJson, function (err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.regularJson);
+                    let isEqual = _.isEqual(json, jsonTestData.regularJson);
                     true.should.equal(isEqual);
                     done();
                 }, options);
@@ -631,7 +631,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.unQuoted.needsTrimming, function (err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.trimmed);
+                    let isEqual = _.isEqual(json, jsonTestData.trimmed);
                     true.should.equal(isEqual);
                     done();
                 }, {TRIM_HEADER_FIELDS: true, TRIM_FIELD_VALUES: true});
@@ -641,7 +641,7 @@ var csv2jsonTests = function () {
                 converter.csv2json(csvTestData.unQuoted.trimmed, function (err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    var isEqual = _.isEqual(json, jsonTestData.trimmed);
+                    let isEqual = _.isEqual(json, jsonTestData.trimmed);
                     true.should.equal(isEqual);
                     done();
                 }, {TRIM_HEADER_FIELDS: true, TRIM_FIELD_VALUES: true});
@@ -679,7 +679,7 @@ var csv2jsonTests = function () {
             it('should convert a basic CSV to JSON', function(done) {
                 converter.csv2jsonPromisified(csvTestData.unQuoted.regularJson)
                     .then(function(json) {
-                        var isEqual = _.isEqual(json, jsonTestData.regularJson);
+                        let isEqual = _.isEqual(json, jsonTestData.regularJson);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -691,7 +691,7 @@ var csv2jsonTests = function () {
             it('should parse a CSV representing nested objects to JSON - 1', function(done) {
                 converter.csv2jsonPromisified(csvTestData.unQuoted.nestedJson)
                     .then(function(json) {
-                        var isEqual = _.isEqual(json, jsonTestData.nestedJson);
+                        let isEqual = _.isEqual(json, jsonTestData.nestedJson);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -703,7 +703,7 @@ var csv2jsonTests = function () {
             it('should parse a CSV representing nested objects to JSON - 2', function(done) {
                 converter.csv2jsonPromisified(csvTestData.unQuoted.nestedJson2)
                     .then(function(json) {
-                        var isEqual = _.isEqual(json, jsonTestData.nestedJson2);
+                        let isEqual = _.isEqual(json, jsonTestData.nestedJson2);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -715,7 +715,7 @@ var csv2jsonTests = function () {
             it('should parse nested quotes in a CSV to have nested quotes in JSON', function(done) {
                 converter.csv2jsonPromisified(csvTestData.unQuoted.nestedQuotes)
                     .then(function(json) {
-                        var isEqual = _.isEqual(json, jsonTestData.nestedQuotes);
+                        let isEqual = _.isEqual(json, jsonTestData.nestedQuotes);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -727,7 +727,7 @@ var csv2jsonTests = function () {
             it('should parse an empty CSV to an empty JSON array', function(done) {
                 converter.csv2jsonPromisified(csvTestData.unQuoted.noData)
                     .then(function(json) {
-                        var isEqual = _.isEqual(json, jsonTestData.noData);
+                        let isEqual = _.isEqual(json, jsonTestData.noData);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -739,7 +739,7 @@ var csv2jsonTests = function () {
             it('should parse a single CSV entry to an array of a single JSON document', function (done) {
                 converter.csv2jsonPromisified(csvTestData.unQuoted.singleDoc)
                     .then(function (json) {
-                        var isEqual = _.isEqual(json, [jsonTestData.singleDoc]);
+                        let isEqual = _.isEqual(json, [jsonTestData.singleDoc]);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -751,7 +751,7 @@ var csv2jsonTests = function () {
             it('should parse a CSV with a nested array to the correct JSON representation', function (done) {
                 converter.csv2jsonPromisified(csvTestData.unQuoted.arrayValue)
                     .then(function (json) {
-                        var isEqual = _.isEqual(json, jsonTestData.arrayValue);
+                        let isEqual = _.isEqual(json, jsonTestData.arrayValue);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -798,7 +798,7 @@ var csv2jsonTests = function () {
             it('should convert a basic CSV to JSON', function(done) {
                 converter.csv2jsonPromisified(csvTestData.unQuoted.regularJson, options)
                     .then(function(json) {
-                        var isEqual = _.isEqual(json, jsonTestData.regularJson);
+                        let isEqual = _.isEqual(json, jsonTestData.regularJson);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -810,7 +810,7 @@ var csv2jsonTests = function () {
             it('should parse a CSV representing nested objects to JSON - 1', function(done) {
                 converter.csv2jsonPromisified(csvTestData.unQuoted.nestedJson, options)
                     .then(function(json) {
-                        var isEqual = _.isEqual(json, jsonTestData.nestedJson);
+                        let isEqual = _.isEqual(json, jsonTestData.nestedJson);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -822,7 +822,7 @@ var csv2jsonTests = function () {
             it('should parse a CSV representing nested objects to JSON - 2', function(done) {
                 converter.csv2jsonPromisified(csvTestData.unQuoted.nestedJson2, options)
                     .then(function(json) {
-                        var isEqual = _.isEqual(json, jsonTestData.nestedJson2);
+                        let isEqual = _.isEqual(json, jsonTestData.nestedJson2);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -834,7 +834,7 @@ var csv2jsonTests = function () {
             it('should parse nested quotes in a CSV to have nested quotes in JSON', function(done) {
                 converter.csv2jsonPromisified(csvTestData.unQuoted.nestedQuotes, options)
                     .then(function(json) {
-                        var isEqual = _.isEqual(json, jsonTestData.nestedQuotes);
+                        let isEqual = _.isEqual(json, jsonTestData.nestedQuotes);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -846,7 +846,7 @@ var csv2jsonTests = function () {
             it('should parse an empty CSV to an empty JSON array', function(done) {
                 converter.csv2jsonPromisified(csvTestData.unQuoted.noData, options)
                     .then(function(json) {
-                        var isEqual = _.isEqual(json, jsonTestData.noData);
+                        let isEqual = _.isEqual(json, jsonTestData.noData);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -858,7 +858,7 @@ var csv2jsonTests = function () {
             it('should parse a single CSV entry to an array of a single JSON document', function (done) {
                 converter.csv2jsonPromisified(csvTestData.unQuoted.singleDoc, options)
                     .then(function (json) {
-                        var isEqual = _.isEqual(json, [jsonTestData.singleDoc]);
+                        let isEqual = _.isEqual(json, [jsonTestData.singleDoc]);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -870,7 +870,7 @@ var csv2jsonTests = function () {
             it('should parse a CSV with a nested array to the correct JSON representation', function (done) {
                 converter.csv2jsonPromisified(csvTestData.unQuoted.arrayValue.replace(/;/g, options.DELIMITER.ARRAY), options)
                     .then(function (json) {
-                        var isEqual = _.isEqual(json, jsonTestData.arrayValue);
+                        let isEqual = _.isEqual(json, jsonTestData.arrayValue);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -880,10 +880,10 @@ var csv2jsonTests = function () {
             });
 
             it('should parse the specified keys to JSON', function (done) {
-                var opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS : ['info.name', 'year']});
+                let opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS : ['info.name', 'year']});
                 converter.csv2jsonPromisified(csvTestData.unQuoted.arrayValue.replace(/,/g, options.DELIMITER.FIELD), opts)
                     .then(function (json) {
-                        var isEqual = _.isEqual(json, jsonTestData.arrayValue_specificKeys);
+                        let isEqual = _.isEqual(json, jsonTestData.arrayValue_specificKeys);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -931,7 +931,7 @@ var csv2jsonTests = function () {
             it('should convert a basic quoted CSV to JSON', function(done) {
                 converter.csv2jsonPromisified(csvTestData.quoted.regularJson, options)
                     .then(function(json) {
-                        var isEqual = _.isEqual(json, jsonTestData.regularJson);
+                        let isEqual = _.isEqual(json, jsonTestData.regularJson);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -943,7 +943,7 @@ var csv2jsonTests = function () {
             it('should parse a quoted CSV representing nested objects to JSON - 1', function(done) {
                 converter.csv2jsonPromisified(csvTestData.quoted.nestedJson, options)
                     .then(function(json) {
-                        var isEqual = _.isEqual(json, jsonTestData.nestedJson);
+                        let isEqual = _.isEqual(json, jsonTestData.nestedJson);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -955,7 +955,7 @@ var csv2jsonTests = function () {
             it('should parse a quoted CSV representing nested objects to JSON - 2', function(done) {
                 converter.csv2jsonPromisified(csvTestData.quoted.nestedJson2, options)
                     .then(function(json) {
-                        var isEqual = _.isEqual(json, jsonTestData.nestedJson2);
+                        let isEqual = _.isEqual(json, jsonTestData.nestedJson2);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -967,7 +967,7 @@ var csv2jsonTests = function () {
             it('should parse nested quotes in a CSV to have nested quotes in JSON', function(done) {
                 converter.csv2jsonPromisified(csvTestData.quoted.nestedQuotes, options)
                     .then(function(json) {
-                        var isEqual = _.isEqual(json, jsonTestData.nestedQuotes);
+                        let isEqual = _.isEqual(json, jsonTestData.nestedQuotes);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -979,7 +979,7 @@ var csv2jsonTests = function () {
             it('should parse an empty CSV to an empty JSON array', function(done) {
                 converter.csv2jsonPromisified(csvTestData.quoted.noData, options)
                     .then(function(json) {
-                        var isEqual = _.isEqual(json, jsonTestData.noData);
+                        let isEqual = _.isEqual(json, jsonTestData.noData);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -991,7 +991,7 @@ var csv2jsonTests = function () {
             it('should parse a single quoted CSV entry to an array of a single JSON document', function (done) {
                 converter.csv2jsonPromisified(csvTestData.quoted.singleDoc, options)
                     .then(function (json) {
-                        var isEqual = _.isEqual(json, [jsonTestData.singleDoc]);
+                        let isEqual = _.isEqual(json, [jsonTestData.singleDoc]);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -1003,7 +1003,7 @@ var csv2jsonTests = function () {
             it('should parse a quoted CSV with a nested array to the correct JSON representation', function (done) {
                 converter.csv2jsonPromisified(csvTestData.quoted.arrayValue, options)
                     .then(function (json) {
-                        var isEqual = _.isEqual(json, jsonTestData.arrayValue);
+                        let isEqual = _.isEqual(json, jsonTestData.arrayValue);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -1013,10 +1013,10 @@ var csv2jsonTests = function () {
             });
 
             it('should parse the specified keys to JSON from a quoted CSV', function (done) {
-                var opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS : ['info.name', 'year']});
+                let opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS : ['info.name', 'year']});
                 converter.csv2jsonPromisified(csvTestData.quoted.arrayValue, opts)
                     .then(function (json) {
-                        var isEqual = _.isEqual(json, jsonTestData.arrayValue_specificKeys);
+                        let isEqual = _.isEqual(json, jsonTestData.arrayValue_specificKeys);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -1029,7 +1029,7 @@ var csv2jsonTests = function () {
                 converter.csv2jsonPromisified(csvTestData.quoted.nestedSomeFieldsWrappedJson, options)
                     .then(function (json) {
                         // Stringify the JSON since these libraries don't say they are equal due to a null field
-                        var isEqual = _.isEqual(JSON.stringify(json), JSON.stringify(jsonTestData.nestedSomeFieldsWrappedJson));                        true.should.equal(isEqual);
+                        let isEqual = _.isEqual(JSON.stringify(json), JSON.stringify(jsonTestData.nestedSomeFieldsWrappedJson));                        true.should.equal(isEqual);
                         done();
                     })
                     .catch(function (err) {
@@ -1040,7 +1040,7 @@ var csv2jsonTests = function () {
             it('should parse an unquoted CSV without any issues while a DELIMITER is set', function (done) {
                 converter.csv2jsonPromisified(csvTestData.unQuoted.arrayValue.replace(/;/g, '/'), options)
                     .then(function (json) {
-                        var isEqual = _.isEqual(json, jsonTestData.arrayValue);
+                        let isEqual = _.isEqual(json, jsonTestData.arrayValue);
                         true.should.equal(isEqual);
                         done();
                     })
@@ -1081,7 +1081,7 @@ var csv2jsonTests = function () {
                 delete options.DELIMITER;
                 converter.csv2jsonPromisified(csvTestData.unQuoted.regularJson, options)
                     .then(function (json) {
-                        var isEqual = _.isEqual(json, jsonTestData.regularJson);
+                        let isEqual = _.isEqual(json, jsonTestData.regularJson);
                         true.should.equal(isEqual);
                         done();
                     })

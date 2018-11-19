@@ -1,10 +1,14 @@
 'use strict';
 
-var _ = require('underscore'),
+let _ = require('underscore'),
     path = require('doc-path'),
     constants = require('./constants.json');
 
-var options = {}; // Initialize the options - this will be populated when the csv2json function is called.
+module.exports = {
+    csv2json: csv2json
+};
+
+let options = {}; // Initialize the options - this will be populated when the csv2json function is called.
 
 /**
  * Generate the JSON heading from the CSV
@@ -12,7 +16,7 @@ var options = {}; // Initialize the options - this will be populated when the cs
  * @param callback
  * @returns {*}
  */
-var retrieveHeading = function (lines, callback) {
+function retrieveHeading(lines, callback) {
     // If there are no lines passed in, return an error
     if (!lines.length) {
         return callback(new Error(constants.Errors.csv2json.noDataRetrieveHeading)); // Pass an error back to the user
@@ -26,24 +30,24 @@ var retrieveHeading = function (lines, callback) {
                 index: index
             };
         });
-};
+}
 
 /**
  * Does the given value represent an array?
  * @param value
  * @returns {boolean}
  */
-var isArrayRepresentation = function (value) {
+function isArrayRepresentation(value) {
     // Verify that there is a value and it starts with '[' and ends with ']'
     return (value && /^\[.*\]$/.test(value));
-};
+}
 
 /**
  * Converts the value from a CSV 'array'
- * @param val
+ * @param arrayRepresentation
  * @returns {Array}
  */
-var convertArrayRepresentation = function (arrayRepresentation) {
+function convertArrayRepresentation(arrayRepresentation) {
     // Remove the '[' and ']' characters
     arrayRepresentation = arrayRepresentation.replace(/(\[|\])/g, '');
 
@@ -54,7 +58,7 @@ var convertArrayRepresentation = function (arrayRepresentation) {
     return _.filter(arrayRepresentation, function (value) {
         return value;
     });
-};
+}
 
 /**
  * Create a JSON document with the given keys (designated by the CSV header)
@@ -63,9 +67,9 @@ var convertArrayRepresentation = function (arrayRepresentation) {
  * @param line String
  * @returns {Object} created json document
  */
-var createDocument = function (keys, line) {
+function createDocument(keys, line) {
     line = splitLine(line); // Split the line using the given field delimiter after trimming whitespace
-    var val; // Temporary variable to set the current key's value to
+    let val; // Temporary letiable to set the current key's value to
 
     // Reduce the keys into a JSON document representing the given line
     return _.reduce(keys, function (document, key) {
@@ -82,7 +86,7 @@ var createDocument = function (keys, line) {
         // Otherwise add the key and value to the document
         return path.setPath(document, key.value, val);
     }, {});
-};
+}
 
 /**
  * Main helper function to convert the CSV to the JSON document array
@@ -90,8 +94,8 @@ var createDocument = function (keys, line) {
  * @param callback Function callback function
  * @returns {Array}
  */
-var convertCSV = function (lines, callback) {
-    var generatedHeaders = retrieveHeading(lines, callback), // Retrieve the headings from the CSV, unless the user specified the keys
+function convertCSV(lines, callback) {
+    let generatedHeaders = retrieveHeading(lines, callback), // Retrieve the headings from the CSV, unless the user specified the keys
         nonHeaderLines = lines.splice(1), // All lines except for the header line
     // If the user provided keys, filter the generated keys to just the user provided keys so we also have the key index
         headers = options.KEYS ? _.filter(generatedHeaders, function (headerKey) {
@@ -100,21 +104,21 @@ var convertCSV = function (lines, callback) {
 
     return _.reduce(nonHeaderLines, function (documentArray, line) { // For each line, create the document and add it to the array of documents
         if (!line) { return documentArray; } // skip over empty lines
-        var generatedDocument = createDocument(headers, line.trim());
+        let generatedDocument = createDocument(headers, line.trim());
         return documentArray.concat(generatedDocument);
     }, []);
-};
+}
 
 /**
  * Helper function that splits a line so that we can handle wrapped fields
  * @param line
  */
-var splitLine = function (line) {
+function splitLine(line) {
     // If the fields are not wrapped, return the line split by the field delimiter
     if (!options.DELIMITER.WRAP) { return line.split(options.DELIMITER.FIELD); }
 
     // Parse out the line...
-    var splitLine = [],
+    let splitLine = [],
         character,
         charBefore,
         charAfter,
@@ -184,37 +188,33 @@ var splitLine = function (line) {
     }
 
     return splitLine;
-};
+}
 
-module.exports = {
+/**
+ * Internally exported csv2json function
+ * Takes options as a document, data as a CSV string, and a callback that will be used to report the results
+ * @param opts Object options object
+ * @param data String csv string
+ * @param callback Function callback function
+ */
+function csv2json(opts, data, callback) {
+    // If a callback wasn't provided, throw an error
+    if (!callback) { throw new Error(constants.Errors.callbackRequired); }
 
-    /**
-     * Internally exported csv2json function
-     * Takes options as a document, data as a CSV string, and a callback that will be used to report the results
-     * @param opts Object options object
-     * @param data String csv string
-     * @param callback Function callback function
-     */
-    csv2json: function (opts, data, callback) {
-        // If a callback wasn't provided, throw an error
-        if (!callback) { throw new Error(constants.Errors.callbackRequired); }
+    // Shouldn't happen, but just in case
+    if (!opts) { return callback(new Error(constants.Errors.optionsRequired)); }
+    options = opts; // Options were passed, set the global options value
 
-        // Shouldn't happen, but just in case
-        if (!opts) { return callback(new Error(constants.Errors.optionsRequired)); }
-        options = opts; // Options were passed, set the global options value
+    // If we don't receive data, report an error
+    if (!data) { return callback(new Error(constants.Errors.csv2json.cannotCallCsv2JsonOn + data + '.')); }
 
-        // If we don't receive data, report an error
-        if (!data) { return callback(new Error(constants.Errors.csv2json.cannotCallCsv2JsonOn + data + '.')); }
-
-        // The data provided is not a string
-        if (!_.isString(data)) {
-            return callback(new Error(constants.Errors.csv2json.csvNotString)); // Report an error back to the caller
-        }
-
-        // Split the CSV into lines using the specified EOL option
-        var lines = data.split(options.DELIMITER.EOL),
-            json = convertCSV(lines, callback); // Retrieve the JSON document array
-        return callback(null, json); // Send the data back to the caller
+    // The data provided is not a string
+    if (!_.isString(data)) {
+        return callback(new Error(constants.Errors.csv2json.csvNotString)); // Report an error back to the caller
     }
 
-};
+    // Split the CSV into lines using the specified EOL option
+    let lines = data.split(options.DELIMITER.EOL),
+        json = convertCSV(lines, callback); // Retrieve the JSON document array
+    return callback(null, json); // Send the data back to the caller
+}

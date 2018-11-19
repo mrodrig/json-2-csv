@@ -1,7 +1,7 @@
-var should = require('should'),
+let should = require('should'),
     assert = require('assert'),
-    converter = require('../lib/converter'),
-    constants = require('../lib/constants'),
+    converter = require('../src/converter'),
+    constants = require('../src/constants'),
     _ = require('underscore'),
     promise = require('bluebird'),
     defaultOptions = constants.DefaultOptions,
@@ -9,7 +9,7 @@ var should = require('should'),
     csvTestData,
     options;
 
-var json2csvTests = function () {
+let json2csvTests = function () {
     describe('Testing Default Usage', function () {
         describe('Default Options', function () {
             beforeEach(function () {
@@ -609,7 +609,7 @@ var json2csvTests = function () {
 
             it('should parse the specified keys to CSV', function (done) {
                 // Create a copy so we don't modify the actual options object
-                var opts = _.extend(options, {KEYS: ['info.name', 'year']});
+                let opts = _.extend(options, {KEYS: ['info.name', 'year']});
                 converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
@@ -1095,7 +1095,7 @@ var json2csvTests = function () {
             });
 
             it('should repress the heading', function (done) {
-                var opts = JSON.parse(JSON.stringify(options));
+                let opts = JSON.parse(JSON.stringify(options));
                 opts.PREPEND_HEADER = false;
 
                 converter.json2csvPromisified(jsonTestData.sameSchemaDifferentOrdering, opts)
@@ -1267,7 +1267,7 @@ var json2csvTests = function () {
             });
 
             it('should repress the heading', function (done) {
-                var opts = JSON.parse(JSON.stringify(options));
+                let opts = JSON.parse(JSON.stringify(options));
                 opts.PREPEND_HEADER = false;
 
                 converter.json2csvPromisified(jsonTestData.sameSchemaDifferentOrdering, opts)
@@ -1426,7 +1426,7 @@ var json2csvTests = function () {
 
             it('should parse the specified keys to CSV', function (done) {
                 // Create a copy so we don't modify the actual options object
-                var opts = _.extend(options, {KEYS: ['info.name', 'year']});
+                let opts = _.extend(options, {KEYS: ['info.name', 'year']});
                 converter.json2csvPromisified(jsonTestData.arrayValue, opts)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.quoted.arrayValue_specificKeys);
@@ -1451,7 +1451,7 @@ var json2csvTests = function () {
             });
 
             it('should repress the heading', function (done) {
-                var opts = JSON.parse(JSON.stringify(options));
+                let opts = JSON.parse(JSON.stringify(options));
                 opts.PREPEND_HEADER = false;
 
                 converter.json2csvPromisified(jsonTestData.sameSchemaDifferentOrdering, opts)

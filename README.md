@@ -1,7 +1,8 @@
-# Convert JSON to CSV or CSV to JSON
+# json-2-csv
+**Convert JSON to CSV _or_ CSV to JSON**
 
-[![Build Status](https://travis-ci.org/mrodrig/json-2-csv.svg?branch=master)](https://travis-ci.org/mrodrig/json-2-csv)
 [![Dependencies](https://img.shields.io/david/mrodrig/json-2-csv.svg?style=flat-square)](https://www.npmjs.org/package/json-2-csv)
+[![Build Status](https://travis-ci.org/mrodrig/json-2-csv.svg?branch=master)](https://travis-ci.org/mrodrig/json-2-csv)
 [![Downloads](http://img.shields.io/npm/dm/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![NPM version](https://img.shields.io/npm/v/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![Known Vulnerabilities](https://snyk.io/test/npm/json-2-csv/badge.svg)](https://snyk.io/test/npm/json-2-csv)
@@ -21,12 +22,12 @@ $ npm install json-2-csv
 ## Usage
 
 ```javascript
-var converter = require('json-2-csv');
+let converter = require('json-2-csv');
 ```
 
 ### API
 
-#### json2csv(array, callback, options)
+#### `converter.json2csv(array, callback, options)`
 
 * `array` - An array of JSON documents to be converted to CSV.
 * `callback` - A function of the form `function (err, csv)`; 
@@ -58,14 +59,16 @@ var converter = require('json-2-csv');
     * Default: `null`
     * If you have a nested object (ie. {info : {name: 'Mike'}}), then set this to ['info.name']
     * If you want all keys to be converted, then specify ```null``` or don't specify the option to utilize the default.
+    
+
 
 For examples, please refer to the [json2csv API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/json2csv-Documentation)
 
-#### Promisified Version: json2csvPromisified(array, options).then(...).catch(...);
+#### Promisified Version: `converter.json2csvPromisified(array, options)`
 
 Available in version `2.2.0`, this functionality makes use of promises from the `bluebird` module.
 
-#### csv2json(csv, callback, options)
+#### `converter.csv2json(csv, callback, options)`
 
 * `csv` - A string of CSV
 * `callback` - A function of the form `function (err, array)`; This function will receive any errors and/or the array of JSON documents generated.
@@ -90,7 +93,7 @@ Available in version `2.2.0`, this functionality makes use of promises from the 
 
 For examples, please refer to the [csv2json API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/csv2json-Documentation)
 
-#### Promisified Version: csv2jsonPromisified(csv, options).then(...).catch(...);
+#### Promisified Version: `csv2jsonPromisified(csv, options)`
 
 Available in version `2.2.0`, this functionality makes use of promises from the `bluebird` module.
 
@@ -109,10 +112,10 @@ $ npm run coverage
 
 Current Coverage is:
 ```
-Statements   : 94.91% ( 205/216 )
-Branches     : 93.33% ( 154/165 )
-Functions    : 100% ( 37/37 )
-Lines        : 95.59% ( 195/204 )
+Statements   : 94.69% ( 196/207 )
+Branches     : 93.55% ( 145/155 )
+Functions    : 100% ( 34/34 )
+Lines        : 95.38% ( 186/195 )
 ```
 
 ## Frequently Asked Questions (FAQ)
