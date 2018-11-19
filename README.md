@@ -64,11 +64,11 @@ let converter = require('json-2-csv');
 
 For examples, please refer to the [json2csv API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/json2csv-Documentation)
 
-#### Promisified Version: json2csvPromisified(array, options).then(...).catch(...);
+#### Promisified Version: `converter.json2csvPromisified(array, options)`
 
 Available in version `2.2.0`, this functionality makes use of promises from the `bluebird` module.
 
-#### csv2json(csv, callback, options)
+#### `converter.csv2json(csv, callback, options)`
 
 * `csv` - A string of CSV
 * `callback` - A function of the form `function (err, array)`; This function will receive any errors and/or the array of JSON documents generated.
@@ -93,7 +93,7 @@ Available in version `2.2.0`, this functionality makes use of promises from the 
 
 For examples, please refer to the [csv2json API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/csv2json-Documentation)
 
-#### Promisified Version: csv2jsonPromisified(csv, options).then(...).catch(...);
+#### Promisified Version: `csv2jsonPromisified(csv, options)`
 
 Available in version `2.2.0`, this functionality makes use of promises from the `bluebird` module.
 
