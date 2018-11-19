@@ -2,12 +2,12 @@
     "author": "mrodrig",
     "name": "json-2-csv",
     "description": "A JSON to CSV and CSV to JSON converter that natively supports sub-documents and auto-generates the CSV heading.",
-    "version": "2.3.1",
+    "version": "2.4.0",
     "repository": {
         "type": "git",
         "url": "http://github.com/mrodrig/json-2-csv.git"
     },
-    "main": "./lib/converter.js",
+    "main": "./src/converter.js",
     "scripts": {
         "test": "./node_modules/.bin/mocha test/tests.js",
         "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -R spec"
@@ -24,9 +24,10 @@
         "csv-2-json"
     ],
     "dependencies": {
-        "underscore": "1.9.1",
-        "doc-path": "1.2.2",
-        "bluebird": "3.5.2"
+        "bluebird": "3.5.3",
+        "deeks": "1.0.0",
+        "doc-path": "1.3.1",
+        "underscore": "1.9.1"
     },
     "devDependencies": {
         "mocha": "5.2.0",
@@ -35,7 +36,7 @@
         "async": "2.6.1"
     },
     "engines": {
-        "node": ">= 4"
+        "node": ">= 6"
     },
     "license": "MIT"
 }

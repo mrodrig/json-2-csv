@@ -1,4 +1,4 @@
-var json2csvTests = require('./testJson2Csv'),
+let json2csvTests = require('./testJson2Csv'),
     csv2jsonTests = require('./testCsv2Json'),
     jsonTestData = require('./testJsonFilesList'),
     async = require('async'),
@@ -7,7 +7,7 @@ var json2csvTests = require('./testJson2Csv'),
     csvTestData  = {unQuoted: {}, quoted: {}}, // Document where all csv files will be loaded into
     csvFiles = require('./testCsvFilesList');
 
-var readCsvFile = function (masterKey, fileInfo, callback) {
+let readCsvFile = function (masterKey, fileInfo, callback) {
     csvTestData[masterKey][fileInfo.key] = fs.readFileSync(fileInfo.file).toString();
     return callback(null, csvTestData[masterKey][fileInfo.key]);
 };
