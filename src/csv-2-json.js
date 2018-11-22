@@ -26,7 +26,7 @@ function retrieveHeading(lines, callback) {
     return _.map(splitLine(lines[0]),
         function (headerKey, index) {
             return {
-                value: options.TRIM_HEADER_FIELDS ? headerKey.trim() : headerKey,
+                value: options.trimHeaderFields ? headerKey.trim() : headerKey,
                 index: index
             };
         });
@@ -52,7 +52,7 @@ function convertArrayRepresentation(arrayRepresentation) {
     arrayRepresentation = arrayRepresentation.replace(/(\[|\])/g, '');
 
     // Split the arrayRepresentation into an array by the array delimiter
-    arrayRepresentation = arrayRepresentation.split(options.DELIMITER.ARRAY);
+    arrayRepresentation = arrayRepresentation.split(options.delimiter.array);
 
     // Filter out non-empty strings
     return _.filter(arrayRepresentation, function (value) {
@@ -77,7 +77,7 @@ function createDocument(keys, line) {
         val = line[key.index] ? line[key.index] : null;
         
         // If the user wants to trim field values, trim the value
-        val = options.TRIM_FIELD_VALUES && !_.isNull(val) ? val.trim() : val;
+        val = options.trimFieldValues && !_.isNull(val) ? val.trim() : val;
 
         // If the value is an array representation, convert it
         if (isArrayRepresentation(val)) {
@@ -98,8 +98,8 @@ function convertCSV(lines, callback) {
     let generatedHeaders = retrieveHeading(lines, callback), // Retrieve the headings from the CSV, unless the user specified the keys
         nonHeaderLines = lines.splice(1), // All lines except for the header line
     // If the user provided keys, filter the generated keys to just the user provided keys so we also have the key index
-        headers = options.KEYS ? _.filter(generatedHeaders, function (headerKey) {
-            return _.contains(options.KEYS, headerKey.value);
+        headers = options.keys ? _.filter(generatedHeaders, function (headerKey) {
+            return _.contains(options.keys, headerKey.value);
         }) : generatedHeaders;
 
     return _.reduce(nonHeaderLines, function (documentArray, line) { // For each line, create the document and add it to the array of documents
@@ -115,7 +115,7 @@ function convertCSV(lines, callback) {
  */
 function splitLine(line) {
     // If the fields are not wrapped, return the line split by the field delimiter
-    if (!options.DELIMITER.WRAP) { return line.split(options.DELIMITER.FIELD); }
+    if (!options.delimiter.wrap) { return line.split(options.delimiter.field); }
 
     // Parse out the line...
     let splitLine = [],
@@ -144,21 +144,21 @@ function splitLine(line) {
             splitLine.push(line.substring(stateVariables.startIndex, stateVariables.insideWrapDelimiter ? index : undefined));
         }
         // If the line starts with a wrap delimiter
-        else if (character === options.DELIMITER.WRAP && index === 0) {
+        else if (character === options.delimiter.wrap && index === 0) {
             stateVariables.insideWrapDelimiter = true;
             stateVariables.parsingValue = true;
             stateVariables.startIndex = index + 1;
         }
 
         // If we reached a wrap delimiter with a field delimiter after it (ie. *",)
-        else if (character === options.DELIMITER.WRAP && charAfter === options.DELIMITER.FIELD) {
+        else if (character === options.delimiter.wrap && charAfter === options.delimiter.field) {
             splitLine.push(line.substring(stateVariables.startIndex, index));
             stateVariables.startIndex = index + 2; // next value starts after the field delimiter
             stateVariables.insideWrapDelimiter = false;
             stateVariables.parsingValue = false;
         }
         // If we reached a wrap delimiter with a field delimiter after it (ie. ,"*)
-        else if (character === options.DELIMITER.WRAP && charBefore === options.DELIMITER.FIELD) {
+        else if (character === options.delimiter.wrap && charBefore === options.delimiter.field) {
             if (stateVariables.parsingValue) {
                 splitLine.push(line.substring(stateVariables.startIndex, index-1));
             }
@@ -167,19 +167,19 @@ function splitLine(line) {
             stateVariables.startIndex = index + 1;
         }
         // If we reached a field delimiter and are not inside the wrap delimiters (ie. *,*)
-        else if (character === options.DELIMITER.FIELD && charBefore !== options.DELIMITER.WRAP &&
-                    charAfter !== options.DELIMITER.WRAP && !stateVariables.insideWrapDelimiter &&
+        else if (character === options.delimiter.field && charBefore !== options.delimiter.wrap &&
+                    charAfter !== options.delimiter.wrap && !stateVariables.insideWrapDelimiter &&
                     stateVariables.parsingValue) {
             splitLine.push(line.substring(stateVariables.startIndex, index));
             stateVariables.startIndex = index + 1;
         }
-        else if (character === options.DELIMITER.FIELD && charBefore === options.DELIMITER.WRAP &&
-                    charAfter !== options.DELIMITER.WRAP) {
+        else if (character === options.delimiter.field && charBefore === options.delimiter.wrap &&
+                    charAfter !== options.delimiter.wrap) {
             stateVariables.insideWrapDelimiter = false;
             stateVariables.parsingValue = true;
             stateVariables.startIndex = index + 1;
         }
-        else if (character === options.DELIMITER.WRAP && charAfter === options.DELIMITER.WRAP && stateVariables.insideWrapDelimiter) {
+        else if (character === options.delimiter.wrap && charAfter === options.delimiter.wrap && stateVariables.insideWrapDelimiter) {
             line = line.slice(0, index) + line.slice(index+1); // Remove the current character from the line
             lastCharacterIndex--; // Update the value since we removed a character
         }
@@ -214,7 +214,7 @@ function csv2json(opts, data, callback) {
     }
 
     // Split the CSV into lines using the specified EOL option
-    let lines = data.split(options.DELIMITER.EOL),
+    let lines = data.split(options.delimiter.eol),
         json = convertCSV(lines, callback); // Retrieve the JSON document array
     return callback(null, json); // Send the data back to the caller
 }

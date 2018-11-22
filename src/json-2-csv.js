@@ -19,14 +19,14 @@ let options = {}; // Initialize the options - this will be populated when the js
  * @returns {promise}
  */
 function generateHeading(data) {
-    if (options.KEYS) { return promise.resolve(options.KEYS); }
+    if (options.keys) { return promise.resolve(options.keys); }
 
     let keys = key.deepKeysFromList(data);
     
     let uniqueKeys = [];
 
     // If the user wants to check for the same schema:
-    if (options.CHECK_SCHEMA_DIFFERENCES) {
+    if (options.checkSchemaDifferences) {
         // Check for a consistent schema that does not require the same order:
         // if we only have one document - then there is no possibility of multiple schemas
         if (keys && keys.length <= 1) {
@@ -58,7 +58,7 @@ function generateHeading(data) {
         });
     }
     
-    if (options.SORT_HEADER) {
+    if (options.sortHeader) {
         uniqueKeys.sort();
     }
 
@@ -76,7 +76,7 @@ function convertData(data, keys) {
     return _.reduce(keys, function (output, key) {
         // Retrieve the appropriate field data
         let fieldData = path.evaluatePath(data, key);
-        if (_.isUndefined(fieldData)) { fieldData = options.EMPTY_FIELD_VALUE; }
+        if (_.isUndefined(fieldData)) { fieldData = options.emptyFieldValue; }
         // Add the CSV representation of the data at the key in the document to the output array
         return output.concat(convertField(fieldData));
     }, []);
@@ -97,18 +97,18 @@ function convertField(value) {
                 result.push(convertValue(item));
             }
         });
-        return options.DELIMITER.WRAP + '[' + result.join(options.DELIMITER.ARRAY) + ']' + options.DELIMITER.WRAP;
+        return options.delimiter.wrap + '[' + result.join(options.delimiter.array) + ']' + options.delimiter.wrap;
     } else if (_.isDate(value)) { // If we have a date
-        return options.DELIMITER.WRAP + convertValue(value) + options.DELIMITER.WRAP;
+        return options.delimiter.wrap + convertValue(value) + options.delimiter.wrap;
     } else if (_.isObject(value)) { // If we have an object
-        return options.DELIMITER.WRAP + convertData(value, _.keys(value)) + options.DELIMITER.WRAP; // Push the recursively generated CSV
+        return options.delimiter.wrap + convertData(value, _.keys(value)) + options.delimiter.wrap; // Push the recursively generated CSV
     } else if (_.isNumber(value)) { // If we have a number (avoids 0 being converted to '')
-        return options.DELIMITER.WRAP + convertValue(value) + options.DELIMITER.WRAP;
+        return options.delimiter.wrap + convertValue(value) + options.delimiter.wrap;
     } else if (_.isBoolean(value)) { // If we have a boolean (avoids false being converted to '')
-        return options.DELIMITER.WRAP + convertValue(value) + options.DELIMITER.WRAP;
+        return options.delimiter.wrap + convertValue(value) + options.delimiter.wrap;
     }
-    value = options.DELIMITER.WRAP && value ? value.replace(new RegExp(options.DELIMITER.WRAP, 'g'), options.DELIMITER.WRAP + options.DELIMITER.WRAP) : value;
-    return options.DELIMITER.WRAP + convertValue(value) + options.DELIMITER.WRAP; // Otherwise push the current value
+    value = options.delimiter.wrap && value ? value.replace(new RegExp(options.delimiter.wrap, 'g'), options.delimiter.wrap + options.delimiter.wrap) : value;
+    return options.delimiter.wrap + convertValue(value) + options.delimiter.wrap; // Otherwise push the current value
 }
 
 function convertValue(val) {
@@ -116,7 +116,7 @@ function convertValue(val) {
     val = _.isNull(val) || _.isUndefined(val) ? '' : val.toString();
     
     // Trim, if necessary, and return the correct value
-    return options.TRIM_FIELD_VALUES ? val.trim() : val;
+    return options.trimFieldValues ? val.trim() : val;
 }
 
 /**
@@ -128,7 +128,7 @@ function convertValue(val) {
 function generateCsv(data, headingKeys) {
     // Reduce each JSON document in data to a CSV string and append it to the CSV accumulator
     return [headingKeys].concat(_.reduce(data, function (csv, doc) {
-        return csv += convertData(doc, headingKeys).join(options.DELIMITER.FIELD) + options.DELIMITER.EOL;
+        return csv += convertData(doc, headingKeys).join(options.delimiter.field) + options.delimiter.eol;
     }, ''));
 }
 
@@ -164,25 +164,25 @@ function json2csv(opts, data, callback) {
         .then(_.partial(generateCsv, data))
         .spread(function (csvHeading, csvData) {
             // If the fields are supposed to be wrapped... (only perform this if we are actually prepending the header)
-            if (options.DELIMITER.WRAP && options.PREPEND_HEADER) {
+            if (options.delimiter.wrap && options.prependHeader) {
                 csvHeading = _.map(csvHeading, function(headingKey) {
-                    return options.DELIMITER.WRAP + headingKey + options.DELIMITER.WRAP;
+                    return options.delimiter.wrap + headingKey + options.delimiter.wrap;
                 });
             }
 
-            if (options.TRIM_HEADER_FIELDS) {
+            if (options.trimHeaderFields) {
                 csvHeading = _.map(csvHeading, function (headingKey) {
                     return headingKey.trim();
                 });
             }
 
             // If we are prepending the header, then join the csvHeading fields
-            if (options.PREPEND_HEADER) {
-                csvHeading = csvHeading.join(options.DELIMITER.FIELD);
+            if (options.prependHeader) {
+                csvHeading = csvHeading.join(options.delimiter.field);
             }
 
             // If we are prepending the header, then join the header and data by EOL, otherwise just return the data
-            return callback(null, options.PREPEND_HEADER ? csvHeading + options.DELIMITER.EOL + csvData : csvData);
+            return callback(null, options.prependHeader ? csvHeading + options.delimiter.eol + csvData : csvData);
         })
         .catch(function (err) {
             return callback(err);

@@ -36,35 +36,13 @@ function copyOption(options, lowercasePath, uppercasePath) {
  * If options are provided, then we set each valid key that was passed
  */
 function buildOptions(opts, cb) {
-    // PREVIOUS VERSION SUPPORT (so that future versions are backwards compatible)
-    // Issue #26: opts.EOL should be opts.DELIMITER.EOL -- this will move the option & provide backwards compatibility
-    if (docPath.evaluatePath(opts, 'EOL')) { docPath.setPath(opts, 'DELIMITER.EOL', opts.EOL); }
-
-    // #62: Allow for lower case option names
-    if (opts) {
-        copyOption(opts, 'prependHeader', 'PREPEND_HEADER');
-        copyOption(opts, 'trimHeaderFields', 'TRIM_HEADER_FIELDS');
-        copyOption(opts, 'trimFieldValues', 'TRIM_FIELD_VALUES');
-        copyOption(opts, 'sortHeader', 'SORT_HEADER');
-        copyOption(opts, 'parseCsvNumbers', 'PARSE_CSV_NUMBERS');
-        copyOption(opts, 'keys', 'KEYS');
-        copyOption(opts, 'checkSchemaDifferences', 'CHECK_SCHEMA_DIFFERENCES');
-        copyOption(opts, 'emptyFieldValue', 'EMPTY_FIELD_VALUE');
-        if (isDefined(opts.delimiter)) {
-            copyOption(opts, 'delimiter.field', 'DELIMITER.FIELD');
-            copyOption(opts, 'delimiter.array', 'DELIMITER.ARRAY');
-            copyOption(opts, 'delimiter.wrap', 'DELIMITER.WRAP');
-            copyOption(opts, 'delimiter.eol', 'DELIMITER.EOL');
-        }
-    }
-
     opts = _.defaults(opts || {}, defaultOptions);
 
     // Note: _.defaults does a shallow default, we need to deep copy the DELIMITER object
-    opts.DELIMITER = _.defaults(opts.DELIMITER || {}, defaultOptions.DELIMITER);
+    opts.delimiter = _.defaults(opts.delimiter || {}, defaultOptions.delimiter);
 
     // If the delimiter fields are the same, report an error to the caller
-    if (opts.DELIMITER.FIELD === opts.DELIMITER.ARRAY) { return cb(new Error(constants.Errors.delimitersMustDiffer)); }
+    if (opts.delimiter.field === opts.delimiter.array) { return cb(new Error(constants.Errors.delimitersMustDiffer)); }
 
     // Otherwise, send the options back
     return cb(null, opts);

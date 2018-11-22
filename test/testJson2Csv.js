@@ -21,7 +21,7 @@ let json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.regularJson);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    csv.split(options.delimiter.eol).length.should.equal(6);
                     done();
                 });
             });
@@ -31,7 +31,7 @@ let json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.nestedJson);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    csv.split(options.delimiter.eol).length.should.equal(6);
                     done();
                 });
             });
@@ -41,7 +41,7 @@ let json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.nestedJson2);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(4);
+                    csv.split(options.delimiter.eol).length.should.equal(4);
                     done();
                 });
             });
@@ -51,7 +51,7 @@ let json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.nestedQuotes);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                    csv.split(options.delimiter.eol).length.should.equal(5);
                     done();
                 });
             });
@@ -61,7 +61,7 @@ let json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.noData);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
+                    csv.split(options.delimiter.eol).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
                     done();
                 });
             });
@@ -71,7 +71,7 @@ let json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.singleDoc);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(3);
+                    csv.split(options.delimiter.eol).length.should.equal(3);
                     done();
                 });
             });
@@ -81,7 +81,7 @@ let json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.arrayValue);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                    csv.split(options.delimiter.eol).length.should.equal(5);
                     done();
                 });
             });
@@ -91,7 +91,7 @@ let json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.regularJson);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    csv.split(options.delimiter.eol).length.should.equal(6);
                     done();
                 });
             });
@@ -166,12 +166,12 @@ let json2csvTests = function () {
         describe('Custom Options - Comma Delimited', function () {
             beforeEach(function () {
                 options = {
-                    DELIMITER         : {
-                        FIELD  :  ',',
-                        ARRAY  :  '/',
-                        EOL    : '\n'
+                    delimiter         : {
+                        field  :  ',',
+                        array  :  '/',
+                        eol    : '\n'
                     },
-                    PARSE_CSV_NUMBERS : false
+                    parseCsvNumbers : false
                 };
             });
 
@@ -180,7 +180,7 @@ let json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.regularJson);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    csv.split(options.delimiter.eol).length.should.equal(6);
                     done();
                 }, options);
             });
@@ -190,7 +190,7 @@ let json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.nestedJson);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    csv.split(options.delimiter.eol).length.should.equal(6);
                     done();
                 }, options);
             });
@@ -200,7 +200,7 @@ let json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.nestedJson2);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(4);
+                    csv.split(options.delimiter.eol).length.should.equal(4);
                     done();
                 }, options);
             });
@@ -210,7 +210,7 @@ let json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.nestedQuotes);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                    csv.split(options.delimiter.eol).length.should.equal(5);
                     done();
                 }, options);
             });
@@ -220,7 +220,7 @@ let json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.noData);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
+                    csv.split(options.delimiter.eol).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
                     done();
                 }, options);
             });
@@ -230,7 +230,7 @@ let json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.singleDoc);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(3);
+                    csv.split(options.delimiter.eol).length.should.equal(3);
                     done();
                 }, options);
             });
@@ -239,20 +239,20 @@ let json2csvTests = function () {
                 converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.arrayValue.replace(new RegExp(defaultOptions.DELIMITER.ARRAY, 'g'), options.DELIMITER.ARRAY));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                    csv.should.equal(csvTestData.unQuoted.arrayValue.replace(new RegExp(defaultOptions.delimiter.array, 'g'), options.delimiter.array));
+                    csv.split(options.delimiter.eol).length.should.equal(5);
                     done();
                 }, options);
             });
 
             it('should parse the specified keys to CSV', function (done) {
                 // Create a copy so we don't modify the actual options object
-                options = _.extend(options, {KEYS: ['info.name', 'year']});
+                options = _.extend(options, {keys: ['info.name', 'year']});
                 converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.arrayValue_specificKeys);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                    csv.split(options.delimiter.eol).length.should.equal(5);
                     done();
                 }, options);
             });
@@ -262,20 +262,20 @@ let json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.regularJson);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    csv.split(options.delimiter.eol).length.should.equal(6);
                     done();
                 }, options);
             });
 
             it('should repress the heading', function (done) {
                 opts = JSON.parse(JSON.stringify(options));
-                opts.PREPEND_HEADER = false;
+                opts.prependHeader = false;
 
                 converter.json2csv(jsonTestData.sameSchemaDifferentOrdering, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.regularJson.split(options.DELIMITER.EOL).slice(1).join(options.DELIMITER.EOL));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                    csv.should.equal(csvTestData.unQuoted.regularJson.split(options.delimiter.eol).slice(1).join(options.delimiter.eol));
+                    csv.split(options.delimiter.eol).length.should.equal(5);
                     done();
                 }, opts);
             });
@@ -341,12 +341,12 @@ let json2csvTests = function () {
         describe('Custom Options - Semicolon Delimited', function () {
             beforeEach(function () {
                 options = {
-                    DELIMITER         : {
-                        FIELD  :  ';',
-                        ARRAY  :  '/',
-                        EOL    : '\n'
+                    delimiter         : {
+                        field  :  ';',
+                        array  :  '/',
+                        eol    : '\n'
                     },
-                    PARSE_CSV_NUMBERS : false
+                    parseCsvNumbers : false
                 };
             });
 
@@ -354,8 +354,8 @@ let json2csvTests = function () {
                 converter.json2csv(jsonTestData.regularJson, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.regularJson.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    csv.should.equal(csvTestData.unQuoted.regularJson.replace(new RegExp(defaultOptions.delimiter.field, 'g'), options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(6);
                     done();
                 }, options);
             });
@@ -364,8 +364,8 @@ let json2csvTests = function () {
                 converter.json2csv(jsonTestData.nestedJson, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.nestedJson.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    csv.should.equal(csvTestData.unQuoted.nestedJson.replace(new RegExp(defaultOptions.delimiter.field, 'g'), options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(6);
                     done();
                 }, options);
             });
@@ -374,8 +374,8 @@ let json2csvTests = function () {
                 converter.json2csv(jsonTestData.nestedJson2, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.nestedJson2.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(4);
+                    csv.should.equal(csvTestData.unQuoted.nestedJson2.replace(new RegExp(defaultOptions.delimiter.field, 'g'), options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(4);
                     done();
                 }, options);
             });
@@ -384,8 +384,8 @@ let json2csvTests = function () {
                 converter.json2csv(jsonTestData.nestedQuotes, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.nestedQuotes.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                    csv.should.equal(csvTestData.unQuoted.nestedQuotes.replace(new RegExp(defaultOptions.delimiter.field, 'g'), options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(5);
                     done();
                 }, options);
             });
@@ -394,8 +394,8 @@ let json2csvTests = function () {
                 converter.json2csv(jsonTestData.noData, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.noData.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
+                    csv.should.equal(csvTestData.unQuoted.noData.replace(new RegExp(defaultOptions.delimiter.field, 'g'), options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
                     done();
                 }, options);
             });
@@ -404,8 +404,8 @@ let json2csvTests = function () {
                 converter.json2csv(jsonTestData.singleDoc, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.singleDoc.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(3);
+                    csv.should.equal(csvTestData.unQuoted.singleDoc.replace(new RegExp(defaultOptions.delimiter.field, 'g'), options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(3);
                     done();
                 }, options);
             });
@@ -414,21 +414,21 @@ let json2csvTests = function () {
                 converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.arrayValue.replace(new RegExp(defaultOptions.DELIMITER.ARRAY, 'g'), options.DELIMITER.ARRAY)
-                            .replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                    csv.should.equal(csvTestData.unQuoted.arrayValue.replace(new RegExp(defaultOptions.delimiter.array, 'g'), options.delimiter.array)
+                            .replace(new RegExp(defaultOptions.delimiter.field, 'g'), options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(5);
                     done();
                 }, options);
             });
 
             it('should parse the specified keys to CSV', function (done) {
                 // Create a copy so we don't modify the actual options object
-                options = _.extend(options, {KEYS: ['info.name', 'year']});
+                options = _.extend(options, {keys: ['info.name', 'year']});
                 converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.arrayValue_specificKeys.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                    csv.should.equal(csvTestData.unQuoted.arrayValue_specificKeys.replace(new RegExp(defaultOptions.delimiter.field, 'g'), options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(5);
                     done();
                 }, options);
             });
@@ -437,21 +437,21 @@ let json2csvTests = function () {
                 converter.json2csv(jsonTestData.sameSchemaDifferentOrdering, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.regularJson.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    csv.should.equal(csvTestData.unQuoted.regularJson.replace(new RegExp(defaultOptions.delimiter.field, 'g'), options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(6);
                     done();
                 }, options);
             });
 
             it('should repress the heading', function (done) {
                 opts = JSON.parse(JSON.stringify(options));
-                opts.PREPEND_HEADER = false;
+                opts.prependHeader = false;
 
                 converter.json2csv(jsonTestData.sameSchemaDifferentOrdering, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.regularJson.replace(/,/g, options.DELIMITER.FIELD).split(options.DELIMITER.EOL).slice(1).join(options.DELIMITER.EOL));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                    csv.should.equal(csvTestData.unQuoted.regularJson.replace(/,/g, options.delimiter.field).split(options.delimiter.eol).slice(1).join(options.delimiter.eol));
+                    csv.split(options.delimiter.eol).length.should.equal(5);
                     done();
                 }, opts);
             });
@@ -517,13 +517,13 @@ let json2csvTests = function () {
         describe('Custom Options - Quote Wrapped Fields', function () {
             beforeEach(function () {
                 options = {
-                    DELIMITER         : {
-                        FIELD  :  ',',
-                        ARRAY  :  '/',
-                        WRAP   :  '\"',
-                        EOL    : '\n'
+                    delimiter         : {
+                        field  :  ',',
+                        array  :  '/',
+                        wrap   :  '\"',
+                        eol    : '\n'
                     },
-                    PARSE_CSV_NUMBERS : false
+                    parseCsvNumbers : false
                 };
             });
 
@@ -531,8 +531,8 @@ let json2csvTests = function () {
                 converter.json2csv(jsonTestData.regularJson, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.quoted.regularJson.replace(/,/g, options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    csv.should.equal(csvTestData.quoted.regularJson.replace(/,/g, options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(6);
                     done();
                 }, options);
             });
@@ -541,8 +541,8 @@ let json2csvTests = function () {
                 converter.json2csv(jsonTestData.nestedJson, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.quoted.nestedJson.replace(/,/g, options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    csv.should.equal(csvTestData.quoted.nestedJson.replace(/,/g, options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(6);
                     done();
                 }, options);
             });
@@ -551,8 +551,8 @@ let json2csvTests = function () {
                 converter.json2csv(jsonTestData.nestedJson2, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.quoted.nestedJson2.replace(/,/g, options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(4);
+                    csv.should.equal(csvTestData.quoted.nestedJson2.replace(/,/g, options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(4);
                     done();
                 }, options);
             });
@@ -561,8 +561,8 @@ let json2csvTests = function () {
                 converter.json2csv(jsonTestData.nestedQuotes, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.quoted.nestedQuotes.replace(/,/g, options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                    csv.should.equal(csvTestData.quoted.nestedQuotes.replace(/,/g, options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(5);
                     done();
                 }, options);
             });
@@ -571,8 +571,8 @@ let json2csvTests = function () {
                 converter.json2csv(jsonTestData.nestedComma, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.quoted.nestedComma.replace(/,/g, options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(3);
+                    csv.should.equal(csvTestData.quoted.nestedComma.replace(/,/g, options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(3);
                     done();
                 }, options);
             });
@@ -581,8 +581,8 @@ let json2csvTests = function () {
                 converter.json2csv(jsonTestData.noData, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.quoted.noData.replace(/,/g, options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
+                    csv.should.equal(csvTestData.quoted.noData.replace(/,/g, options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
                     done();
                 }, options);
             });
@@ -591,8 +591,8 @@ let json2csvTests = function () {
                 converter.json2csv(jsonTestData.singleDoc, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.quoted.singleDoc.replace(/,/g, options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(3);
+                    csv.should.equal(csvTestData.quoted.singleDoc.replace(/,/g, options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(3);
                     done();
                 }, options);
             });
@@ -601,20 +601,20 @@ let json2csvTests = function () {
                 converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.quoted.arrayValue.replace(/,/g, options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                    csv.should.equal(csvTestData.quoted.arrayValue.replace(/,/g, options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(5);
                     done();
                 }, options);
             });
 
             it('should parse the specified keys to CSV', function (done) {
                 // Create a copy so we don't modify the actual options object
-                let opts = _.extend(options, {KEYS: ['info.name', 'year']});
+                let opts = _.extend(options, {keys: ['info.name', 'year']});
                 converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.quoted.arrayValue_specificKeys);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                    csv.split(options.delimiter.eol).length.should.equal(5);
                     done();
                 }, opts);
             });
@@ -624,20 +624,20 @@ let json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.quoted.regularJson);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    csv.split(options.delimiter.eol).length.should.equal(6);
                     done();
                 }, options);
             });
 
             it('should repress the heading', function (done) {
                 opts = JSON.parse(JSON.stringify(options));
-                opts.PREPEND_HEADER = false;
+                opts.prependHeader = false;
 
                 converter.json2csv(jsonTestData.sameSchemaDifferentOrdering, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.quoted.regularJson.split(options.DELIMITER.EOL).slice(1).join(options.DELIMITER.EOL));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                    csv.should.equal(csvTestData.quoted.regularJson.split(options.delimiter.eol).slice(1).join(options.delimiter.eol));
+                    csv.split(options.delimiter.eol).length.should.equal(5);
                     done();
                 }, opts);
             });
@@ -706,49 +706,49 @@ let json2csvTests = function () {
             });
 
             it('should sort sort the headers alphabetically', function(done) {
-                options = {SORT_HEADER : true};
+                options = {sortHeader : true};
                 
                 converter.json2csv(jsonTestData.regularJson, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.regularJsonSorted);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    csv.split(options.delimiter.eol).length.should.equal(6);
                     done();
                 }, options);
             });
             
             it('should not check for schema differences - same schema', function(done) {
-                options = {CHECK_SCHEMA_DIFFERENCES : false};
+                options = {checkSchemaDifferences : false};
                 
                 converter.json2csv(jsonTestData.regularJson, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.regularJson);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    csv.split(options.delimiter.eol).length.should.equal(6);
                     done();
                 }, options);
             });
             
             it('should not check for schema differences - different schema', function(done) {
-                options = {CHECK_SCHEMA_DIFFERENCES : false};
+                options = {checkSchemaDifferences : false};
                 
                 converter.json2csv(jsonTestData.differentSchemas, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.differentSchemas);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    csv.split(options.delimiter.eol).length.should.equal(6);
                     done();
                 }, options);
             });
             
             it('should not check for schema differences and sort header', function(done) {
-                options = {CHECK_SCHEMA_DIFFERENCES : false, SORT_HEADER : true};
+                options = {checkSchemaDifferences : false, sortHeader : true};
                 
                 converter.json2csv(jsonTestData.differentSchemas, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.differentSchemasSorted);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    csv.split(options.delimiter.eol).length.should.equal(6);
                     done();
                 }, options);
             });
@@ -758,19 +758,19 @@ let json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.convertFieldTestCases);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(4);
+                    csv.split(options.delimiter.eol).length.should.equal(4);
                     done();
                 }, options);
             });
             
             it('should test the empty field value', function (done) {
-                options = {CHECK_SCHEMA_DIFFERENCES: false, EMPTY_FIELD_VALUE : ''};
+                options = {checkSchemaDifferences: false, emptyFieldValue : ''};
                 
                 converter.json2csv(jsonTestData.differentSchemas, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.differentSchemasEmptyValue);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    csv.split(options.delimiter.eol).length.should.equal(6);
                     done();
                 }, options);
             });
@@ -780,9 +780,9 @@ let json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.trimmed);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(3);
+                    csv.split(options.delimiter.eol).length.should.equal(3);
                     done();
-                }, {TRIM_HEADER_FIELDS: true, TRIM_FIELD_VALUES: true});
+                }, {trimHeaderFields: true, trimFieldValues: true});
             });
             
             it('should trim the headers and fields - 2', function (done) {
@@ -790,28 +790,28 @@ let json2csvTests = function () {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     csv.should.equal(csvTestData.unQuoted.trimmed);
-                    csv.split(options.DELIMITER.EOL).length.should.equal(3);
+                    csv.split(options.delimiter.eol).length.should.equal(3);
                     done();
-                }, {TRIM_HEADER_FIELDS: true, TRIM_FIELD_VALUES: true});
+                }, {trimHeaderFields: true, trimFieldValues: true});
             });
         });
             
         describe('Testing other errors', function () {
             beforeEach(function () {
                 options = {
-                    DELIMITER         : {
-                        FIELD  :  ',',
-                        ARRAY  :  ';',
-                        WRAP   :  ''
+                    delimiter         : {
+                        field  :  ',',
+                        array  :  ';',
+                        wrap   :  ''
                     },
-                    EOL               : '\n',
-                    PARSE_CSV_NUMBERS : false,
-                    KEYS              : null
+                    eol               : '\n',
+                    parseCsvNumbers : false,
+                    keys              : null
                 };
             });
 
             it('should throw an error about the field and array delimiters being the same', function (done) {
-                options.DELIMITER.FIELD = options.DELIMITER.ARRAY = ',';
+                options.delimiter.field = options.delimiter.array = ',';
                 converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
                     err.message.should.equal(constants.Errors.delimitersMustDiffer);
                     done();
@@ -831,14 +831,14 @@ let json2csvTests = function () {
         describe('Default Options', function () {
             beforeEach(function () {
                 options = {
-                    DELIMITER         : {
-                        FIELD  :  ',',
-                        ARRAY  :  ';',
-                        WRAP   :  '',
-                        EOL    : '\n'
+                    delimiter         : {
+                        field  :  ',',
+                        array  :  ';',
+                        wrap   :  '',
+                        eol    : '\n'
                     },
-                    PARSE_CSV_NUMBERS : false,
-                    KEYS              : null
+                    parseCsvNumbers : false,
+                    keys              : null
                 };
             });
 
@@ -846,7 +846,7 @@ let json2csvTests = function () {
                 converter.json2csvPromisified(jsonTestData.regularJson)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.regularJson);
-                        csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                        csv.split(options.delimiter.eol).length.should.equal(6);
                         done();
                     })
                     .catch(function (err) {
@@ -858,7 +858,7 @@ let json2csvTests = function () {
                 converter.json2csvPromisified(jsonTestData.nestedJson)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.nestedJson);
-                        csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                        csv.split(options.delimiter.eol).length.should.equal(6);
                         done();
                     })
                     .catch(function (err) {
@@ -870,7 +870,7 @@ let json2csvTests = function () {
                 converter.json2csvPromisified(jsonTestData.nestedJson2)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.nestedJson2);
-                        csv.split(options.DELIMITER.EOL).length.should.equal(4);
+                        csv.split(options.delimiter.eol).length.should.equal(4);
                         done();
                     })
                     .catch(function (err) {
@@ -882,7 +882,7 @@ let json2csvTests = function () {
                 converter.json2csvPromisified(jsonTestData.nestedQuotes)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.nestedQuotes);
-                        csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                        csv.split(options.delimiter.eol).length.should.equal(5);
                         done();
                     })
                     .catch(function (err) {
@@ -894,7 +894,7 @@ let json2csvTests = function () {
                 converter.json2csvPromisified(jsonTestData.noData)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.noData);
-                        csv.split(options.DELIMITER.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
+                        csv.split(options.delimiter.eol).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
                         done();
                     })
                     .catch(function (err) {
@@ -906,7 +906,7 @@ let json2csvTests = function () {
                 converter.json2csvPromisified(jsonTestData.singleDoc)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.unQuoted.singleDoc);
-                        csv.split(options.DELIMITER.EOL).length.should.equal(3);
+                        csv.split(options.delimiter.eol).length.should.equal(3);
                         done();
                     })
                     .catch(function (err) {
@@ -918,7 +918,7 @@ let json2csvTests = function () {
                 converter.json2csvPromisified(jsonTestData.arrayValue)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.unQuoted.arrayValue);
-                        csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                        csv.split(options.delimiter.eol).length.should.equal(5);
                         done();
                     })
                     .catch(function (err) {
@@ -930,7 +930,7 @@ let json2csvTests = function () {
                 converter.json2csvPromisified(jsonTestData.sameSchemaDifferentOrdering)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.unQuoted.regularJson);
-                        csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                        csv.split(options.delimiter.eol).length.should.equal(6);
                         done();
                     })
                     .catch(function (err) {
@@ -975,12 +975,12 @@ let json2csvTests = function () {
         describe('Custom Options - Comma Delimited', function () {
             beforeEach(function () {
                 options = {
-                    DELIMITER         : {
-                        FIELD  :  ',',
-                        ARRAY  :  '/',
-                        EOL    : '\n'
+                    delimiter         : {
+                        field  :  ',',
+                        array  :  '/',
+                        eol    : '\n'
                     },
-                    PARSE_CSV_NUMBERS : false
+                    parseCsvNumbers : false
                 };
             });
 
@@ -988,7 +988,7 @@ let json2csvTests = function () {
                 converter.json2csvPromisified(jsonTestData.regularJson, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.regularJson);
-                        csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                        csv.split(options.delimiter.eol).length.should.equal(6);
                         done();
                     })
                     .catch(function (err) {
@@ -1000,7 +1000,7 @@ let json2csvTests = function () {
                 converter.json2csvPromisified(jsonTestData.nestedJson, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.nestedJson);
-                        csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                        csv.split(options.delimiter.eol).length.should.equal(6);
                         done();
                     })
                     .catch(function (err) {
@@ -1012,7 +1012,7 @@ let json2csvTests = function () {
                 converter.json2csvPromisified(jsonTestData.nestedJson2, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.nestedJson2);
-                        csv.split(options.DELIMITER.EOL).length.should.equal(4);
+                        csv.split(options.delimiter.eol).length.should.equal(4);
                         done();
                     })
                     .catch(function (err) {
@@ -1024,7 +1024,7 @@ let json2csvTests = function () {
                 converter.json2csvPromisified(jsonTestData.nestedQuotes, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.nestedQuotes);
-                        csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                        csv.split(options.delimiter.eol).length.should.equal(5);
                         done();
                     })
                     .catch(function (err) {
@@ -1036,7 +1036,7 @@ let json2csvTests = function () {
                 converter.json2csvPromisified(jsonTestData.noData, options)
                     .then(function(csv) {
                         csv.should.equal(csvTestData.unQuoted.noData);
-                        csv.split(options.DELIMITER.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
+                        csv.split(options.delimiter.eol).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
                         done();
                     })
                     .catch(function (err) {
@@ -1048,7 +1048,7 @@ let json2csvTests = function () {
                 converter.json2csvPromisified(jsonTestData.singleDoc, options)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.unQuoted.singleDoc);
-                        csv.split(options.DELIMITER.EOL).length.should.equal(3);
+                        csv.split(options.delimiter.eol).length.should.equal(3);
                         done();
                     })
                     .catch(function (err) {
@@ -1059,8 +1059,8 @@ let json2csvTests = function () {
             it('should parse an array of JSON documents to CSV', function (done) {
                 converter.json2csvPromisified(jsonTestData.arrayValue, options)
                     .then(function (csv) {
-                        csv.should.equal(csvTestData.unQuoted.arrayValue.replace(new RegExp(defaultOptions.DELIMITER.ARRAY, 'g'), options.DELIMITER.ARRAY));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                        csv.should.equal(csvTestData.unQuoted.arrayValue.replace(new RegExp(defaultOptions.delimiter.array, 'g'), options.delimiter.array));
+                        csv.split(options.delimiter.eol).length.should.equal(5);
                         done();
                     })
                     .catch(function (err) {
@@ -1070,11 +1070,11 @@ let json2csvTests = function () {
 
             it('should parse the specified keys to CSV', function (done) {
                 // Create a copy so we don't modify the actual options object
-                options = _.extend(options, {KEYS: ['info.name', 'year']});
+                options = _.extend(options, {keys: ['info.name', 'year']});
                 converter.json2csvPromisified(jsonTestData.arrayValue, options)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.unQuoted.arrayValue_specificKeys);
-                        csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                        csv.split(options.delimiter.eol).length.should.equal(5);
                         done();
                     })
                     .catch(function (err) {
@@ -1086,7 +1086,7 @@ let json2csvTests = function () {
                 converter.json2csvPromisified(jsonTestData.sameSchemaDifferentOrdering, options)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.unQuoted.regularJson);
-                        csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                        csv.split(options.delimiter.eol).length.should.equal(6);
                         done();
                     })
                     .catch(function (err) {
@@ -1096,12 +1096,12 @@ let json2csvTests = function () {
 
             it('should repress the heading', function (done) {
                 let opts = JSON.parse(JSON.stringify(options));
-                opts.PREPEND_HEADER = false;
+                opts.prependHeader = false;
 
                 converter.json2csvPromisified(jsonTestData.sameSchemaDifferentOrdering, opts)
                     .then(function (csv) {
-                        csv.should.equal(csvTestData.unQuoted.regularJson.split(options.DELIMITER.EOL).slice(1).join(options.DELIMITER.EOL));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                        csv.should.equal(csvTestData.unQuoted.regularJson.split(options.delimiter.eol).slice(1).join(options.delimiter.eol));
+                        csv.split(options.delimiter.eol).length.should.equal(5);
                         done();
                     })
                     .catch(function (err) {
@@ -1146,20 +1146,20 @@ let json2csvTests = function () {
         describe('Custom Options - Semicolon Delimited', function () {
             beforeEach(function () {
                 options = {
-                    DELIMITER         : {
-                        FIELD  :  ';',
-                        ARRAY  :  '/',
-                        EOL    : '\n'
+                    delimiter         : {
+                        field  :  ';',
+                        array  :  '/',
+                        eol    : '\n'
                     },
-                    PARSE_CSV_NUMBERS : false
+                    parseCsvNumbers : false
                 };
             });
 
             it('should convert plain JSON to CSV', function(done) {
                 converter.json2csvPromisified(jsonTestData.regularJson, options)
                     .then(function(csv) {
-                        csv.should.equal(csvTestData.unQuoted.regularJson.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                        csv.should.equal(csvTestData.unQuoted.regularJson.replace(new RegExp(defaultOptions.delimiter.field, 'g'), options.delimiter.field));
+                        csv.split(options.delimiter.eol).length.should.equal(6);
                         done();
                     })
                     .catch(function (err) {
@@ -1170,8 +1170,8 @@ let json2csvTests = function () {
             it('should parse nested JSON to CSV - 1', function(done) {
                 converter.json2csvPromisified(jsonTestData.nestedJson, options)
                     .then(function(csv) {
-                        csv.should.equal(csvTestData.unQuoted.nestedJson.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                        csv.should.equal(csvTestData.unQuoted.nestedJson.replace(new RegExp(defaultOptions.delimiter.field, 'g'), options.delimiter.field));
+                        csv.split(options.delimiter.eol).length.should.equal(6);
                         done();
                     })
                     .catch(function (err) {
@@ -1182,8 +1182,8 @@ let json2csvTests = function () {
             it('should parse nested JSON to CSV - 2', function(done) {
                 converter.json2csvPromisified(jsonTestData.nestedJson2, options)
                     .then(function(csv) {
-                        csv.should.equal(csvTestData.unQuoted.nestedJson2.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(4);
+                        csv.should.equal(csvTestData.unQuoted.nestedJson2.replace(new RegExp(defaultOptions.delimiter.field, 'g'), options.delimiter.field));
+                        csv.split(options.delimiter.eol).length.should.equal(4);
                         done();
                     })
                     .catch(function (err) {
@@ -1194,8 +1194,8 @@ let json2csvTests = function () {
             it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
                 converter.json2csvPromisified(jsonTestData.nestedQuotes, options)
                     .then(function(csv) {
-                        csv.should.equal(csvTestData.unQuoted.nestedQuotes.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                        csv.should.equal(csvTestData.unQuoted.nestedQuotes.replace(new RegExp(defaultOptions.delimiter.field, 'g'), options.delimiter.field));
+                        csv.split(options.delimiter.eol).length.should.equal(5);
                         done();
                     })
                     .catch(function (err) {
@@ -1206,8 +1206,8 @@ let json2csvTests = function () {
             it('should parse an empty array to an empty CSV', function(done) {
                 converter.json2csvPromisified(jsonTestData.noData, options)
                     .then(function(csv) {
-                        csv.should.equal(csvTestData.unQuoted.noData.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
+                        csv.should.equal(csvTestData.unQuoted.noData.replace(new RegExp(defaultOptions.delimiter.field, 'g'), options.delimiter.field));
+                        csv.split(options.delimiter.eol).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
                         done();
                     })
                     .catch(function (err) {
@@ -1218,8 +1218,8 @@ let json2csvTests = function () {
             it('should parse a single JSON document to CSV', function (done) {
                 converter.json2csvPromisified(jsonTestData.singleDoc, options)
                     .then(function (csv) {
-                        csv.should.equal(csvTestData.unQuoted.singleDoc.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(3);
+                        csv.should.equal(csvTestData.unQuoted.singleDoc.replace(new RegExp(defaultOptions.delimiter.field, 'g'), options.delimiter.field));
+                        csv.split(options.delimiter.eol).length.should.equal(3);
                         done();
                     })
                     .catch(function (err) {
@@ -1230,9 +1230,9 @@ let json2csvTests = function () {
             it('should parse an array of JSON documents to CSV', function (done) {
                 converter.json2csvPromisified(jsonTestData.arrayValue, options)
                     .then(function (csv) {
-                        csv.should.equal(csvTestData.unQuoted.arrayValue.replace(new RegExp(defaultOptions.DELIMITER.ARRAY, 'g'), options.DELIMITER.ARRAY)
-                            .replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                        csv.should.equal(csvTestData.unQuoted.arrayValue.replace(new RegExp(defaultOptions.delimiter.array, 'g'), options.delimiter.array)
+                            .replace(new RegExp(defaultOptions.delimiter.field, 'g'), options.delimiter.field));
+                        csv.split(options.delimiter.eol).length.should.equal(5);
                         done();
                     })
                     .catch(function (err) {
@@ -1242,11 +1242,11 @@ let json2csvTests = function () {
 
             it('should parse the specified keys to CSV', function (done) {
                 // Create a copy so we don't modify the actual options object
-                options = _.extend(options, {KEYS: ['info.name', 'year']});
+                options = _.extend(options, {keys: ['info.name', 'year']});
                 converter.json2csvPromisified(jsonTestData.arrayValue, options)
                     .then(function (csv) {
-                        csv.should.equal(csvTestData.unQuoted.arrayValue_specificKeys.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                        csv.should.equal(csvTestData.unQuoted.arrayValue_specificKeys.replace(new RegExp(defaultOptions.delimiter.field, 'g'), options.delimiter.field));
+                        csv.split(options.delimiter.eol).length.should.equal(5);
                         done();
                     })
                     .catch(function (err) {
@@ -1257,8 +1257,8 @@ let json2csvTests = function () {
             it('should parse an array of JSON documents with the same schema but different ordering of fields', function (done) {
                 converter.json2csvPromisified(jsonTestData.sameSchemaDifferentOrdering, options)
                     .then(function (csv) {
-                        csv.should.equal(csvTestData.unQuoted.regularJson.replace(new RegExp(defaultOptions.DELIMITER.FIELD, 'g'), options.DELIMITER.FIELD));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                        csv.should.equal(csvTestData.unQuoted.regularJson.replace(new RegExp(defaultOptions.delimiter.field, 'g'), options.delimiter.field));
+                        csv.split(options.delimiter.eol).length.should.equal(6);
                         done();
                     })
                     .catch(function (err) {
@@ -1268,12 +1268,12 @@ let json2csvTests = function () {
 
             it('should repress the heading', function (done) {
                 let opts = JSON.parse(JSON.stringify(options));
-                opts.PREPEND_HEADER = false;
+                opts.prependHeader = false;
 
                 converter.json2csvPromisified(jsonTestData.sameSchemaDifferentOrdering, opts)
                     .then(function (csv) {
-                        csv.should.equal(csvTestData.unQuoted.regularJson.replace(/,/g, options.DELIMITER.FIELD).split(options.DELIMITER.EOL).slice(1).join(options.DELIMITER.EOL));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                        csv.should.equal(csvTestData.unQuoted.regularJson.replace(/,/g, options.delimiter.field).split(options.delimiter.eol).slice(1).join(options.delimiter.eol));
+                        csv.split(options.delimiter.eol).length.should.equal(5);
                         done();
                     })
                     .catch(function (err) {
@@ -1318,21 +1318,21 @@ let json2csvTests = function () {
         describe('Custom Options - Quote Wrapped Fields', function () {
             beforeEach(function () {
                 options = {
-                    DELIMITER         : {
-                        FIELD  :  ',',
-                        ARRAY  :  '/',
-                        WRAP   :  '\"',
-                        EOL    : '\n'
+                    delimiter         : {
+                        field  :  ',',
+                        array  :  '/',
+                        wrap   :  '\"',
+                        eol    : '\n'
                     },
-                    PARSE_CSV_NUMBERS : false
+                    parseCsvNumbers : false
                 };
             });
 
             it('should convert plain JSON to CSV', function(done) {
                 converter.json2csvPromisified(jsonTestData.regularJson, options)
                     .then(function(csv) {
-                        csv.should.equal(csvTestData.quoted.regularJson.replace(/,/g, options.DELIMITER.FIELD));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                        csv.should.equal(csvTestData.quoted.regularJson.replace(/,/g, options.delimiter.field));
+                        csv.split(options.delimiter.eol).length.should.equal(6);
                         done();
                     })
                     .catch(function (err) {
@@ -1343,8 +1343,8 @@ let json2csvTests = function () {
             it('should parse nested JSON to CSV - 1', function(done) {
                 converter.json2csvPromisified(jsonTestData.nestedJson, options)
                     .then(function(csv) {
-                        csv.should.equal(csvTestData.quoted.nestedJson.replace(/,/g, options.DELIMITER.FIELD));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                        csv.should.equal(csvTestData.quoted.nestedJson.replace(/,/g, options.delimiter.field));
+                        csv.split(options.delimiter.eol).length.should.equal(6);
                         done();
                     })
                     .catch(function (err) {
@@ -1355,8 +1355,8 @@ let json2csvTests = function () {
             it('should parse nested JSON to CSV - 2', function(done) {
                 converter.json2csvPromisified(jsonTestData.nestedJson2, options)
                     .then(function(csv) {
-                        csv.should.equal(csvTestData.quoted.nestedJson2.replace(/,/g, options.DELIMITER.FIELD));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(4);
+                        csv.should.equal(csvTestData.quoted.nestedJson2.replace(/,/g, options.delimiter.field));
+                        csv.split(options.delimiter.eol).length.should.equal(4);
                         done();
                     })
                     .catch(function (err) {
@@ -1367,8 +1367,8 @@ let json2csvTests = function () {
             it('should parse nested quotes in JSON to have quotes in CSV ', function(done) {
                 converter.json2csvPromisified(jsonTestData.nestedQuotes, options)
                     .then(function(csv) {
-                        csv.should.equal(csvTestData.quoted.nestedQuotes.replace(/,/g, options.DELIMITER.FIELD));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                        csv.should.equal(csvTestData.quoted.nestedQuotes.replace(/,/g, options.delimiter.field));
+                        csv.split(options.delimiter.eol).length.should.equal(5);
                         done();
                     })
                     .catch(function (err) {
@@ -1379,8 +1379,8 @@ let json2csvTests = function () {
             it('should parse nested commas in JSON to have commas in CSV ', function(done) {
                 converter.json2csvPromisified(jsonTestData.nestedComma, options)
                     .then(function(csv) {
-                        csv.should.equal(csvTestData.quoted.nestedComma.replace(/,/g, options.DELIMITER.FIELD));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(3);
+                        csv.should.equal(csvTestData.quoted.nestedComma.replace(/,/g, options.delimiter.field));
+                        csv.split(options.delimiter.eol).length.should.equal(3);
                         done();
                     })
                     .catch(function (err) {
@@ -1391,8 +1391,8 @@ let json2csvTests = function () {
             it('should parse an empty array to an empty CSV', function(done) {
                 converter.json2csvPromisified(jsonTestData.noData, options)
                     .then(function(csv) {
-                        csv.should.equal(csvTestData.quoted.noData.replace(/,/g, options.DELIMITER.FIELD));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
+                        csv.should.equal(csvTestData.quoted.noData.replace(/,/g, options.delimiter.field));
+                        csv.split(options.delimiter.eol).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
                         done();
                     })
                     .catch(function (err) {
@@ -1403,8 +1403,8 @@ let json2csvTests = function () {
             it('should parse a single JSON document to CSV', function (done) {
                 converter.json2csvPromisified(jsonTestData.singleDoc, options)
                     .then(function (csv) {
-                        csv.should.equal(csvTestData.quoted.singleDoc.replace(/,/g, options.DELIMITER.FIELD));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(3);
+                        csv.should.equal(csvTestData.quoted.singleDoc.replace(/,/g, options.delimiter.field));
+                        csv.split(options.delimiter.eol).length.should.equal(3);
                         done();
                     })
                     .catch(function (err) {
@@ -1415,8 +1415,8 @@ let json2csvTests = function () {
             it('should parse an array of JSON documents to CSV', function (done) {
                 converter.json2csvPromisified(jsonTestData.arrayValue, options)
                     .then(function (csv) {
-                        csv.should.equal(csvTestData.quoted.arrayValue.replace(/,/g, options.DELIMITER.FIELD));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                        csv.should.equal(csvTestData.quoted.arrayValue.replace(/,/g, options.delimiter.field));
+                        csv.split(options.delimiter.eol).length.should.equal(5);
                         done();
                     })
                     .catch(function (err) {
@@ -1426,11 +1426,11 @@ let json2csvTests = function () {
 
             it('should parse the specified keys to CSV', function (done) {
                 // Create a copy so we don't modify the actual options object
-                let opts = _.extend(options, {KEYS: ['info.name', 'year']});
+                let opts = _.extend(options, {keys: ['info.name', 'year']});
                 converter.json2csvPromisified(jsonTestData.arrayValue, opts)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.quoted.arrayValue_specificKeys);
-                        csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                        csv.split(options.delimiter.eol).length.should.equal(5);
                         done();
                     })
                     .catch(function (err) {
@@ -1442,7 +1442,7 @@ let json2csvTests = function () {
                 converter.json2csvPromisified(jsonTestData.sameSchemaDifferentOrdering, options)
                     .then(function (csv) {
                         csv.should.equal(csvTestData.quoted.regularJson);
-                        csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                        csv.split(options.delimiter.eol).length.should.equal(6);
                         done();
                     })
                     .catch(function (err) {
@@ -1452,12 +1452,12 @@ let json2csvTests = function () {
 
             it('should repress the heading', function (done) {
                 let opts = JSON.parse(JSON.stringify(options));
-                opts.PREPEND_HEADER = false;
+                opts.prependHeader = false;
 
                 converter.json2csvPromisified(jsonTestData.sameSchemaDifferentOrdering, opts)
                     .then(function (csv) {
-                        csv.should.equal(csvTestData.quoted.regularJson.split(options.DELIMITER.EOL).slice(1).join(options.DELIMITER.EOL));
-                        csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                        csv.should.equal(csvTestData.quoted.regularJson.split(options.delimiter.eol).slice(1).join(options.delimiter.eol));
+                        csv.split(options.delimiter.eol).length.should.equal(5);
                         done();
                     })
                     .catch(function (err) {
@@ -1502,19 +1502,19 @@ let json2csvTests = function () {
         describe('Testing other errors', function () {
             beforeEach(function () {
                 options = {
-                    DELIMITER         : {
-                        FIELD  :  ',',
-                        ARRAY  :  ';',
-                        WRAP   :  ''
+                    delimiter         : {
+                        field  :  ',',
+                        array  :  ';',
+                        wrap   :  ''
                     },
-                    EOL               : '\n',
-                    PARSE_CSV_NUMBERS : false,
-                    KEYS              : null
+                    eol               : '\n',
+                    parseCsvNumbers : false,
+                    keys              : null
                 };
             });
 
             it('should throw an error about the field and array delimiters being the same', function (done) {
-                options.DELIMITER.FIELD = options.DELIMITER.ARRAY = ',';
+                options.delimiter.field = options.delimiter.array = ',';
                 converter.json2csvPromisified(jsonTestData.arrayValue, options)
                     .then(function (csv) {
                         throw new Error('should not hit');

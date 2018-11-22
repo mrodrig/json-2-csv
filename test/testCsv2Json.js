@@ -140,12 +140,12 @@ let csv2jsonTests = function () {
         describe('Custom Options - Comma Delimited', function () {
             beforeEach(function () {
                 options = {
-                    DELIMITER         : {
-                        FIELD  :  ',',
-                        ARRAY  :  '/',
-                        EOL    : '\n'
+                    delimiter         : {
+                        field  :  ',',
+                        array  :  '/',
+                        eol    : '\n'
                     },
-                    PARSE_CSV_NUMBERS : false
+                    parseCsvNumbers : false
                 };
             });
 
@@ -210,7 +210,7 @@ let csv2jsonTests = function () {
             });
 
             it('should parse a CSV with a nested array to the correct JSON representation', function (done) {
-                converter.csv2json(csvTestData.unQuoted.arrayValue.replace(/;/g, options.DELIMITER.ARRAY), function (err, json) {
+                converter.csv2json(csvTestData.unQuoted.arrayValue.replace(/;/g, options.delimiter.array), function (err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     let isEqual = _.isEqual(json, jsonTestData.arrayValue);
@@ -220,8 +220,8 @@ let csv2jsonTests = function () {
             });
 
             it('should parse the specified keys to JSON', function (done) {
-                let opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS : ['info.name', 'year']});
-                converter.csv2json(csvTestData.unQuoted.arrayValue.replace(/,/g, options.DELIMITER.FIELD), function (err, json) {
+                let opts = _.extend(JSON.parse(JSON.stringify(options)), {keys : ['info.name', 'year']});
+                converter.csv2json(csvTestData.unQuoted.arrayValue.replace(/,/g, options.delimiter.field), function (err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     let isEqual = _.isEqual(json, jsonTestData.arrayValue_specificKeys);
@@ -284,12 +284,12 @@ let csv2jsonTests = function () {
         describe('Custom Options - Semicolon Delimited', function () {
             beforeEach(function () {
                 options = {
-                    DELIMITER         : {
-                        FIELD  :  ';',
-                        ARRAY  :  '/',
-                        EOL    : '\n'
+                    delimiter         : {
+                        field  :  ';',
+                        array  :  '/',
+                        eol    : '\n'
                     },
-                    PARSE_CSV_NUMBERS : false
+                    parseCsvNumbers : false
                 };
             });
 
@@ -297,8 +297,8 @@ let csv2jsonTests = function () {
                 converter.json2csv(jsonTestData.regularJson, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.regularJson.replace(/,/g, options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    csv.should.equal(csvTestData.unQuoted.regularJson.replace(/,/g, options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(6);
                     done();
                 }, options);
             });
@@ -307,8 +307,8 @@ let csv2jsonTests = function () {
                 converter.json2csv(jsonTestData.nestedJson, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.nestedJson.replace(/,/g, options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    csv.should.equal(csvTestData.unQuoted.nestedJson.replace(/,/g, options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(6);
                     done();
                 }, options);
             });
@@ -317,8 +317,8 @@ let csv2jsonTests = function () {
                 converter.json2csv(jsonTestData.nestedJson2, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.nestedJson2.replace(/,/g, options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(4);
+                    csv.should.equal(csvTestData.unQuoted.nestedJson2.replace(/,/g, options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(4);
                     done();
                 }, options);
             });
@@ -327,8 +327,8 @@ let csv2jsonTests = function () {
                 converter.json2csv(jsonTestData.nestedQuotes, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.nestedQuotes.replace(/,/g, options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                    csv.should.equal(csvTestData.unQuoted.nestedQuotes.replace(/,/g, options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(5);
                     done();
                 }, options);
             });
@@ -337,8 +337,8 @@ let csv2jsonTests = function () {
                 converter.json2csv(jsonTestData.noData, function(err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.noData.replace(/,/g, options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
+                    csv.should.equal(csvTestData.unQuoted.noData.replace(/,/g, options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(3); // Still adds newlines for header, first data row, and end of data
                     done();
                 }, options);
             });
@@ -347,8 +347,8 @@ let csv2jsonTests = function () {
                 converter.json2csv(jsonTestData.singleDoc, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.singleDoc.replace(/,/g, options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(3);
+                    csv.should.equal(csvTestData.unQuoted.singleDoc.replace(/,/g, options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(3);
                     done();
                 }, options);
             });
@@ -357,20 +357,20 @@ let csv2jsonTests = function () {
                 converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.arrayValue.replace(/;/g, options.DELIMITER.ARRAY).replace(/,/g, options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                    csv.should.equal(csvTestData.unQuoted.arrayValue.replace(/;/g, options.delimiter.array).replace(/,/g, options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(5);
                     done();
                 }, options);
             });
 
             it('should parse the specified keys to CSV', function (done) {
                 // Create a copy so we don't modify the actual options object
-                let opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS: ['info.name', 'year']});
+                let opts = _.extend(JSON.parse(JSON.stringify(options)), {keys: ['info.name', 'year']});
                 converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.arrayValue_specificKeys.replace(/,/g, opts.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(5);
+                    csv.should.equal(csvTestData.unQuoted.arrayValue_specificKeys.replace(/,/g, opts.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(5);
                     done();
                 }, opts);
             });
@@ -379,8 +379,8 @@ let csv2jsonTests = function () {
                 converter.json2csv(jsonTestData.sameSchemaDifferentOrdering, function (err, csv) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
-                    csv.should.equal(csvTestData.unQuoted.regularJson.replace(/,/g, options.DELIMITER.FIELD));
-                    csv.split(options.DELIMITER.EOL).length.should.equal(6);
+                    csv.should.equal(csvTestData.unQuoted.regularJson.replace(/,/g, options.delimiter.field));
+                    csv.split(options.delimiter.eol).length.should.equal(6);
                     done();
                 }, options);
             });
@@ -446,13 +446,13 @@ let csv2jsonTests = function () {
         describe('Custom Options - Quote Wrapped Fields', function () {
             beforeEach(function () {
                 options = {
-                    DELIMITER         : {
-                        FIELD  :  ',',
-                        ARRAY  :  '/',
-                        WRAP   :  '\"'
+                    delimiter         : {
+                        field  :  ',',
+                        array  :  '/',
+                        wrap   :  '\"'
                     },
-                    EOL               : '\n',
-                    PARSE_CSV_NUMBERS : false
+                    eol               : '\n',
+                    parseCsvNumbers : false
                 };
             });
 
@@ -517,7 +517,7 @@ let csv2jsonTests = function () {
             });
 
             it('should parse a quoted CSV with a nested array to the correct JSON representation', function (done) {
-                converter.csv2json(csvTestData.quoted.arrayValue.replace(/;/g, options.DELIMITER.ARRAY), function (err, json) {
+                converter.csv2json(csvTestData.quoted.arrayValue.replace(/;/g, options.delimiter.array), function (err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     let isEqual = _.isEqual(json, jsonTestData.arrayValue);
@@ -527,8 +527,8 @@ let csv2jsonTests = function () {
             });
 
             it('should parse the specified keys to JSON from a quoted CSV', function (done) {
-                let opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS : ['info.name', 'year']});
-                converter.csv2json(csvTestData.quoted.arrayValue.replace(/,/g, options.DELIMITER.FIELD), function (err, json) {
+                let opts = _.extend(JSON.parse(JSON.stringify(options)), {keys : ['info.name', 'year']});
+                converter.csv2json(csvTestData.quoted.arrayValue.replace(/,/g, options.delimiter.field), function (err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
                     let isEqual = _.isEqual(json, jsonTestData.arrayValue_specificKeys);
@@ -548,7 +548,7 @@ let csv2jsonTests = function () {
                 }, options);
             });
 
-            it('should parse an unquoted CSV without any issues while a DELIMITER is set', function (done) {
+            it('should parse an unquoted CSV without any issues while a delimiter is set', function (done) {
                 converter.csv2json(csvTestData.unQuoted.arrayValue.replace(/;/g, '/'), function (err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
@@ -615,7 +615,7 @@ let csv2jsonTests = function () {
             });
 
             it('should still work when no delimiters specified', function (done) {
-                delete options.DELIMITER;
+                delete options.delimiter;
                 converter.csv2json(csvTestData.unQuoted.regularJson, function (err, json) {
                     if (err) { throw err; }
                     true.should.equal(_.isEqual(err, null));
@@ -634,7 +634,7 @@ let csv2jsonTests = function () {
                     let isEqual = _.isEqual(json, jsonTestData.trimmed);
                     true.should.equal(isEqual);
                     done();
-                }, {TRIM_HEADER_FIELDS: true, TRIM_FIELD_VALUES: true});
+                }, {trimHeaderFields: true, trimFieldValues: true});
             });
             
             it('should trim the headers and the fields - 2', function (done) {
@@ -644,7 +644,7 @@ let csv2jsonTests = function () {
                     let isEqual = _.isEqual(json, jsonTestData.trimmed);
                     true.should.equal(isEqual);
                     done();
-                }, {TRIM_HEADER_FIELDS: true, TRIM_FIELD_VALUES: true});
+                }, {trimHeaderFields: true, trimFieldValues: true});
             });
         });
 
@@ -654,7 +654,7 @@ let csv2jsonTests = function () {
             });
 
             it('should throw an error about the field and array delimiters being the same', function (done) {
-                options.DELIMITER.FIELD = options.DELIMITER.ARRAY = ',';
+                options.delimiter.field = options.delimiter.array = ',';
                 converter.csv2json(csvTestData.unQuoted.regularJson, function (err, json) {
                     err.message.should.equal(constants.Errors.delimitersMustDiffer);
                     done();
@@ -786,12 +786,12 @@ let csv2jsonTests = function () {
         describe('Custom Options - Comma Delimited', function () {
             beforeEach(function () {
                 options = {
-                    DELIMITER         : {
-                        FIELD  :  ',',
-                        ARRAY  :  '/'
+                    delimiter         : {
+                        field  :  ',',
+                        array  :  '/'
                     },
-                    EOL               : '\n',
-                    PARSE_CSV_NUMBERS : false
+                    eol               : '\n',
+                    parseCsvNumbers : false
                 };
             });
 
@@ -868,7 +868,7 @@ let csv2jsonTests = function () {
             });
 
             it('should parse a CSV with a nested array to the correct JSON representation', function (done) {
-                converter.csv2jsonPromisified(csvTestData.unQuoted.arrayValue.replace(/;/g, options.DELIMITER.ARRAY), options)
+                converter.csv2jsonPromisified(csvTestData.unQuoted.arrayValue.replace(/;/g, options.delimiter.array), options)
                     .then(function (json) {
                         let isEqual = _.isEqual(json, jsonTestData.arrayValue);
                         true.should.equal(isEqual);
@@ -880,8 +880,8 @@ let csv2jsonTests = function () {
             });
 
             it('should parse the specified keys to JSON', function (done) {
-                let opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS : ['info.name', 'year']});
-                converter.csv2jsonPromisified(csvTestData.unQuoted.arrayValue.replace(/,/g, options.DELIMITER.FIELD), opts)
+                let opts = _.extend(JSON.parse(JSON.stringify(options)), {keys : ['info.name', 'year']});
+                converter.csv2jsonPromisified(csvTestData.unQuoted.arrayValue.replace(/,/g, options.delimiter.field), opts)
                     .then(function (json) {
                         let isEqual = _.isEqual(json, jsonTestData.arrayValue_specificKeys);
                         true.should.equal(isEqual);
@@ -918,13 +918,13 @@ let csv2jsonTests = function () {
         describe('Custom Options - Quote Wrapped Fields', function () {
             beforeEach(function () {
                 options = {
-                    DELIMITER         : {
-                        FIELD  :  ',',
-                        ARRAY  :  '/',
-                        WRAP   :  '\"',
-                        EOL    : '\n'
+                    delimiter         : {
+                        field  :  ',',
+                        array  :  '/',
+                        wrap   :  '\"',
+                        eol    : '\n'
                     },
-                    PARSE_CSV_NUMBERS : false
+                    parseCsvNumbers : false
                 };
             });
 
@@ -1013,7 +1013,7 @@ let csv2jsonTests = function () {
             });
 
             it('should parse the specified keys to JSON from a quoted CSV', function (done) {
-                let opts = _.extend(JSON.parse(JSON.stringify(options)), {KEYS : ['info.name', 'year']});
+                let opts = _.extend(JSON.parse(JSON.stringify(options)), {keys : ['info.name', 'year']});
                 converter.csv2jsonPromisified(csvTestData.quoted.arrayValue, opts)
                     .then(function (json) {
                         let isEqual = _.isEqual(json, jsonTestData.arrayValue_specificKeys);
@@ -1037,7 +1037,7 @@ let csv2jsonTests = function () {
                     });
             });
             
-            it('should parse an unquoted CSV without any issues while a DELIMITER is set', function (done) {
+            it('should parse an unquoted CSV without any issues while a delimiter is set', function (done) {
                 converter.csv2jsonPromisified(csvTestData.unQuoted.arrayValue.replace(/;/g, '/'), options)
                     .then(function (json) {
                         let isEqual = _.isEqual(json, jsonTestData.arrayValue);
@@ -1078,7 +1078,7 @@ let csv2jsonTests = function () {
             });
 
             it('should still work when no delimiters specified', function (done) {
-                delete options.DELIMITER;
+                delete options.delimiter;
                 converter.csv2jsonPromisified(csvTestData.unQuoted.regularJson, options)
                     .then(function (json) {
                         let isEqual = _.isEqual(json, jsonTestData.regularJson);
@@ -1097,7 +1097,7 @@ let csv2jsonTests = function () {
             });
 
             it('should throw an error about the field and array delimiters being the same', function (done) {
-                options.DELIMITER.FIELD = options.DELIMITER.ARRAY = ',';
+                options.delimiter.field = options.delimiter.array = ',';
                 converter.csv2jsonPromisified(csvTestData.unQuoted.regularJson, options)
                     .then(function (json) {
                         throw new Error('should not hit');

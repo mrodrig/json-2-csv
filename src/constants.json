@@ -20,19 +20,19 @@
   },
 
   "DefaultOptions" : {
-    "DELIMITER" : {
-      "FIELD" : ",",
-      "ARRAY" : ";",
-      "WRAP"  : "",
-      "EOL"   : "\n"
+    "delimiter" : {
+      "field" : ",",
+      "array" : ";",
+      "wrap"  : "",
+      "eol"   : "\n"
     },
-    "PREPEND_HEADER" : true,
-    "TRIM_HEADER_FIELDS": false,
-    "TRIM_FIELD_VALUES" : false,
-    "SORT_HEADER" : false,
-    "PARSE_CSV_NUMBERS" : false,
-    "KEYS" : null,
-    "CHECK_SCHEMA_DIFFERENCES": true,
-    "EMPTY_FIELD_VALUE": "null"
+    "prependHeader" : true,
+    "trimHeaderFields": false,
+    "trimFieldValues" : false,
+    "sortHeader" : false,
+    "parseCsvNumbers" : false,
+    "keys" : null,
+    "checkSchemaDifferences": true,
+    "emptyFieldValue": "null"
   }
 }
