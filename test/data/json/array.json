@@ -1,0 +1,14 @@
+[
+  {
+    "author": "mrodrig",
+    "modules": ["json-2-csv"]
+  },
+  {
+    "author": "jsmith",
+    "modules": []
+  },
+  {
+    "author": "anonymous_user_123",
+    "modules": ["some_module", "another_module", "this other cool module"]
+  }
+]
