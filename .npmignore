@@ -2,7 +2,7 @@ test/
 .git*
 npm-debug.log
 .travis.yml
-node_modules/
-node_modules/*
-coverage/
-coverage/*
+.eslintrc
+node_modules
+coverage
+upgrade_guides

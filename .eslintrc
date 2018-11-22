@@ -1,0 +1,125 @@
+//https://eslint.org/docs/rules/ for enabled rules for eslint:recommended and --fix rules
+{
+  "env": {
+    "es6": true,      // ignore ES6 globals
+    "node": true,     // ignore node globals
+    "mocha": true     // ignore mocha globals (describe, it)
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "rules": {
+    //Overrides "eslint:recommended"
+    "no-console": 0,                    // allow use of console.log
+
+    //Add the rules associated with --fix not covered by "eslint:recommended" so we highlight them
+    //during pre-test script
+
+    //Possible Errors
+    "no-extra-parens": "error",
+    //"valid-jsdoc": "error",
+
+    //Best Practices
+//    "curly": "error",
+    //"dot-location": "error",
+    "dot-notation": "error",
+    "eqeqeq": "error",
+    //"no-else-return": "error",
+    "no-extra-bind": "error",
+    "no-extra-label": "error",
+    "no-floating-decimal": "error",
+    "no-implicit-coercion": "error",
+    "no-multi-spaces": "error",
+    "no-useless-return": "error",
+    "wrap-iife": "error",
+    "yoda": "error",
+
+    //Strict Mode
+    //"strict": "error",
+
+    //Variables
+    "no-undef-init": "error",
+
+    //Stylistic
+    //"array-bracket-newline": "error",
+    "array-bracket-spacing": "error",
+    //"array-element-newline": "error",
+    "block-spacing": "error",
+    "brace-style": "error",
+    //"capitalized-comments": "error",
+    "comma-dangle": "error",
+    "comma-spacing": "error",
+    "comma-style": "error",
+    "computed-property-spacing": "error",
+    "eol-last": "error",
+    "func-call-spacing": "error",
+    //"function-paren-newline": "error",
+    "implicit-arrow-linebreak": "error",
+    "indent": ["error", 4, {            // use 4 spaces for indents
+      "SwitchCase": 1                   // indent case within switch
+    }],
+    "key-spacing": "error",
+    "keyword-spacing": "error",
+    "linebreak-style" : 0,              // mixed environment let git config enforce line endings
+    "lines-around-comment": "error",
+    "lines-between-class-members": "error",
+    //"multiline-comment-style": "error",
+    "new-parens": "error",
+    "newline-per-chained-call": "error",
+    "no-lonely-if": "error",
+    "no-multiple-empty-lines": ["error", {
+      "max": 1                          // enforce single empty line max
+    }],
+    "no-trailing-spaces": "error",
+    "no-unneeded-ternary": "error",
+    "no-whitespace-before-property": "error",
+    "nonblock-statement-body-position": "error",
+    "object-curly-newline": ["error", { "consistent": true }],
+    "object-property-newline":  ["error", { "allowAllPropertiesOnSameLine": true }],
+    "one-var": ["error", "consecutive"],
+    "one-var-declaration-per-line": "error",
+    "operator-assignment": "error",
+    "operator-linebreak": "error",
+    //"padded-blocks":  ["error"],
+    "padding-line-between-statements": "error",
+    "prefer-object-spread": "error",
+    "quote-props":  ["error", "as-needed"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "semi-spacing": "error",
+    "semi-style": "error",
+    //"sort-vars": "error",
+    "space-before-blocks": "error",
+    "space-before-function-paren": ["error", "never"],
+    "space-in-parens": "error",
+    "space-infix-ops": "error",
+    "space-unary-ops": "error",
+    "spaced-comment": "error",
+    "switch-colon-spacing": "error",
+    "template-tag-spacing": "error",
+    "unicode-bom": "error",
+    "wrap-regex": "error",
+
+    //ECMAScript6
+    "arrow-body-style": "error",
+    "arrow-parens": "error",
+    "arrow-spacing": "error",
+    "generator-star-spacing": "error",
+    "no-confusing-arrow": "error",
+    "no-useless-computed-key": "error",
+    "no-useless-rename": "error",
+    "no-var": "error",
+    //"object-shorthand": "error",              //haven't implemented this yet
+    //"prefer-arrow-callback": "error",         //we have not full moved to arrow functions
+    //"prefer-const": "error",                  //use in future, already 179 errors (only 51 fixable)
+    "prefer-numeric-literals": "error",
+    "prefer-spread": "error",
+    //"prefer-template": "error",               //issues with string concatenation in logging
+    "rest-spread-spacing": "error",
+    "sort-imports": "error",
+    "template-curly-spacing": "error",
+    "yield-star-spacing": "error"
+  }
+}

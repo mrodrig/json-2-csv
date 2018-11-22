@@ -1,0 +1,3 @@
+arrayOfStrings,isBoolean,number,object.subField,optionalField
+"[""test1"",""test2""]",true,5,subValue,this one has it
+"[""test3"",""test4""]",false,7,subValue,null

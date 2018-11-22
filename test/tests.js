@@ -1,31 +1,12 @@
-let json2csvTests = require('./testJson2Csv'),
-    csv2jsonTests = require('./testCsv2Json'),
-    jsonTestData = require('./testJsonFilesList'),
-    async = require('async'),
-    fs = require('fs'),
-    _ = require('underscore'),
-    csvTestData  = {unQuoted: {}, quoted: {}}, // Document where all csv files will be loaded into
-    csvFiles = require('./testCsvFilesList');
+let json2csvTests = require('./json2csv'),
+    csv2jsonTests = require('./csv2json'),
+    jsonTestData = require('./config/testJsonFilesList'),
+    csvTestData = require('./config/testCsvFilesList');
 
-let readCsvFile = function (masterKey, fileInfo, callback) {
-    csvTestData[masterKey][fileInfo.key] = fs.readFileSync(fileInfo.file).toString();
-    return callback(null, csvTestData[masterKey][fileInfo.key]);
-};
+describe('json-2-csv Node Module', function() {
+    // Run JSON to CSV tests
+    json2csvTests.runTests(jsonTestData, csvTestData);
 
-describe('json-2-csv Module', function() {
-    before(function(done) {
-        async.parallel(
-            _.flatten(_.map(csvFiles, function (grouping) {
-                return _.map(grouping.files, function (fileInfo) {
-                    return _.partial(readCsvFile, grouping.key, fileInfo);
-                });
-            })),
-            function(err, results) {
-                if (err) throw err;
-                done();
-            });
-    });
-
-    json2csvTests.runTests({jsonTestData: jsonTestData, csvTestData: csvTestData});
-    csv2jsonTests.runTests({jsonTestData: jsonTestData, csvTestData: csvTestData});
+    // Run CSV to JSON Tests
+    csv2jsonTests.runTests(jsonTestData, csvTestData);
 });

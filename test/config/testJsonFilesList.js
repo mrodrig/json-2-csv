@@ -1,0 +1,20 @@
+module.exports = {
+    noData: require('../data/json/noData'),
+    singleDocument: require('../data/json/singleDocument'),
+    array: require('../data/json/array'),
+    date: require('../data/json/date'),
+    null: require('../data/json/null'),
+    undefined: require('../data/json/undefined'),
+    nested: require('../data/json/nested'),
+    nestedMissingField: require('../data/json/nestedMissingField'),
+    comma: require('../data/json/comma'),
+    quotes: require('../data/json/quotes'),
+    quotesAndCommas: require('../data/json/quotesAndCommas'),
+    eol: require('../data/json/eol'),
+    assortedValues: require('../data/json/assortedValues'),
+    trimFields: require('../data/json/trimFields'),
+    trimmedFields: require('../data/json/trimmedFields'),
+    trimHeader: require('../data/json/trimHeader'),
+    trimmedHeader: require('../data/json/trimmedHeader'),
+    specifiedKeys: require('../data/json/specifiedKeys')
+};
