@@ -4,7 +4,7 @@ let should = require('should'),
     constants = require('../src/constants'),
     _ = require('underscore'),
     promise = require('bluebird'),
-    defaultOptions = constants.DefaultOptions,
+    defaultOptions = constants.defaultOptions,
     jsonTestData,
     csvTestData,
     options;
@@ -88,14 +88,14 @@ let csv2jsonTests = function () {
 
             it('should throw an error about not having been passed data - 1', function (done) {
                 converter.csv2json(null, function (err, json) {
-                    err.message.should.equal(constants.Errors.csv2json.cannotCallCsv2JsonOn + 'null.');
+                    err.message.should.equal(constants.errors.csv2json.cannotCallCsv2JsonOn + 'null.');
                     done();
                 });
             });
 
             it('should throw an error about not having been passed data - 2', function (done) {
                 converter.csv2json(undefined, function (err, json) {
-                    err.message.should.equal(constants.Errors.csv2json.cannotCallCsv2JsonOn + 'undefined.');
+                    err.message.should.equal(constants.errors.csv2json.cannotCallCsv2JsonOn + 'undefined.');
                     done();
                 });
             });
@@ -104,7 +104,7 @@ let csv2jsonTests = function () {
                 try {
                     converter.csv2json(undefined, undefined);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -113,7 +113,7 @@ let csv2jsonTests = function () {
                 try {
                     converter.csv2json(null, undefined);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -122,7 +122,7 @@ let csv2jsonTests = function () {
                 try {
                     converter.csv2json(null, null);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -131,7 +131,7 @@ let csv2jsonTests = function () {
                 try {
                     converter.csv2json(undefined, null);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -232,14 +232,14 @@ let csv2jsonTests = function () {
 
             it('should throw an error about not having been passed data - 1', function (done) {
                 converter.csv2json(null, function (err, json) {
-                    err.message.should.equal(constants.Errors.csv2json.cannotCallCsv2JsonOn + 'null.');
+                    err.message.should.equal(constants.errors.csv2json.cannotCallCsv2JsonOn + 'null.');
                     done();
                 }, options);
             });
 
             it('should throw an error about not having been passed data - 2', function (done) {
                 converter.csv2json(undefined, function (err, json) {
-                    err.message.should.equal(constants.Errors.csv2json.cannotCallCsv2JsonOn + 'undefined.');
+                    err.message.should.equal(constants.errors.csv2json.cannotCallCsv2JsonOn + 'undefined.');
                     done();
                 }, options);
             });
@@ -248,7 +248,7 @@ let csv2jsonTests = function () {
                 try {
                     converter.csv2json(undefined, undefined, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -257,7 +257,7 @@ let csv2jsonTests = function () {
                 try {
                     converter.csv2json(null, undefined, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -266,7 +266,7 @@ let csv2jsonTests = function () {
                 try {
                     converter.csv2json(null, null, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -275,7 +275,7 @@ let csv2jsonTests = function () {
                 try {
                     converter.csv2json(undefined, null, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -410,7 +410,7 @@ let csv2jsonTests = function () {
                 try {
                     converter.json2csv(undefined, undefined, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -419,7 +419,7 @@ let csv2jsonTests = function () {
                 try {
                     converter.json2csv(null, undefined, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -428,7 +428,7 @@ let csv2jsonTests = function () {
                 try {
                     converter.json2csv(null, null, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -437,7 +437,7 @@ let csv2jsonTests = function () {
                 try {
                     converter.json2csv(undefined, null, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -560,14 +560,14 @@ let csv2jsonTests = function () {
 
             it('should throw an error about not having been passed data - 1', function (done) {
                 converter.csv2json(null, function (err, json) {
-                    err.message.should.equal(constants.Errors.csv2json.cannotCallCsv2JsonOn + 'null.');
+                    err.message.should.equal(constants.errors.csv2json.cannotCallCsv2JsonOn + 'null.');
                     done();
                 }, options);
             });
 
             it('should throw an error about not having been passed data - 2', function (done) {
                 converter.csv2json(undefined, function (err, json) {
-                    err.message.should.equal(constants.Errors.csv2json.cannotCallCsv2JsonOn + 'undefined.');
+                    err.message.should.equal(constants.errors.csv2json.cannotCallCsv2JsonOn + 'undefined.');
                     done();
                 }, options);
             });
@@ -576,7 +576,7 @@ let csv2jsonTests = function () {
                 try {
                     converter.csv2json(undefined, undefined, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -585,7 +585,7 @@ let csv2jsonTests = function () {
                 try {
                     converter.csv2json(null, undefined, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -594,7 +594,7 @@ let csv2jsonTests = function () {
                 try {
                     converter.csv2json(null, null, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -603,7 +603,7 @@ let csv2jsonTests = function () {
                 try {
                     converter.csv2json(undefined, null, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -656,14 +656,14 @@ let csv2jsonTests = function () {
             it('should throw an error about the field and array delimiters being the same', function (done) {
                 options.delimiter.field = options.delimiter.array = ',';
                 converter.csv2json(csvTestData.unQuoted.regularJson, function (err, json) {
-                    err.message.should.equal(constants.Errors.delimitersMustDiffer);
+                    err.message.should.equal(constants.errors.delimitersMustDiffer);
                     done();
                 }, options);
             });
 
             it('should throw an error if the data is of the wrong type', function (done) {
                 converter.csv2json(new Date(), function (err, json) {
-                    err.message.should.equal(constants.Errors.csv2json.csvNotString);
+                    err.message.should.equal(constants.errors.csv2json.csvNotString);
                     done();
                 }, options);
             });
@@ -766,7 +766,7 @@ let csv2jsonTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.csv2json.cannotCallCsv2JsonOn + 'null.');
+                        err.message.should.equal(constants.errors.csv2json.cannotCallCsv2JsonOn + 'null.');
                         done();
                     });
             });
@@ -777,7 +777,7 @@ let csv2jsonTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.csv2json.cannotCallCsv2JsonOn + 'undefined.');
+                        err.message.should.equal(constants.errors.csv2json.cannotCallCsv2JsonOn + 'undefined.');
                         done();
                     });
             });
@@ -898,7 +898,7 @@ let csv2jsonTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.csv2json.cannotCallCsv2JsonOn + 'null.');
+                        err.message.should.equal(constants.errors.csv2json.cannotCallCsv2JsonOn + 'null.');
                         done();
                     });
             });
@@ -909,7 +909,7 @@ let csv2jsonTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.csv2json.cannotCallCsv2JsonOn + 'undefined.');
+                        err.message.should.equal(constants.errors.csv2json.cannotCallCsv2JsonOn + 'undefined.');
                         done();
                     });
             });
@@ -1055,7 +1055,7 @@ let csv2jsonTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.csv2json.cannotCallCsv2JsonOn + 'null.');
+                        err.message.should.equal(constants.errors.csv2json.cannotCallCsv2JsonOn + 'null.');
                         done();
                     });
             });
@@ -1066,7 +1066,7 @@ let csv2jsonTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.csv2json.cannotCallCsv2JsonOn + 'undefined.');
+                        err.message.should.equal(constants.errors.csv2json.cannotCallCsv2JsonOn + 'undefined.');
                         done();
                     });
             });
@@ -1103,7 +1103,7 @@ let csv2jsonTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.delimitersMustDiffer);
+                        err.message.should.equal(constants.errors.delimitersMustDiffer);
                         done();
                     });
             });
@@ -1114,7 +1114,7 @@ let csv2jsonTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.csv2json.csvNotString);
+                        err.message.should.equal(constants.errors.csv2json.csvNotString);
                         done();
                     });
             });

@@ -14,7 +14,7 @@ const Csv2Json = function (options) {
     function retrieveHeading(lines, callback) {
         // If there are no lines passed in, return an error
         if (!lines.length) {
-            return callback(new Error(constants.Errors.csv2json.noDataRetrieveHeading)); // Pass an error back to the user
+            return callback(new Error(constants.errors.csv2json.noDataRetrieveHeading)); // Pass an error back to the user
         }
 
         // Generate and return the heading keys
@@ -193,17 +193,17 @@ const Csv2Json = function (options) {
      */
     function convert(data, callback) {
         // If a callback wasn't provided, throw an error
-        if (!callback) { throw new Error(constants.Errors.callbackRequired); }
+        if (!callback) { throw new Error(constants.errors.callbackRequired); }
 
         // Shouldn't happen, but just in case
-        if (!opts) { return callback(new Error(constants.Errors.optionsRequired)); }
+        if (!opts) { return callback(new Error(constants.errors.optionsRequired)); }
 
         // If we don't receive data, report an error
-        if (!data) { return callback(new Error(constants.Errors.csv2json.cannotCallCsv2JsonOn + data + '.')); }
+        if (!data) { return callback(new Error(constants.errors.csv2json.cannotCallCsv2JsonOn + data + '.')); }
 
         // The data provided is not a string
         if (!_.isString(data)) {
-            return callback(new Error(constants.Errors.csv2json.csvNotString)); // Report an error back to the caller
+            return callback(new Error(constants.errors.csv2json.csvNotString)); // Report an error back to the caller
         }
 
         // Split the CSV into lines using the specified EOL option

@@ -1,5 +1,5 @@
 {
-  "Errors" : {
+  "errors" : {
 
     "delimitersMustDiffer": "The field and array delimiters must differ.",
     "callbackRequired": "A callback is required!",
@@ -19,7 +19,7 @@
 
   },
 
-  "DefaultOptions" : {
+  "defaultOptions" : {
     "delimiter" : {
       "field" : ",",
       "array" : ";",

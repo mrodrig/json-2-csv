@@ -4,7 +4,7 @@ let should = require('should'),
     constants = require('../src/constants'),
     _ = require('underscore'),
     promise = require('bluebird'),
-    defaultOptions = constants.DefaultOptions,
+    defaultOptions = constants.defaultOptions,
     jsonTestData,
     csvTestData,
     options;
@@ -98,39 +98,41 @@ let json2csvTests = function () {
 
             it('should throw an error if the documents do not have the same schema', function (done) {
                 converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
-                    err.message.should.equal(constants.Errors.json2csv.notSameSchema);
+                    err.message.should.equal(constants.errors.json2csv.notSameSchema);
                     done();
                 });
             });
 
             it('should throw an error about not having been passed data - 1', function (done) {
                 converter.json2csv(null, function (err, csv) {
-                    err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'null.');
+                    err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'null.');
                     done();
                 });
             });
 
             it('should throw an error about not having been passed data - 2', function (done) {
                 converter.json2csv(undefined, function (err, csv) {
-                    err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
+                    err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
                     done();
                 });
             });
 
             it('should throw an error about not being provided a callback - 1', function (done) {
                 try {
-                    converter.json2csv(undefined, undefined);
+                    console.log('GOOD');
+                    converter.json2csv(undefined, undefined, undefined);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    console.log('ERROR');
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
 
             it('should throw an error about not being provided a callback - 2', function (done) {
                 try {
-                    converter.json2csv(null, undefined);
+                    converter.json2csv(null, undefined, undefined);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -139,7 +141,7 @@ let json2csvTests = function () {
                 try {
                     converter.json2csv(null, null);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -148,7 +150,7 @@ let json2csvTests = function () {
                 try {
                     converter.json2csv(undefined, null);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -157,7 +159,7 @@ let json2csvTests = function () {
                 try {
                     converter.json2csv();
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -282,21 +284,21 @@ let json2csvTests = function () {
 
             it('should throw an error if the documents do not have the same schema', function (done) {
                 converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
-                    err.message.should.equal(constants.Errors.json2csv.notSameSchema);
+                    err.message.should.equal(constants.errors.json2csv.notSameSchema);
                     done();
                 }, options);
             });
 
             it('should throw an error about not having been passed data - 1', function (done) {
                 converter.json2csv(null, function (err, csv) {
-                    err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'null.');
+                    err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'null.');
                     done();
                 }, options);
             });
 
             it('should throw an error about not having been passed data - 2', function (done) {
                 converter.json2csv(undefined, function (err, csv) {
-                    err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
+                    err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
                     done();
                 }, options);
             });
@@ -305,7 +307,7 @@ let json2csvTests = function () {
                 try {
                     converter.json2csv(undefined, undefined, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -314,7 +316,7 @@ let json2csvTests = function () {
                 try {
                     converter.json2csv(null, undefined, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -323,7 +325,7 @@ let json2csvTests = function () {
                 try {
                     converter.json2csv(null, null, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -332,7 +334,7 @@ let json2csvTests = function () {
                 try {
                     converter.json2csv(undefined, null, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -458,21 +460,21 @@ let json2csvTests = function () {
 
             it('should throw an error if the documents do not have the same schema', function (done) {
                 converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
-                    err.message.should.equal(constants.Errors.json2csv.notSameSchema);
+                    err.message.should.equal(constants.errors.json2csv.notSameSchema);
                     done();
                 }, options);
             });
 
             it('should throw an error about not having been passed data - 1', function (done) {
                 converter.json2csv(null, function (err, csv) {
-                    err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'null.');
+                    err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'null.');
                     done();
                 }, options);
             });
 
             it('should throw an error about not having been passed data - 2', function (done) {
                 converter.json2csv(undefined, function (err, csv) {
-                    err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
+                    err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
                     done();
                 }, options);
             });
@@ -481,7 +483,7 @@ let json2csvTests = function () {
                 try {
                     converter.json2csv(undefined, undefined, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -490,7 +492,7 @@ let json2csvTests = function () {
                 try {
                     converter.json2csv(null, undefined, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -499,7 +501,7 @@ let json2csvTests = function () {
                 try {
                     converter.json2csv(null, null, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -508,7 +510,7 @@ let json2csvTests = function () {
                 try {
                     converter.json2csv(undefined, null, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -644,21 +646,21 @@ let json2csvTests = function () {
 
             it('should throw an error if the documents do not have the same schema', function (done) {
                 converter.json2csv(jsonTestData.differentSchemas, function (err, csv) {
-                    err.message.should.equal(constants.Errors.json2csv.notSameSchema);
+                    err.message.should.equal(constants.errors.json2csv.notSameSchema);
                     done();
                 }, options);
             });
 
             it('should throw an error about not having been passed data - 1', function (done) {
                 converter.json2csv(null, function (err, csv) {
-                    err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'null.');
+                    err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'null.');
                     done();
                 }, options);
             });
 
             it('should throw an error about not having been passed data - 2', function (done) {
                 converter.json2csv(undefined, function (err, csv) {
-                    err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
+                    err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
                     done();
                 }, options);
             });
@@ -667,7 +669,7 @@ let json2csvTests = function () {
                 try {
                     converter.json2csv(undefined, undefined, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -676,7 +678,7 @@ let json2csvTests = function () {
                 try {
                     converter.json2csv(null, undefined, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -685,7 +687,7 @@ let json2csvTests = function () {
                 try {
                     converter.json2csv(null, null, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -694,7 +696,7 @@ let json2csvTests = function () {
                 try {
                     converter.json2csv(undefined, null, options);
                 } catch (err) {
-                    err.message.should.equal(constants.Errors.callbackRequired);
+                    err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }
             });
@@ -813,14 +815,14 @@ let json2csvTests = function () {
             it('should throw an error about the field and array delimiters being the same', function (done) {
                 options.delimiter.field = options.delimiter.array = ',';
                 converter.json2csv(jsonTestData.arrayValue, function (err, csv) {
-                    err.message.should.equal(constants.Errors.delimitersMustDiffer);
+                    err.message.should.equal(constants.errors.delimitersMustDiffer);
                     done();
                 }, options);
             });
             
             it('should throw an error if the data is of the wrong type', function (done) {
                 converter.json2csv(new Date().toString(), function (err, csv) {
-                    err.message.should.equal(constants.Errors.json2csv.dataNotArrayOfDocuments);
+                    err.message.should.equal(constants.errors.json2csv.dataNotArrayOfDocuments);
                     done();
                 }, options);
             });
@@ -944,7 +946,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.json2csv.notSameSchema);
+                        err.message.should.equal(constants.errors.json2csv.notSameSchema);
                         done();
                     });
             });
@@ -955,7 +957,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'null.');
+                        err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'null.');
                         done();
                     });
             });
@@ -966,7 +968,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
+                        err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
                         done();
                     });
             });
@@ -1115,7 +1117,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.json2csv.notSameSchema);
+                        err.message.should.equal(constants.errors.json2csv.notSameSchema);
                         done();
                     });
             });
@@ -1126,7 +1128,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'null.');
+                        err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'null.');
                         done();
                     });
             });
@@ -1137,7 +1139,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
+                        err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
                         done();
                     });
             });
@@ -1287,7 +1289,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.json2csv.notSameSchema);
+                        err.message.should.equal(constants.errors.json2csv.notSameSchema);
                         done();
                     });
             });
@@ -1298,7 +1300,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'null.');
+                        err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'null.');
                         done();
                     });
             });
@@ -1309,7 +1311,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
+                        err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
                         done();
                     });
             });
@@ -1471,7 +1473,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.json2csv.notSameSchema);
+                        err.message.should.equal(constants.errors.json2csv.notSameSchema);
                         done();
                     });
             });
@@ -1482,7 +1484,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'null.');
+                        err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'null.');
                         done();
                     });
             });
@@ -1493,7 +1495,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
+                        err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
                         done();
                     });
             });
@@ -1520,7 +1522,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.delimitersMustDiffer);
+                        err.message.should.equal(constants.errors.delimitersMustDiffer);
                         done();
                     });
             });
@@ -1531,7 +1533,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.Errors.json2csv.dataNotArrayOfDocuments);
+                        err.message.should.equal(constants.errors.json2csv.dataNotArrayOfDocuments);
                         done();
                     });
             });

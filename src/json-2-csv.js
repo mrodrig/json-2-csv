@@ -42,7 +42,7 @@ const Json2Csv = function (options) {
 
             // If there are schema inconsistencies, throw a schema not the same error
             if (schemaDifferences) {
-                return promise.reject(new Error(constants.Errors.json2csv.notSameSchema));
+                return promise.reject(new Error(constants.errors.json2csv.notSameSchema));
             }
 
 
@@ -138,17 +138,17 @@ const Json2Csv = function (options) {
      */
     function convert(data, callback) {
         // If a callback wasn't provided, throw an error
-        if (!callback) { throw new Error(constants.Errors.callbackRequired); }
+        if (!callback) { throw new Error(constants.errors.callbackRequired); }
 
         // Shouldn't happen, but just in case
-        if (!options) { return callback(new Error(constants.Errors.optionsRequired)); }
+        if (!options) { return callback(new Error(constants.errors.optionsRequired)); }
 
         // If we don't receive data, report an error
-        if (!data) { return callback(new Error(constants.Errors.json2csv.cannotCallJson2CsvOn + data + '.')); }
+        if (!data) { return callback(new Error(constants.errors.json2csv.cannotCallJson2CsvOn + data + '.')); }
 
         // If the data was not a single document or an array of documents
         if (!_.isObject(data)) {
-            return callback(new Error(constants.Errors.json2csv.dataNotArrayOfDocuments));  // Report the error back to the caller
+            return callback(new Error(constants.errors.json2csv.dataNotArrayOfDocuments));  // Report the error back to the caller
         }
         // Single document, not an array
         else if (_.isObject(data) && !data.length) {
