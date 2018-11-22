@@ -36,3 +36,11 @@ global scope ☹️ which could result in options being overwritten if there wer
 two or more simultaneous calls to the json2csv or csv2json function. This has
 been fixed to improve parallel processing. This change is invisible to the
 developer though, as it requires no changes to your code. 🙂
+
+* Duplicated code, no longer!
+
+Another invisible improvement is that duplicated code has been removed. More 
+specifically, the functionality has been abstracted out to avoid having the same
+underlying support code in multiple spots. This falls moreso under technical
+debt, but nonetheless, it's an improvement that will help improve 
+maintainability long-term. 
