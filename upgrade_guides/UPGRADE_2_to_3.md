@@ -26,4 +26,13 @@ DELIMITER.WRAP           --> delimiter.wrap
 DELIMITER.EOL            --> delimiter.eol
 ```
 
-* 
+## Improvements
+
+* Class-based functionality
+
+Starting with v3.0.0, the internal workings of json-2-csv have been revamped to
+utilize a class-based structure. Previously, the options objects were set on a
+global scope ☹️ which could result in options being overwritten if there were
+two or more simultaneous calls to the json2csv or csv2json function. This has
+been fixed to improve parallel processing. This change is invisible to the
+developer though, as it requires no changes to your code. 🙂

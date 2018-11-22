@@ -1,7 +1,7 @@
 'use strict';
 
-let json2Csv = require('./json-2-csv'), // Require our json-2-csv code
-    csv2Json = require('./csv-2-json'), // Require our csv-2-json code
+let {Json2Csv} = require('./json-2-csv'), // Require our json-2-csv code
+    {Csv2Json} = require('./csv-2-json'), // Require our csv-2-json code
     constants = require('./constants.json'), // Require in constants
     docPath = require('doc-path'),
     promise = require('bluebird'),
@@ -68,7 +68,8 @@ function json2csv(array, callback, opts) {
         if (err) {
             return callback(err);
         } else {
-            json2Csv.json2csv(options, array, callback); // Call our internal json2csv function
+            let converter = new Json2Csv(options);
+            converter.convert(array, callback); // Call our internal json2csv function
         }
     });
 }
@@ -94,7 +95,8 @@ function csv2json(csv, callback, opts) {
         if (err) {
             return callback(err);
         } else {
-            csv2Json.csv2json(options, csv, callback); // Call our internal csv2json function
+            let converter = new Csv2Json(options);
+            converter.convert(csv, callback); // Call our internal json2csv function
         }
     });
 }
