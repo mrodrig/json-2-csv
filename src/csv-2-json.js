@@ -1,8 +1,9 @@
 'use strict';
 
-let _ = require('underscore'),
-    path = require('doc-path'),
-    constants = require('./constants.json');
+let constants = require('./constants.json'),
+    utilities = require('./utils'),
+    _ = require('underscore'),
+    path = require('doc-path');
 
 const Csv2Json = function (options) {
     /**
@@ -192,19 +193,12 @@ const Csv2Json = function (options) {
      * @param callback Function callback function
      */
     function convert(data, callback) {
-        // If a callback wasn't provided, throw an error
-        if (!callback) { throw new Error(constants.errors.callbackRequired); }
-
-        // Shouldn't happen, but just in case
-        if (!opts) { return callback(new Error(constants.errors.optionsRequired)); }
-
-        // If we don't receive data, report an error
-        if (!data) { return callback(new Error(constants.errors.csv2json.cannotCallCsv2JsonOn + data + '.')); }
-
-        // The data provided is not a string
-        if (!_.isString(data)) {
-            return callback(new Error(constants.errors.csv2json.csvNotString)); // Report an error back to the caller
-        }
+        utilities.validateParameters({
+            data,
+            callback,
+            errorMessages: constants.errors.csv2json,
+            dataCheckFn: _.isString
+        });
 
         // Split the CSV into lines using the specified EOL option
         let lines = data.split(options.delimiter.eol),

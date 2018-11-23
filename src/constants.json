@@ -6,14 +6,14 @@
     "optionsRequired": "Options were not passed and are required.",
 
     "json2csv": {
-      "cannotCallJson2CsvOn": "Cannot call json2csv on ",
-      "dataNotArrayOfDocuments": "Data provided was not an array of documents.",
+      "cannotCallOn": "Cannot call json2csv on ",
+      "dataCheckFailure": "Data provided was not an array of documents.",
       "notSameSchema": "Not all documents have the same schema."
     },
 
     "csv2json": {
-      "cannotCallCsv2JsonOn": "Cannot call csv2json on ",
-      "csvNotString": "CSV is not a string.",
+      "cannotCallOn": "Cannot call csv2json on ",
+      "dataCheckFailure": "CSV is not a string.",
       "noDataRetrieveHeading": "No data provided to retrieve heading."
     }
 

@@ -105,14 +105,14 @@ let json2csvTests = function () {
 
             it('should throw an error about not having been passed data - 1', function (done) {
                 converter.json2csv(null, function (err, csv) {
-                    err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'null.');
+                    err.message.should.equal(constants.errors.json2csv.cannotCallOn + 'null.');
                     done();
                 });
             });
 
             it('should throw an error about not having been passed data - 2', function (done) {
                 converter.json2csv(undefined, function (err, csv) {
-                    err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
+                    err.message.should.equal(constants.errors.json2csv.cannotCallOn + 'undefined.');
                     done();
                 });
             });
@@ -291,14 +291,14 @@ let json2csvTests = function () {
 
             it('should throw an error about not having been passed data - 1', function (done) {
                 converter.json2csv(null, function (err, csv) {
-                    err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'null.');
+                    err.message.should.equal(constants.errors.json2csv.cannotCallOn + 'null.');
                     done();
                 }, options);
             });
 
             it('should throw an error about not having been passed data - 2', function (done) {
                 converter.json2csv(undefined, function (err, csv) {
-                    err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
+                    err.message.should.equal(constants.errors.json2csv.cannotCallOn + 'undefined.');
                     done();
                 }, options);
             });
@@ -467,14 +467,14 @@ let json2csvTests = function () {
 
             it('should throw an error about not having been passed data - 1', function (done) {
                 converter.json2csv(null, function (err, csv) {
-                    err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'null.');
+                    err.message.should.equal(constants.errors.json2csv.cannotCallOn + 'null.');
                     done();
                 }, options);
             });
 
             it('should throw an error about not having been passed data - 2', function (done) {
                 converter.json2csv(undefined, function (err, csv) {
-                    err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
+                    err.message.should.equal(constants.errors.json2csv.cannotCallOn + 'undefined.');
                     done();
                 }, options);
             });
@@ -653,14 +653,14 @@ let json2csvTests = function () {
 
             it('should throw an error about not having been passed data - 1', function (done) {
                 converter.json2csv(null, function (err, csv) {
-                    err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'null.');
+                    err.message.should.equal(constants.errors.json2csv.cannotCallOn + 'null.');
                     done();
                 }, options);
             });
 
             it('should throw an error about not having been passed data - 2', function (done) {
                 converter.json2csv(undefined, function (err, csv) {
-                    err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
+                    err.message.should.equal(constants.errors.json2csv.cannotCallOn + 'undefined.');
                     done();
                 }, options);
             });
@@ -822,7 +822,7 @@ let json2csvTests = function () {
             
             it('should throw an error if the data is of the wrong type', function (done) {
                 converter.json2csv(new Date().toString(), function (err, csv) {
-                    err.message.should.equal(constants.errors.json2csv.dataNotArrayOfDocuments);
+                    err.message.should.equal(constants.errors.json2csv.dataCheckFailure);
                     done();
                 }, options);
             });
@@ -957,7 +957,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'null.');
+                        err.message.should.equal(constants.errors.json2csv.cannotCallOn + 'null.');
                         done();
                     });
             });
@@ -968,7 +968,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
+                        err.message.should.equal(constants.errors.json2csv.cannotCallOn + 'undefined.');
                         done();
                     });
             });
@@ -1128,7 +1128,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'null.');
+                        err.message.should.equal(constants.errors.json2csv.cannotCallOn + 'null.');
                         done();
                     });
             });
@@ -1139,7 +1139,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
+                        err.message.should.equal(constants.errors.json2csv.cannotCallOn + 'undefined.');
                         done();
                     });
             });
@@ -1300,7 +1300,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'null.');
+                        err.message.should.equal(constants.errors.json2csv.cannotCallOn + 'null.');
                         done();
                     });
             });
@@ -1311,7 +1311,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
+                        err.message.should.equal(constants.errors.json2csv.cannotCallOn + 'undefined.');
                         done();
                     });
             });
@@ -1484,7 +1484,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'null.');
+                        err.message.should.equal(constants.errors.json2csv.cannotCallOn + 'null.');
                         done();
                     });
             });
@@ -1495,7 +1495,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.errors.json2csv.cannotCallJson2CsvOn + 'undefined.');
+                        err.message.should.equal(constants.errors.json2csv.cannotCallOn + 'undefined.');
                         done();
                     });
             });
@@ -1533,7 +1533,7 @@ let json2csvTests = function () {
                         throw new Error('should not hit');
                     })
                     .catch(function (err) {
-                        err.message.should.equal(constants.errors.json2csv.dataNotArrayOfDocuments);
+                        err.message.should.equal(constants.errors.json2csv.dataCheckFailure);
                         done();
                     });
             });

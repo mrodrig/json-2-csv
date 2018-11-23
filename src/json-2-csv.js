@@ -1,64 +1,77 @@
 'use strict';
 
-let _ = require('underscore'),
-    constants = require('./constants.json'),
+let constants = require('./constants.json'),
+    utilities = require('./utils'),
+    _ = require('underscore'),
     path = require('doc-path'),
-    key = require('deeks'),
-    promise = require('bluebird');
+    deeks = require('deeks'),
+    Promise = require('bluebird');
 
 const Json2Csv = function (options) {
+
+    function getFieldNameList(data) {
+        // If keys weren't specified,
+        return Promise.resolve(deeks.deepKeysFromList(data));
+    }
+
+    function processSchemas(documentSchemas) {
+        // If the user wants to check for the same schema (regardless of schema ordering)
+        if (options.checkSchemaDifferences) {
+            return checkSchemaDifferences(documentSchemas);
+        } else {
+            // Otherwise, we do not care if the schemas are different, so we should get the unique list of keys
+            let uniqueFieldNames = _.uniq(_.flatten(documentSchemas));
+            return Promise.resolve(uniqueFieldNames);
+        }
+    }
+
+    function checkSchemaDifferences(documentSchemas) {
+        // if we only have one document - then there is no possibility of multiple schemas
+        if (documentSchemas && documentSchemas.length <= 1) {
+            return Promise.resolve(_.flatten(documentSchemas) || []);
+        }
+        // else - multiple documents - ensure only one schema (regardless of field ordering)
+        let firstDocSchema = documentSchemas[0],
+            schemaDifferences = computeNumberOfSchemaDifferences(firstDocSchema, documentSchemas);
+
+        // If there are schema inconsistencies, throw a schema not the same error
+        if (schemaDifferences) {
+            return Promise.reject(new Error(constants.errors.json2csv.notSameSchema));
+        }
+
+        return Promise.resolve(firstDocSchema);
+    }
+
+    function computeNumberOfSchemaDifferences(firstDocSchema, documentSchemas) {
+        return _.reduce(documentSchemas, (schemaDifferences, documentSchema) => {
+            // If there is a difference between the schemas, increment the counter of schema inconsistencies
+            let numberOfDifferences = _.difference(firstDocSchema, _.flatten(documentSchema)).length;
+            return (numberOfDifferences > 0) ? schemaDifferences + 1 : schemaDifferences;
+        }, 0);
+    }
+
+    function sortHeaderFields(fieldNames) {
+        if (options.sortHeader) {
+            return fieldNames.sort();
+        }
+        return fieldNames;
+    }
 
     /**
      * Retrieve the headings for all documents and return it.
      * This checks that all documents have the same schema.
      * @param data
-     * @returns {promise}
+     * @returns {Promise}
      */
     function generateHeading(data) {
-        if (options.keys) { return promise.resolve(options.keys); }
-
-        let keys = key.deepKeysFromList(data);
-
-        let uniqueKeys = [];
-
-        // If the user wants to check for the same schema:
-        if (options.checkSchemaDifferences) {
-            // Check for a consistent schema that does not require the same order:
-            // if we only have one document - then there is no possibility of multiple schemas
-            if (keys && keys.length <= 1) {
-                return promise.resolve(_.flatten(keys) || []);
-            }
-            // else - multiple documents - ensure only one schema (regardless of field ordering)
-            let firstDocSchema = keys[0],
-                schemaDifferences = 0;
-
-            _.each(keys, function (keys) {
-                // If there is a difference between the schemas, increment the counter of schema inconsistencies
-                let diff = _.difference(firstDocSchema, _.flatten(keys));
-                if (!_.isEqual(diff, [])) {
-                    schemaDifferences++;
-                }
-            });
-
-            // If there are schema inconsistencies, throw a schema not the same error
-            if (schemaDifferences) {
-                return promise.reject(new Error(constants.errors.json2csv.notSameSchema));
-            }
-
-
-            uniqueKeys = keys[0];
-        } else {
-            // Otherwise, we do not care if the schemas are different, so we should merge them via union:
-            _.each(keys, function (keys) {
-                uniqueKeys = _.union(uniqueKeys, _.flatten(keys));
-            });
+        if (options.keys) {
+            return Promise.resolve(options.keys)
+                .then(sortHeaderFields);
         }
 
-        if (options.sortHeader) {
-            uniqueKeys.sort();
-        }
-
-        return promise.resolve(uniqueKeys);
+        return getFieldNameList(data)
+            .then(processSchemas)
+            .then(sortHeaderFields);
     }
 
     /**
@@ -137,21 +150,15 @@ const Json2Csv = function (options) {
      * @param callback Function callback function
      */
     function convert(data, callback) {
-        // If a callback wasn't provided, throw an error
-        if (!callback) { throw new Error(constants.errors.callbackRequired); }
+        utilities.validateParameters({
+            data,
+            callback,
+            errorMessages: constants.errors.json2csv,
+            dataCheckFn: _.isObject
+        });
 
-        // Shouldn't happen, but just in case
-        if (!options) { return callback(new Error(constants.errors.optionsRequired)); }
-
-        // If we don't receive data, report an error
-        if (!data) { return callback(new Error(constants.errors.json2csv.cannotCallJson2CsvOn + data + '.')); }
-
-        // If the data was not a single document or an array of documents
-        if (!_.isObject(data)) {
-            return callback(new Error(constants.errors.json2csv.dataNotArrayOfDocuments));  // Report the error back to the caller
-        }
         // Single document, not an array
-        else if (_.isObject(data) && !data.length) {
+        if (_.isObject(data) && !data.length) {
             data = [data]; // Convert to an array of the given document
         }
 

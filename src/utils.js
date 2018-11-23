@@ -5,7 +5,8 @@ let constants = require('./constants.json'),
 
 module.exports = {
     buildOptions,
-    parseArguments
+    parseArguments,
+    validateParameters
 };
 
 /**
@@ -49,4 +50,21 @@ function parseArguments(arg1, arg2) {
         options: arg2,
         callback: arg1
     };
+}
+
+/**
+ * Validates the parameters passed in to json2csv and csv2json
+ * @param config {Object} of the form: { data: {Any}, callback: {Function}, dataCheckFn: Function, errorMessages: {Object} }
+ */
+function validateParameters(config) {
+    // If a callback wasn't provided, throw an error
+    if (!config.callback) { throw new Error(constants.errors.callbackRequired); }
+
+    // If we don't receive data, report an error
+    if (!config.data) { return config.callback(new Error(config.errorMessages.cannotCallOn + config.data + '.')); }
+
+    // The data provided data does not meet the type check requirement
+    if (!config.dataCheckFn(config.data)) {
+        return config.callback(new Error(config.errorMessages.dataCheckFailure));
+    }
 }
