@@ -47,7 +47,7 @@ const Json2Csv = function (options) {
      * @returns {*}
      */
     function checkSchemaDifferences(documentSchemas) {
-        // if we only have one document - then there is no possibility of multiple schemas
+        // if we have no documents - then there is no possibility of multiple schemas
         if (documentSchemas && documentSchemas.length === 0) {
             return Promise.resolve([]);
         }
@@ -210,13 +210,6 @@ const Json2Csv = function (options) {
      * @param callback {Function} callback function
      */
     function convert(data, callback) {
-        utilities.validateParameters({
-            data,
-            callback,
-            errorMessages: constants.errors.json2csv,
-            dataCheckFn: _.isObject
-        });
-
         // Single document, not an array
         if (_.isObject(data) && !data.length) {
             data = [data]; // Convert to an array of the given document
@@ -246,7 +239,11 @@ const Json2Csv = function (options) {
             .catch(callback);
     }
 
-    return { convert };
+    return {
+        convert,
+        validationFn: _.isObject,
+        validationMessages: constants.errors.json2csv
+    };
 };
 
 module.exports = { Json2Csv };

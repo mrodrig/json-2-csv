@@ -6,7 +6,8 @@ let constants = require('./constants.json'),
 module.exports = {
     buildOptions,
     parseArguments,
-    validateParameters
+    validateParameters,
+    convert
 };
 
 /**
@@ -20,7 +21,7 @@ function buildOptions(opts, callback) {
     opts = _.defaults(opts || {}, constants.defaultOptions);
 
     // Note: _.defaults does a shallow default, we need to deep copy the DELIMITER object
-    opts.delimiter = _.defaults(opts.delimiter || {}, constants.defaultOptions.delimiter);
+    opts.delimiter = _.defaults(opts.delimiter, constants.defaultOptions.delimiter);
 
     // If the delimiter fields are the same, report an error to the caller
     if (opts.delimiter.field === opts.delimiter.array) {
@@ -67,4 +68,32 @@ function validateParameters(config) {
     if (!config.dataCheckFn(config.data)) {
         return config.callback(new Error(config.errorMessages.dataCheckFailure));
     }
+}
+
+/**
+ * Abstracted function to perform the conversion of json-->csv or csv-->json
+ * depending on the converter class that is passed via the params object
+ * @param params {Object}
+ */
+function convert(params) {
+    let {options, callback} = parseArguments(params.callback, params.options);
+
+    buildOptions(options,
+        (error, options) => {
+            if (error) {
+                return callback(error);
+            }
+
+            let converter = new params.converter(options);
+
+            // Validate the parameters before calling the converter's convert function
+            validateParameters({
+                data: params.data,
+                callback,
+                errorMessages: converter.validationMessages,
+                dataCheckFn: converter.validationFn
+            });
+
+            converter.convert(params.data, callback);
+        });
 }

@@ -16,21 +16,17 @@ module.exports = {
  * Client accessible json2csv function
  * Takes an array of JSON documents to be converted, a callback that will be called with (err, csv)
  * after processing is complete, and optional options
- * @param array Object[] data to be converted
- * @param cb Function callback
- * @param opts Object options object
+ * @param documents {Array<Object>} data to be converted
+ * @param callback {Function} callback function
+ * @param options {Object} options object
  */
-function json2csv(array, cb, opts) {
-    let {options, callback} = utilities.parseArguments(cb, opts);
-
-    utilities.buildOptions(options,
-        (error, options) => {
-            if (error) {
-                return callback(error);
-            }
-            let converter = new Json2Csv(options);
-            converter.convert(array, callback); // Call our internal json2csv function
-        });
+function json2csv(documents, callback, options) {
+    return utilities.convert({
+        data: documents,
+        callback,
+        options,
+        converter: Json2Csv
+    });
 }
 
 
@@ -39,18 +35,14 @@ function json2csv(array, cb, opts) {
  * Takes a string of CSV to be converted to a JSON document array, a callback that will be called
  * with (err, json) after processing is complete, and optional options
  * @param csv String csv data to be converted
- * @param cb Function callback
- * @param opts Object options object
+ * @param callback Function callback
+ * @param options Object options object
  */
-function csv2json(csv, cb, opts) {
-    let {options, callback} = utilities.parseArguments(cb, opts);
-
-    utilities.buildOptions(options,
-        (error, options) => {
-            if (error) {
-                return callback(error);
-            }
-            let converter = new Csv2Json(options);
-            converter.convert(csv, callback); // Call our internal csv2json function
-        });
+function csv2json(csv, callback, options) {
+    return utilities.convert({
+        data: csv,
+        callback,
+        options,
+        converter: Csv2Json
+    });
 }

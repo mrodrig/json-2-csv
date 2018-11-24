@@ -193,20 +193,17 @@ const Csv2Json = function (options) {
      * @param callback Function callback function
      */
     function convert(data, callback) {
-        utilities.validateParameters({
-            data,
-            callback,
-            errorMessages: constants.errors.csv2json,
-            dataCheckFn: _.isString
-        });
-
         // Split the CSV into lines using the specified EOL option
         let lines = data.split(options.delimiter.eol),
             json = convertCSV(lines, callback); // Retrieve the JSON document array
         return callback(null, json); // Send the data back to the caller
     }
 
-    return { convert };
+    return {
+        convert,
+        validationFn: _.isString,
+        validationMessages: constants.errors.csv2json
+    };
 };
 
 module.exports = { Csv2Json };
