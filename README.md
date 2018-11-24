@@ -42,6 +42,7 @@ let converter = require('json-2-csv');
       * Default: `''`
     * `eol` - String - End of Line Delimiter. 
       * Default: `'\n'`
+  * `excelBom` - Boolean - Should a unicode character be prepended to allow Excel to open a UTF-8 encoded file with non-ASCII characters present.
   * `prependHeader` - Boolean - Should the auto-generated header be prepended as the first line in the CSV?
     * Default: `true`
   * `sortHeader` - Boolean - Should the header keys be sorted in alphabetical order? 
@@ -112,10 +113,10 @@ $ npm run coverage
 
 Current Coverage is:
 ```
-Statements   : 97.84% ( 181/185 )
-Branches     : 95.49% ( 127/133 )
-Functions    : 100% ( 37/37 )
-Lines        : 97.78% ( 176/180 )
+Statements   : 97.33% ( 182/187 )
+Branches     : 94.66% ( 124/131 )
+Functions    : 100% ( 35/35 )
+Lines        : 97.24% ( 176/181 )
 ```
 
 ## Frequently Asked Questions (FAQ)

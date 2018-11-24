@@ -43,4 +43,12 @@ Another invisible improvement is that duplicated code has been removed. More
 specifically, the functionality has been abstracted out to avoid having the same
 underlying support code in multiple spots. This falls moreso under technical
 debt, but nonetheless, it's an improvement that will help improve 
-maintainability long-term. 
+maintainability long-term.
+
+* Excel Byte Order Mark (BOM) Support
+
+Starting in v3, there's a new option `excelBom` which allows you to specify that
+a Byte Order Mark (BOM) be prepended to the beginning of the CSV. This allows
+Microsoft Excel to open a UTF-8 encoded CSV file with non-ASCII characters,
+without them being scrambled. This, however, is not needed when using Apple's 
+Numbers app. 

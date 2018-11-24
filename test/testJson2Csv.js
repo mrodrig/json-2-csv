@@ -119,10 +119,8 @@ let json2csvTests = function () {
 
             it('should throw an error about not being provided a callback - 1', function (done) {
                 try {
-                    console.log('GOOD');
                     converter.json2csv(undefined, undefined, undefined);
                 } catch (err) {
-                    console.log('ERROR');
                     err.message.should.equal(constants.errors.callbackRequired);
                     done();
                 }

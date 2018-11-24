@@ -26,6 +26,7 @@
       "wrap"  : "",
       "eol"   : "\n"
     },
+    "excelBom": false,
     "prependHeader" : true,
     "trimHeaderFields": false,
     "trimFieldValues" : false,

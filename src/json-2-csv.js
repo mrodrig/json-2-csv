@@ -9,11 +9,25 @@ let constants = require('./constants.json'),
 
 const Json2Csv = function (options) {
 
+    /*** HEADER FIELD FUNCTIONS **/
+
+    /**
+     * Returns the list of data field names of all documents in the provided list
+     * @param data {Array<Object>} Data to be converted
+     * @returns {Promise.<Array[String]>}
+     */
     function getFieldNameList(data) {
         // If keys weren't specified,
         return Promise.resolve(deeks.deepKeysFromList(data));
     }
 
+    /**
+     * Processes the schemas by checking for schema differences, if so desired.
+     * If schema differences are not to be checked, then it resolves the unique
+     * list of field names.
+     * @param documentSchemas
+     * @returns {Promise.<Array[String]>}
+     */
     function processSchemas(documentSchemas) {
         // If the user wants to check for the same schema (regardless of schema ordering)
         if (options.checkSchemaDifferences) {
@@ -25,14 +39,22 @@ const Json2Csv = function (options) {
         }
     }
 
+    /**
+     * This function performs the schema difference check, if the user specifies that it should be checked.
+     * If there are no field names, then there are no differences.
+     * Otherwise, we get the first schema and the remaining list of schemas
+     * @param documentSchemas
+     * @returns {*}
+     */
     function checkSchemaDifferences(documentSchemas) {
         // if we only have one document - then there is no possibility of multiple schemas
-        if (documentSchemas && documentSchemas.length <= 1) {
-            return Promise.resolve(_.flatten(documentSchemas) || []);
+        if (documentSchemas && documentSchemas.length === 0) {
+            return Promise.resolve([]);
         }
         // else - multiple documents - ensure only one schema (regardless of field ordering)
         let firstDocSchema = documentSchemas[0],
-            schemaDifferences = computeNumberOfSchemaDifferences(firstDocSchema, documentSchemas);
+            restOfDocumentSchemas = documentSchemas.slice(1),
+            schemaDifferences = computeNumberOfSchemaDifferences(firstDocSchema, restOfDocumentSchemas);
 
         // If there are schema inconsistencies, throw a schema not the same error
         if (schemaDifferences) {
@@ -42,14 +64,25 @@ const Json2Csv = function (options) {
         return Promise.resolve(firstDocSchema);
     }
 
-    function computeNumberOfSchemaDifferences(firstDocSchema, documentSchemas) {
-        return _.reduce(documentSchemas, (schemaDifferences, documentSchema) => {
+    /**
+     * Computes the number of schema differences
+     * @param firstDocSchema
+     * @param restOfDocumentSchemas
+     * @returns {*}
+     */
+    function computeNumberOfSchemaDifferences(firstDocSchema, restOfDocumentSchemas) {
+        return restOfDocumentSchemas.reduce((schemaDifferences, documentSchema) => {
             // If there is a difference between the schemas, increment the counter of schema inconsistencies
-            let numberOfDifferences = _.difference(firstDocSchema, _.flatten(documentSchema)).length;
+            let numberOfDifferences = _.difference(firstDocSchema, documentSchema).length;
             return (numberOfDifferences > 0) ? schemaDifferences + 1 : schemaDifferences;
         }, 0);
     }
 
+    /**
+     * If so specified, this sorts the header field names alphabetically
+     * @param fieldNames {Array<String>}
+     * @returns {Array<String>} sorted field names, or unsorted if sorting not specified
+     */
     function sortHeaderFields(fieldNames) {
         if (options.sortHeader) {
             return fieldNames.sort();
@@ -58,12 +91,39 @@ const Json2Csv = function (options) {
     }
 
     /**
+     * Trims the header fields, if the user desires them to be trimmed.
+     * @param params
+     * @returns {*}
+     */
+    function trimHeaderFields(params) {
+        if (options.trimHeaderFields) {
+            params.headerFields = params.headerFields.map((field) => { return field.trim(); });
+        }
+        return params;
+    }
+
+    /**
+     * Wrap the headings, if desired by the user.
+     * @param params
+     * @returns {*}
+     */
+    function wrapHeaderFields(params) {
+        // If the fields are supposed to be wrapped... (only perform this if we are actually prepending the header)
+        if (options.delimiter.wrap && options.prependHeader) {
+            params.headerFields = params.headerFields.map(function(headingKey) {
+                return options.delimiter.wrap + headingKey + options.delimiter.wrap;
+            });
+        }
+        return params;
+    }
+
+    /**
      * Retrieve the headings for all documents and return it.
      * This checks that all documents have the same schema.
      * @param data
      * @returns {Promise}
      */
-    function generateHeading(data) {
+    function retrieveHeaderFields(data) {
         if (options.keys) {
             return Promise.resolve(options.keys)
                 .then(sortHeaderFields);
@@ -82,7 +142,7 @@ const Json2Csv = function (options) {
      */
     function convertData(data, keys) {
         // Reduce each key in the data to its CSV value
-        return _.reduce(keys, function (output, key) {
+        return keys.reduce((output, key) => {
             // Retrieve the appropriate field data
             let fieldData = path.evaluatePath(data, key);
             if (_.isUndefined(fieldData)) { fieldData = options.emptyFieldValue; }
@@ -110,7 +170,7 @@ const Json2Csv = function (options) {
         } else if (_.isDate(value)) { // If we have a date
             return options.delimiter.wrap + convertValue(value, options) + options.delimiter.wrap;
         } else if (_.isObject(value)) { // If we have an object
-            return options.delimiter.wrap + convertData(value, _.keys(value), options) + options.delimiter.wrap; // Push the recursively generated CSV
+            return options.delimiter.wrap + convertData(value, Object.keys(value), options) + options.delimiter.wrap; // Push the recursively generated CSV
         } else if (_.isNumber(value)) { // If we have a number (avoids 0 being converted to '')
             return options.delimiter.wrap + convertValue(value, options) + options.delimiter.wrap;
         } else if (_.isBoolean(value)) { // If we have a boolean (avoids false being converted to '')
@@ -130,24 +190,24 @@ const Json2Csv = function (options) {
 
     /**
      * Generate the CSV representing the given data.
-     * @param data
-     * @param headingKeys
-     * @returns {*}
+     * @param rows
+     * @param headerFields
+     * @returns {String} records in csv format
      */
-    function generateCsv(data, headingKeys) {
-        let reducer = function(csv, doc) {
-            return csv += convertData(doc, headingKeys, options).join(options.delimiter.field) + options.delimiter.eol;
-        };
-
+    function transformRecords(rows, headerFields) {
         // Reduce each JSON document in data to a CSV string and append it to the CSV accumulator
-        return [headingKeys].concat(data.reduce(reducer.bind({options: options}), ''));
+        return rows.reduce(function(csv, recordData) {
+            let recordFields = convertData(recordData, headerFields, options);
+
+            return csv += recordFields.join(options.delimiter.field) + options.delimiter.eol;
+        }, '');
     }
 
     /**
      * Internally exported json2csv function
-     * Takes data as a JSON document array and a callback that will be used to report the results
-     * @param data String csv string
-     * @param callback Function callback function
+     * Takes data as either a document or array of documents and a callback that will be used to report the results
+     * @param data {Object|Array<Object>} documents to be converted to csv
+     * @param callback {Function} callback function
      */
     function convert(data, callback) {
         utilities.validateParameters({
@@ -163,33 +223,27 @@ const Json2Csv = function (options) {
         }
 
         // Retrieve the heading and then generate the CSV with the keys that are identified
-        generateHeading(data)
-            .then(_.partial(generateCsv, data))
-            .spread(function (csvHeading, csvData) {
-                // If the fields are supposed to be wrapped... (only perform this if we are actually prepending the header)
-                if (options.delimiter.wrap && options.prependHeader) {
-                    csvHeading = _.map(csvHeading, function(headingKey) {
-                        return options.delimiter.wrap + headingKey + options.delimiter.wrap;
-                    });
-                }
-
-                if (options.trimHeaderFields) {
-                    csvHeading = _.map(csvHeading, function (headingKey) {
-                        return headingKey.trim();
-                    });
-                }
-
-                // If we are prepending the header, then join the csvHeading fields
-                if (options.prependHeader) {
-                    csvHeading = csvHeading.join(options.delimiter.field);
-                }
-
-                // If we are prepending the header, then join the header and data by EOL, otherwise just return the data
-                return callback(null, options.prependHeader ? csvHeading + options.delimiter.eol + csvData : csvData);
+        retrieveHeaderFields(data)
+            .then((headerFields) => {
+                return {
+                    headerFields,
+                    records: transformRecords(data, headerFields)
+                };
             })
-            .catch(function (err) {
-                return callback(err);
-            });
+            .then(wrapHeaderFields)
+            .then(trimHeaderFields)
+            .then((params) => {
+                let header = params.headerFields.join(options.delimiter.field),
+                    records = params.records,
+
+                    // If we are prepending the header, then add an EOL, otherwise just return the records
+                    csv = (options.excelBOM ? '\ufeff' : '') +
+                          (options.prependHeader ? header + options.delimiter.eol : '') +
+                          records;
+
+                return callback(null, csv);
+            })
+            .catch(callback);
     }
 
     return { convert };
