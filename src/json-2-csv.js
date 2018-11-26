@@ -190,17 +190,18 @@ const Json2Csv = function (options) {
 
     /**
      * Generate the CSV representing the given data.
-     * @param rows
-     * @param headerFields
+     * @param params
      * @returns {String} records in csv format
      */
-    function transformRecords(rows, headerFields) {
+    function transformRecords(params) {
         // Reduce each JSON document in data to a CSV string and append it to the CSV accumulator
-        return rows.reduce(function(csv, recordData) {
-            let recordFields = convertData(recordData, headerFields, options);
+        params.records = params.records.reduce(function(csv, recordData) {
+            let recordFields = convertData(recordData, params.headerFields, options);
 
             return csv += recordFields.join(options.delimiter.field) + options.delimiter.eol;
         }, '');
+
+        return params;
     }
 
     /**
@@ -220,9 +221,10 @@ const Json2Csv = function (options) {
             .then((headerFields) => {
                 return {
                     headerFields,
-                    records: transformRecords(data, headerFields)
+                    records: data
                 };
             })
+            .then(transformRecords)
             .then(wrapHeaderFields)
             .then(trimHeaderFields)
             .then((params) => {
