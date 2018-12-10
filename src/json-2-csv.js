@@ -9,7 +9,7 @@ let constants = require('./constants.json'),
 
 const Json2Csv = function (options) {
 
-    /*** HEADER FIELD FUNCTIONS **/
+    /*** HEADER FIELD FUNCTIONS ***/
 
     /**
      * Returns the list of data field names of all documents in the provided list
@@ -134,6 +134,68 @@ const Json2Csv = function (options) {
             .then(sortHeaderFields);
     }
 
+    /*** RECORD FIELD FUNCTIONS ***/
+
+    /**
+     * Order of operations:
+     * - Get fields from provided key list (as array of actual values)
+     * - Convert the values to csv/string representation [possible option here for custom converters?]
+     * - Trim fields
+     * - Determine if they need to be wrapped (& wrap if necessary)
+     * - Combine values for each line (by joining by field delimiter)
+     */
+
+    function processRecords (records, fields) {
+        return records.map((record) => {
+            return retrieveRecordFieldData(record, fields)
+                .each(recordFieldValueToString)
+                .each(trimRecordFieldValue);
+        });
+    }
+
+    /**
+     * Gets all field values from a particular record for the given list of fields
+     * @param record
+     * @param fields
+     * @returns {Array}
+     */
+    function retrieveRecordFieldData (record, fields) {
+        let recordValues = [];
+
+        fields.forEach((field) => {
+            let recordFieldValue = path.evaluatePath(record, field);
+            recordValues.push(recordFieldValue);
+        });
+
+        return Promise.resolve(recordValues);
+    }
+
+    function recordFieldValueToString (fieldValue) {
+        if (_.isArray(fieldValue) || _.isObject(fieldValue)) {
+            return JSON.stringify(fieldValue);
+        } else {
+            return fieldValue.toString();
+        }
+    }
+
+    function trimRecordFieldValue (fieldValue) {
+        if (options.trimFieldValues) {
+            return fieldValue.trim();
+        }
+        return fieldValue;
+    }
+
+    function wrapFieldValueIfNecessary (fieldValue) {
+        // eg. includes quotation marks (default delimiter)
+        if (fieldValue.includes(options.delimiter.wrap)) {
+            // add an additional quotation mark before each quotation mark appearing in the field value
+        }
+        // eg. contains a comma (default delimiter)
+        else if (fieldValue.includes(options.delimiter.field)) {
+            // wrap the field's value in a wrap delimiter (quotation marks by default)
+        }
+    }
+
     /**
      * Convert the given data with the given keys
      * @param data
@@ -203,6 +265,8 @@ const Json2Csv = function (options) {
 
         return params;
     }
+
+    /*** MAIN CONVERTER FUNCTION ***/
 
     /**
      * Internally exported json2csv function
