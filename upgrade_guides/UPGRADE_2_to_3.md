@@ -26,6 +26,14 @@ DELIMITER.WRAP           --> delimiter.wrap
 DELIMITER.EOL            --> delimiter.eol
 ```
 
+* RFC 4180 Compliance
+
+As of v3.0.0, the module is now compliant with RFC 4180, which means improved
+compatibility with spreadsheet applications, like Microsoft Excel. This is great
+news, however, it may mean that any applications or tools that depend on the
+previous CSV format that the module generated may need to be updated since they
+may break as a result.
+
 ## Improvements
 
 * Class-based functionality

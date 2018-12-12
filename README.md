@@ -42,7 +42,7 @@ let converter = require('json-2-csv');
       * Default: `''`
     * `eol` - String - End of Line Delimiter. 
       * Default: `'\n'`
-  * `excelBom` - Boolean - Should a unicode character be prepended to allow Excel to open a UTF-8 encoded file with non-ASCII characters present.
+  * `excelBOM` - Boolean - Should a unicode character be prepended to allow Excel to open a UTF-8 encoded file with non-ASCII characters present.
   * `prependHeader` - Boolean - Should the auto-generated header be prepended as the first line in the CSV?
     * Default: `true`
   * `sortHeader` - Boolean - Should the header keys be sorted in alphabetical order? 
