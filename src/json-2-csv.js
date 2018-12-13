@@ -6,10 +6,9 @@ let constants = require('./constants.json'),
     deeks = require('deeks'),
     Promise = require('bluebird');
 
-// TODO: JSDocs on functions
-
 const Json2Csv = function (options) {
-    const wrapDelimiterCheckRegex = new RegExp(options.delimiter.wrap, 'g');
+    const wrapDelimiterCheckRegex = new RegExp(options.delimiter.wrap, 'g'),
+        crlfSearchRegex = /\r?\n|\r/;
 
     /*** HEADER FIELD FUNCTIONS ***/
 
@@ -119,6 +118,11 @@ const Json2Csv = function (options) {
         return params;
     }
 
+    /**
+     * Generates the CSV header string by joining the headerFields by the field delimiter
+     * @param params
+     * @returns {*}
+     */
     function generateCsvHeader(params) {
         params.header = params.headerFields.join(options.delimiter.field);
         return params;
@@ -144,14 +148,18 @@ const Json2Csv = function (options) {
     /*** RECORD FIELD FUNCTIONS ***/
 
     /**
-     * Order of operations:
+     * Main function which handles the processing of a record, or document to be converted to CSV format
+     * This function specifies and performs the necessary operations in the necessary order
+     * in order to obtain the data and convert it to CSV form while maintaining RFC 4180 compliance.
+     * * Order of operations:
      * - Get fields from provided key list (as array of actual values)
      * - Convert the values to csv/string representation [possible option here for custom converters?]
      * - Trim fields
      * - Determine if they need to be wrapped (& wrap if necessary)
      * - Combine values for each line (by joining by field delimiter)
+     * @param params
+     * @returns {*}
      */
-
     function processRecords (params) {
         params.records = params.records.map((record) => {
                 // Retrieve data for each of the headerFields from this record
@@ -190,6 +198,11 @@ const Json2Csv = function (options) {
         return recordValues;
     }
 
+    /**
+     * Converts a record field value to its string representation
+     * @param fieldValue
+     * @returns {*}
+     */
     function recordFieldValueToString (fieldValue) {
         if (_.isArray(fieldValue) || _.isObject(fieldValue)) {
             return JSON.stringify(fieldValue);
@@ -202,6 +215,11 @@ const Json2Csv = function (options) {
         }
     }
 
+    /**
+     * Trims the record field value, if specified by the user's provided options
+     * @param fieldValue
+     * @returns {*}
+     */
     function trimRecordFieldValue (fieldValue) {
         if (options.trimFieldValues) {
             return fieldValue.trim();
@@ -209,6 +227,13 @@ const Json2Csv = function (options) {
         return fieldValue;
     }
 
+    /**
+     * Escapes quotation marks in the field value, if necessary, and appropriately
+     * wraps the record field value if it contains a comma (field delimiter),
+     * quotation mark (wrap delimiter), or a line break (CRLF)
+     * @param fieldValue
+     * @returns {*}
+     */
     function wrapFieldValueIfNecessary (fieldValue) {
         const wrapDelimiter = options.delimiter.wrap;
 
@@ -219,9 +244,9 @@ const Json2Csv = function (options) {
         }
         // if the field contains a comma (field delimiter), quotation mark (wrap delimiter), line break, or CRLF
         //   then enclose it in quotation marks (wrap delimiter)
-        // TODO: Add line break and CRLF matching conditions here...
         if (fieldValue.includes(options.delimiter.field) ||
-                fieldValue.includes(options.delimiter.wrap)) {
+                fieldValue.includes(options.delimiter.wrap) ||
+                fieldValue.match(crlfSearchRegex)) {
             // wrap the field's value in a wrap delimiter (quotation marks by default)
             fieldValue = wrapDelimiter + fieldValue + wrapDelimiter;
         }
@@ -229,11 +254,21 @@ const Json2Csv = function (options) {
         return fieldValue;
     }
 
+    /**
+     * Generates the CSV record string by joining the field values together by the field delimiter
+     * @param recordFieldValues
+     */
     function generateCsvRowFromRecord (recordFieldValues) {
         return recordFieldValues.join(options.delimiter.field);
     }
 
     /*** CSV COMPONENT COMBINER/FINAL PROCESSOR ***/
+    /**
+     * Performs the final CSV construction by combining the fields in the appropriate
+     * order depending on the provided options values and sends the generated CSV
+     * back to the user
+     * @param params
+     */
     function generateCsvFromComponents(params) {
         let header = params.header,
             records = params.records,
