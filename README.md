@@ -35,26 +35,24 @@ let converter = require('json-2-csv');
 * `options` - (Optional) A JSON document specifying any of the following key value pairs:
   * `delimiter` - Document - Specifies the different types of delimiters
     * `field` - String - Field Delimiter. 
-      * Default: `','`
-    * `array` - String - Array Value Delimiter. 
-      * Default: `';'`
+      * Default: `,`
     * `wrap` - String - Wrap values in the delimiter of choice (e.g. wrap values in quotes). 
-      * Default: `''`
+      * Default: `"`
     * `eol` - String - End of Line Delimiter. 
-      * Default: `'\n'`
+      * Default: `\n`
   * `excelBOM` - Boolean - Should a unicode character be prepended to allow Excel to open a UTF-8 encoded file with non-ASCII characters present.
   * `prependHeader` - Boolean - Should the auto-generated header be prepended as the first line in the CSV?
     * Default: `true`
   * `sortHeader` - Boolean - Should the header keys be sorted in alphabetical order? 
     * Default: `false`
   * `emptyFieldValue` - String - Value for fields without data _when not checking schemas_.
-    * Default: `'null'`
+    * Default: `''`
   * `trimHeaderFields` - Boolean - Should the header fields be trimmed? 
     * Default: `false`
   * `trimFieldValues` - Boolean - Should the field values be trimmed? (*in development*)
     * Default: `false`
   * `checkSchemaDifferences` - Boolean - Should all documents have the same schema?
-    * Default: `true`
+    * Default: `false`
     * Note: Change this to `false` if some documents are missing certain fields and you still want to convert the data.
   * `keys` - Array - Specify the keys (as strings) that should be converted. 
     * Default: `null`
@@ -76,13 +74,11 @@ Available in version `2.2.0`, this functionality makes use of promises from the 
 * `options` - (Optional) A JSON document specifying any of the following key value pairs:
   * `delimiter` - Document - Specifies the different types of delimiters
     * `field` - String - Field Delimiter. 
-      * Default: `','`
-    * `array` - String - Array Value Delimiter. 
-      * Default: `';'`
+      * Default: `,`
     * `wrap` - String - The character that field values are wrapped in. 
-      * Default: `''`
+      * Default: `"`
     * `eol` - String - End of Line Delimiter. 
-      * Default: `'\n'`
+      * Default: `\n`
   * `trimHeaderFields` - Boolean - Should the header fields be trimmed? 
     * Default: `false`
   * `trimFieldValues` - Boolean - Should the field values be trimmed? 

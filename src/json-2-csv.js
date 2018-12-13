@@ -1,11 +1,12 @@
 'use strict';
 
 let constants = require('./constants.json'),
-    utilities = require('./utils'),
     _ = require('underscore'),
     path = require('doc-path'),
     deeks = require('deeks'),
     Promise = require('bluebird');
+
+// TODO: JSDocs on functions
 
 const Json2Csv = function (options) {
     const wrapDelimiterCheckRegex = new RegExp(options.delimiter.wrap, 'g');
@@ -109,12 +110,17 @@ const Json2Csv = function (options) {
      * @returns {*}
      */
     function wrapHeaderFields(params) {
-        // If the fields are supposed to be wrapped... (only perform this if we are actually prepending the header)
-        if (options.delimiter.wrap && options.prependHeader) {
+        // only perform this if we are actually prepending the header
+        if (options.prependHeader) {
             params.headerFields = params.headerFields.map(function(headingKey) {
-                return options.delimiter.wrap + headingKey + options.delimiter.wrap;
+                return wrapFieldValueIfNecessary(headingKey);
             });
         }
+        return params;
+    }
+
+    function generateCsvHeader(params) {
+        params.header = params.headerFields.join(options.delimiter.field);
         return params;
     }
 
@@ -147,16 +153,24 @@ const Json2Csv = function (options) {
      */
 
     function processRecords (params) {
-        return {
-            headerFields: params.headerFields,
-            records: params.records.map((record) => {
-                return retrieveRecordFieldData(record, params.headerFields)
-                    .each(recordFieldValueToString)
-                    .each(trimRecordFieldValue)
-                    .each(wrapFieldValueIfNecessary)
-                    .then(generateCsvRowFromRecord)
-            }).join(options.delimiter.eol)
-        };
+        params.records = params.records.map((record) => {
+                // Retrieve data for each of the headerFields from this record
+                let recordFieldData = retrieveRecordFieldData(record, params.headerFields);
+
+                // Process the data in this record and return the
+                let processedRecordData = recordFieldData.map((fieldValue) => {
+                    fieldValue = recordFieldValueToString(fieldValue);
+                    fieldValue = trimRecordFieldValue(fieldValue);
+                    fieldValue = wrapFieldValueIfNecessary(fieldValue);
+
+                    return fieldValue;
+                });
+
+                // Join the record data by the field delimiter
+                return generateCsvRowFromRecord(processedRecordData);
+            }).join(options.delimiter.eol);
+
+        return params;
     }
 
     /**
@@ -173,12 +187,16 @@ const Json2Csv = function (options) {
             recordValues.push(recordFieldValue);
         });
 
-        return Promise.resolve(recordValues);
+        return recordValues;
     }
 
     function recordFieldValueToString (fieldValue) {
         if (_.isArray(fieldValue) || _.isObject(fieldValue)) {
             return JSON.stringify(fieldValue);
+        } else if (_.isUndefined(fieldValue)) {
+            return 'undefined';
+        } else if (_.isNull(fieldValue)) {
+            return 'null';
         } else {
             return fieldValue.toString();
         }
@@ -199,8 +217,11 @@ const Json2Csv = function (options) {
             // add an additional quotation mark before each quotation mark appearing in the field value
             fieldValue = fieldValue.replace(wrapDelimiterCheckRegex, wrapDelimiter + wrapDelimiter);
         }
-        // eg. contains a comma (default delimiter)
-        if (fieldValue.includes(options.delimiter.field)) {
+        // if the field contains a comma (field delimiter), quotation mark (wrap delimiter), line break, or CRLF
+        //   then enclose it in quotation marks (wrap delimiter)
+        // TODO: Add line break and CRLF matching conditions here...
+        if (fieldValue.includes(options.delimiter.field) ||
+                fieldValue.includes(options.delimiter.wrap)) {
             // wrap the field's value in a wrap delimiter (quotation marks by default)
             fieldValue = wrapDelimiter + fieldValue + wrapDelimiter;
         }
@@ -210,6 +231,19 @@ const Json2Csv = function (options) {
 
     function generateCsvRowFromRecord (recordFieldValues) {
         return recordFieldValues.join(options.delimiter.field);
+    }
+
+    /*** CSV COMPONENT COMBINER/FINAL PROCESSOR ***/
+    function generateCsvFromComponents(params) {
+        let header = params.header,
+            records = params.records,
+
+            // If we are prepending the header, then add an EOL, otherwise just return the records
+            csv = (options.excelBOM ? '\ufeff' : '') +
+                (options.prependHeader ? header + options.delimiter.eol : '') +
+                records;
+
+        return params.callback(null, csv);
     }
 
     /*** MAIN CONVERTER FUNCTION ***/
@@ -231,23 +265,15 @@ const Json2Csv = function (options) {
             .then((headerFields) => {
                 return {
                     headerFields,
-                    records: data
+                    callback,
+                    records: data,
                 };
             })
             .then(processRecords)
             .then(wrapHeaderFields)
             .then(trimHeaderFields)
-            .then((params) => {
-                let header = params.headerFields.join(options.delimiter.field),
-                    records = params.records,
-
-                    // If we are prepending the header, then add an EOL, otherwise just return the records
-                    csv = (options.excelBOM ? '\ufeff' : '') +
-                        (options.prependHeader ? header + options.delimiter.eol : '') +
-                        records;
-
-                return callback(null, csv);
-            })
+            .then(generateCsvHeader)
+            .then(generateCsvFromComponents)
             .catch(callback);
     }
 

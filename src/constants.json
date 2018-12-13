@@ -23,7 +23,7 @@
     "delimiter" : {
       "field" : ",",
       "array" : ";",
-      "wrap"  : "",
+      "wrap"  : "\"",
       "eol"   : "\n"
     },
     "excelBOM": false,
@@ -33,7 +33,7 @@
     "sortHeader" : false,
     "parseCsvNumbers" : false,
     "keys" : null,
-    "checkSchemaDifferences": true,
-    "emptyFieldValue": "null"
+    "checkSchemaDifferences": false,
+    "emptyFieldValue": ""
   }
 }
