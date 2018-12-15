@@ -1,31 +1,39 @@
 'use strict';
 
 let constants = require('./constants.json'),
-    utilities = require('./utils'),
     _ = require('underscore'),
     path = require('doc-path');
 
 const Csv2Json = function (options) {
     /**
      * Generate the JSON heading from the CSV
-     * @param lines
-     * @param callback
+     * @param params {Object} {lines: [String], callback: Function}
      * @returns {*}
      */
-    function retrieveHeading(lines, callback) {
-        // If there are no lines passed in, return an error
-        if (!lines.length) {
-            return callback(new Error(constants.errors.csv2json.noDataRetrieveHeading)); // Pass an error back to the user
+    function retrieveHeading(params) {
+        // Generate and return the heading keys
+        let headerRow = params.lines[0];
+        params.headerFields = splitLine(headerRow).map((headerKey, index) => {
+            return {
+                value: options.trimHeaderFields ? headerKey.trim() : headerKey,
+                index: index
+            };
+        });
+
+        // If the user provided keys, filter the generated keys to just the user provided keys so we also have the key index
+        if (options.keys) {
+            params.headerFields = _.filter(params.headerFields, function (headerKey) {
+                return _.contains(options.keys, headerKey.value);
+            });
         }
 
-        // Generate and return the heading keys
-        return _.map(splitLine(lines[0]),
-            function (headerKey, index) {
-                return {
-                    value: options.trimHeaderFields ? headerKey.trim() : headerKey,
-                    index: index
-                };
-            });
+        return params;
+    }
+
+    function retrieveRecordLines(params) {
+        params.recordLines = params.lines.splice(1); // All lines except for the header line
+
+        return params;
     }
 
     /**
@@ -65,7 +73,7 @@ const Csv2Json = function (options) {
      */
     function createDocument(keys, line) {
         line = splitLine(line); // Split the line using the given field delimiter after trimming whitespace
-        let val; // Temporary letiable to set the current key's value to
+        let val; // Temporary variable to set the current key's value to
 
         // Reduce the keys into a JSON document representing the given line
         return _.reduce(keys, function (document, key) {
@@ -86,23 +94,17 @@ const Csv2Json = function (options) {
 
     /**
      * Main helper function to convert the CSV to the JSON document array
-     * @param lines String[]
-     * @param callback Function callback function
+     * @param params {Object} {lines: [String], callback: Function}
      * @returns {Array}
      */
-    function convertCSV(lines, callback) {
-        let generatedHeaders = retrieveHeading(lines, callback), // Retrieve the headings from the CSV, unless the user specified the keys
-            nonHeaderLines = lines.splice(1), // All lines except for the header line
-            // If the user provided keys, filter the generated keys to just the user provided keys so we also have the key index
-            headers = options.keys ? _.filter(generatedHeaders, function (headerKey) {
-                return _.contains(options.keys, headerKey.value);
-            }) : generatedHeaders;
-
-        return _.reduce(nonHeaderLines, function (documentArray, line) { // For each line, create the document and add it to the array of documents
+    function transformRecordLines(params) {
+        params.json = _.reduce(params.recordLines, function (documentArray, line) { // For each line, create the document and add it to the array of documents
             if (!line) { return documentArray; } // skip over empty lines
-            let generatedDocument = createDocument(headers, line.trim());
+            let generatedDocument = createDocument(params.headerFields, line.trim());
             return documentArray.concat(generatedDocument);
         }, []);
+
+        return params;
     }
 
     /**
@@ -186,6 +188,10 @@ const Csv2Json = function (options) {
         return splitLine;
     }
 
+    function splitCsvLines(csv) {
+        return Promise.resolve(csv.split(options.delimiter.eol));
+    }
+
     /**
      * Internally exported csv2json function
      * Takes options as a document, data as a CSV string, and a callback that will be used to report the results
@@ -194,9 +200,24 @@ const Csv2Json = function (options) {
      */
     function convert(data, callback) {
         // Split the CSV into lines using the specified EOL option
-        let lines = data.split(options.delimiter.eol),
-            json = convertCSV(lines, callback); // Retrieve the JSON document array
-        return callback(null, json); // Send the data back to the caller
+        splitCsvLines(data)
+            .then((lines) => {
+                // If there are no lines passed in, return an error
+                if (!lines.length) {
+                    return callback(new Error(constants.errors.csv2json.noDataRetrieveHeading)); // Pass an error back to the user
+                }
+
+                return {
+                    lines,
+                    callback
+                };
+            })
+            .then(retrieveHeading) // Retrieve the headings from the CSV, unless the user specified the keys
+            .then(retrieveRecordLines) // Retrieve the record lines from the CSV
+            .then(transformRecordLines) // Retrieve the JSON document array
+            .then((params) => {
+                return callback(null, params.json); // Send the data back to the caller
+            });
     }
 
     return {
