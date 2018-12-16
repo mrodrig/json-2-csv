@@ -210,8 +210,7 @@ const Csv2Json = function (options) {
 
         // Future version:
         // try {
-        //     JSON.parse(value);
-        //     return true;
+        //     return JSON.parse(value);;
         // } catch (err) {
         //     return false;
         // }
