@@ -30,81 +30,13 @@ const Csv2Json = function (options) {
         return params;
     }
 
-    function retrieveRecordLines(params) {
-        params.recordLines = params.lines.splice(1); // All lines except for the header line
-
-        return params;
-    }
-
     /**
-     * Does the given value represent an array?
-     * @param value
-     * @returns {boolean}
+     * Splits the lines of the CSV string by the EOL delimiter and resolves and array of strings (lines)
+     * @param csv
+     * @returns {Promise.<*>}
      */
-    function isArrayRepresentation(value) {
-        // Verify that there is a value and it starts with '[' and ends with ']'
-        return (value && /^\[.*\]$/.test(value));
-    }
-
-    /**
-     * Converts the value from a CSV 'array'
-     * @param arrayRepresentation
-     * @returns {Array}
-     */
-    function convertArrayRepresentation(arrayRepresentation) {
-        // Remove the '[' and ']' characters
-        arrayRepresentation = arrayRepresentation.replace(/(\[|\])/g, '');
-
-        // Split the arrayRepresentation into an array by the array delimiter
-        arrayRepresentation = arrayRepresentation.split(options.delimiter.array);
-
-        // Filter out non-empty strings
-        return _.filter(arrayRepresentation, function (value) {
-            return value;
-        });
-    }
-
-    /**
-     * Create a JSON document with the given keys (designated by the CSV header)
-     *   and the values (from the given line)
-     * @param keys String[]
-     * @param line String
-     * @returns {Object} created json document
-     */
-    function createDocument(keys, line) {
-        line = splitLine(line); // Split the line using the given field delimiter after trimming whitespace
-        let val; // Temporary variable to set the current key's value to
-
-        // Reduce the keys into a JSON document representing the given line
-        return _.reduce(keys, function (document, key) {
-            // If there is a value at the key's index in the line, set the value; otherwise null
-            val = line[key.index] ? line[key.index] : null;
-
-            // If the user wants to trim field values, trim the value
-            val = options.trimFieldValues && !_.isNull(val) ? val.trim() : val;
-
-            // If the value is an array representation, convert it
-            if (isArrayRepresentation(val)) {
-                val = convertArrayRepresentation(val);
-            }
-            // Otherwise add the key and value to the document
-            return path.setPath(document, key.value, val);
-        }, {});
-    }
-
-    /**
-     * Main helper function to convert the CSV to the JSON document array
-     * @param params {Object} {lines: [String], callback: Function}
-     * @returns {Array}
-     */
-    function transformRecordLines(params) {
-        params.json = _.reduce(params.recordLines, function (documentArray, line) { // For each line, create the document and add it to the array of documents
-            if (!line) { return documentArray; } // skip over empty lines
-            let generatedDocument = createDocument(params.headerFields, line.trim());
-            return documentArray.concat(generatedDocument);
-        }, []);
-
-        return params;
+    function splitCsvLines(csv) {
+        return Promise.resolve(csv.split(options.delimiter.eol));
     }
 
     /**
@@ -188,8 +120,119 @@ const Csv2Json = function (options) {
         return splitLine;
     }
 
-    function splitCsvLines(csv) {
-        return Promise.resolve(csv.split(options.delimiter.eol));
+    /**
+     * Retrieves the record lines from the split CSV lines and sets it on the params object
+     * @param params
+     * @returns {*}
+     */
+    function retrieveRecordLines(params) {
+        params.recordLines = params.lines.splice(1); // All lines except for the header line
+
+        return params;
+    }
+
+    function retrieveRecordValueFromLine(line, key) {
+        let value = null;
+
+        if (line[key.index]) {
+            value = line[key.index];
+        }
+
+        return processRecordValue(value);
+    }
+
+    function processRecordValue(fieldValue) {
+        // Trim the value, if specified in the options
+        fieldValue = trimRecordValue(fieldValue);
+
+        // TODO: Handle case of null or undefined
+        // If the value is an array representation, convert it
+        if (isArrayRepresentation(fieldValue)) {
+            fieldValue = convertArrayRepresentation(fieldValue);
+        }
+
+        return fieldValue;
+    }
+
+    function trimRecordValue(fieldValue) {
+        if (options.trimFieldValues && !_.isNull(fieldValue)) {
+            return fieldValue.trim();
+        }
+        return fieldValue;
+    }
+
+    /**
+     * Create a JSON document with the given keys (designated by the CSV header)
+     *   and the values (from the given line)
+     * @param keys String[]
+     * @param line String
+     * @returns {Object} created json document
+     */
+    function createDocument(keys, line) {
+        // Reduce the keys into a JSON document representing the given line
+        return _.reduce(keys, function (document, key) {
+            // If there is a value at the key's index in the line, set the value; otherwise null
+            let value = retrieveRecordValueFromLine(line, key);
+
+            // Otherwise add the key and value to the document
+            return path.setPath(document, key.value, value);
+        }, {});
+    }
+
+    /**
+     * Main helper function to convert the CSV to the JSON document array
+     * @param params {Object} {lines: [String], callback: Function}
+     * @returns {Array}
+     */
+    function transformRecordLines(params) {
+        params.json = _.reduce(params.recordLines, function (generatedJsonObjects, line) { // For each line, create the document and add it to the array of documents
+            // skip over empty lines
+            if (!line) { return generatedJsonObjects; }
+
+            // TODO: remove the trim in future version, gets rid of whitespace in leading/ending values
+            line = splitLine(line.trim()); // Split the line using the given field delimiter after trimming whitespace
+            let generatedDocument = createDocument(params.headerFields, line);
+            return generatedJsonObjects.concat(generatedDocument);
+        }, []);
+
+        return params;
+    }
+
+    /** TODO: Refactor array and object representation handling **/
+    /**
+     * Does the given value represent an array?
+     * @param value
+     * @returns {boolean}
+     */
+    function isArrayRepresentation(value) {
+        // Verify that there is a value and it starts with '[' and ends with ']'
+        return (value && /^\[.*\]$/.test(value));
+
+        // Future version:
+        // try {
+        //     JSON.parse(value);
+        //     return true;
+        // } catch (err) {
+        //     return false;
+        // }
+    }
+
+    /**
+     * Converts the value from a CSV 'array'
+     * @param arrayRepresentation
+     * @returns {Array}
+     */
+    function convertArrayRepresentation(arrayRepresentation) {
+        // Remove the '[' and ']' characters
+        arrayRepresentation = arrayRepresentation.replace(/(\[|\])/g, '');
+
+        // Split the arrayRepresentation into an array by the array delimiter
+        arrayRepresentation = arrayRepresentation.split(options.delimiter.array);
+
+        // Filter out non-empty strings
+        return _.filter(arrayRepresentation, function (value) {
+            return value;
+        });
     }
 
     /**
