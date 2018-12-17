@@ -5,6 +5,10 @@ let constants = require('./constants.json'),
     path = require('doc-path');
 
 const Csv2Json = function (options) {
+    const leadingWrapRegex = new RegExp('^' + options.delimiter.wrap),
+        endingWrapRegex = new RegExp(options.delimiter.wrap + '$'),
+        fieldValueWrapRegex = new RegExp('(^' + options.delimiter.wrap + '|' + options.delimiter.wrap + '$)');
+
     /**
      * Generate the JSON heading from the CSV
      * @param params {Object} {lines: [String], callback: Function}
@@ -103,6 +107,7 @@ const Csv2Json = function (options) {
                 splitLine.push(line.substring(stateVariables.startIndex, index));
                 stateVariables.startIndex = index + 1;
             }
+            // If we reached a field delimiter, the previous character was a wrap delimiter, and the next character is not a wrap delimiter (ie. ",*)
             else if (character === options.delimiter.field && charBefore === options.delimiter.wrap &&
                 charAfter !== options.delimiter.wrap) {
                 stateVariables.insideWrapDelimiter = false;
@@ -179,6 +184,18 @@ const Csv2Json = function (options) {
         }, {});
     }
 
+    function removeWrapDelimitersFromValue(fieldValue) {
+        let firstChar = fieldValue[0],
+            lastIndex = fieldValue.length - 1,
+            lastChar = fieldValue[lastIndex];
+        // If the field starts and ends with a wrap delimiter
+        // TODO: add check for containing comma (
+        if (firstChar === options.delimiter.wrap && lastChar === options.delimiter.wrap) {
+            return fieldValue.substr(1, lastIndex - 1);
+        }
+        return fieldValue;
+    }
+
     /**
      * Main helper function to convert the CSV to the JSON document array
      * @param params {Object} {lines: [String], callback: Function}
@@ -190,7 +207,13 @@ const Csv2Json = function (options) {
             if (!line) { return generatedJsonObjects; }
 
             // TODO: remove the trim in future version, gets rid of whitespace in leading/ending values
-            line = splitLine(line.trim()); // Split the line using the given field delimiter after trimming whitespace
+            // Split the line using the given field delimiter after trimming whitespace
+            line = splitLine(line.trim()).map((fieldValue) => {
+                fieldValue = removeWrapDelimitersFromValue(fieldValue);
+
+                return fieldValue;
+            });
+
             let generatedDocument = createDocument(params.headerFields, line);
             return generatedJsonObjects.concat(generatedDocument);
         }, []);

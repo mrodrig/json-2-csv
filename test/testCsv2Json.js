@@ -536,7 +536,7 @@ let csv2jsonTests = function () {
                     done();
                 }, opts);
             });
-            
+
             it('should parse a CSV with some fields wrapped and others unwrapped', function (done) {
                 converter.csv2json(csvTestData.quoted.nestedSomeFieldsWrappedJson, function (err, json) {
                     if (err) { throw err; }
@@ -625,7 +625,7 @@ let csv2jsonTests = function () {
                 }, options);
             });
         });
-        
+
         describe('Testing other features', function () {
             it('should trim the headers and the fields - 1', function (done) {
                 converter.csv2json(csvTestData.unQuoted.needsTrimming, function (err, json) {
@@ -636,7 +636,7 @@ let csv2jsonTests = function () {
                     done();
                 }, {trimHeaderFields: true, trimFieldValues: true});
             });
-            
+
             it('should trim the headers and the fields - 2', function (done) {
                 converter.csv2json(csvTestData.unQuoted.trimmed, function (err, json) {
                     if (err) { throw err; }
@@ -972,7 +972,7 @@ let csv2jsonTests = function () {
                         done();
                     })
                     .catch(function (err) {
-                        throw err;
+                        done(err);
                     });
             });
 
@@ -1036,7 +1036,7 @@ let csv2jsonTests = function () {
                         throw err;
                     });
             });
-            
+
             it('should parse an unquoted CSV without any issues while a delimiter is set', function (done) {
                 converter.csv2jsonPromisified(csvTestData.unQuoted.arrayValue.replace(/;/g, '/'), options)
                     .then(function (json) {
