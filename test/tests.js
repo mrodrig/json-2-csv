@@ -27,5 +27,5 @@ describe('json-2-csv Module', function() {
     });
 
     // json2csvTests.runTests({jsonTestData: jsonTestData, csvTestData: csvTestData});
-    csv2jsonTests.runTests({jsonTestData: jsonTestData, csvTestData: csvTestData});
+    // csv2jsonTests.runTests({jsonTestData: jsonTestData, csvTestData: csvTestData});
 });
