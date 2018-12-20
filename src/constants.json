@@ -23,17 +23,17 @@
     "delimiter" : {
       "field" : ",",
       "array" : ";",
-      "wrap"  : "",
+      "wrap"  : "\"",
       "eol"   : "\n"
     },
-    "excelBom": false,
+    "excelBOM": false,
     "prependHeader" : true,
     "trimHeaderFields": false,
     "trimFieldValues" : false,
     "sortHeader" : false,
     "parseCsvNumbers" : false,
     "keys" : null,
-    "checkSchemaDifferences": true,
-    "emptyFieldValue": "null"
+    "checkSchemaDifferences": false,
+    "emptyFieldValue": ""
   }
 }
