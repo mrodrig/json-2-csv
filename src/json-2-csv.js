@@ -1,13 +1,14 @@
 'use strict';
 
 let constants = require('./constants.json'),
-    utilities = require('./utils'),
     _ = require('underscore'),
     path = require('doc-path'),
     deeks = require('deeks'),
     Promise = require('bluebird');
 
 const Json2Csv = function (options) {
+    const wrapDelimiterCheckRegex = new RegExp(options.delimiter.wrap, 'g'),
+        crlfSearchRegex = /\r?\n|\r/;
 
     /*** HEADER FIELD FUNCTIONS ***/
 
@@ -108,12 +109,22 @@ const Json2Csv = function (options) {
      * @returns {*}
      */
     function wrapHeaderFields(params) {
-        // If the fields are supposed to be wrapped... (only perform this if we are actually prepending the header)
-        if (options.delimiter.wrap && options.prependHeader) {
+        // only perform this if we are actually prepending the header
+        if (options.prependHeader) {
             params.headerFields = params.headerFields.map(function(headingKey) {
-                return options.delimiter.wrap + headingKey + options.delimiter.wrap;
+                return wrapFieldValueIfNecessary(headingKey);
             });
         }
+        return params;
+    }
+
+    /**
+     * Generates the CSV header string by joining the headerFields by the field delimiter
+     * @param params
+     * @returns {*}
+     */
+    function generateCsvHeader(params) {
+        params.header = params.headerFields.join(options.delimiter.field);
         return params;
     }
 
@@ -137,20 +148,37 @@ const Json2Csv = function (options) {
     /*** RECORD FIELD FUNCTIONS ***/
 
     /**
-     * Order of operations:
+     * Main function which handles the processing of a record, or document to be converted to CSV format
+     * This function specifies and performs the necessary operations in the necessary order
+     * in order to obtain the data and convert it to CSV form while maintaining RFC 4180 compliance.
+     * * Order of operations:
      * - Get fields from provided key list (as array of actual values)
      * - Convert the values to csv/string representation [possible option here for custom converters?]
      * - Trim fields
      * - Determine if they need to be wrapped (& wrap if necessary)
      * - Combine values for each line (by joining by field delimiter)
+     * @param params
+     * @returns {*}
      */
+    function processRecords (params) {
+        params.records = params.records.map((record) => {
+                // Retrieve data for each of the headerFields from this record
+                let recordFieldData = retrieveRecordFieldData(record, params.headerFields);
 
-    function processRecords (records, fields) {
-        return records.map((record) => {
-            return retrieveRecordFieldData(record, fields)
-                .each(recordFieldValueToString)
-                .each(trimRecordFieldValue);
-        });
+                // Process the data in this record and return the
+                let processedRecordData = recordFieldData.map((fieldValue) => {
+                    fieldValue = recordFieldValueToString(fieldValue);
+                    fieldValue = trimRecordFieldValue(fieldValue);
+                    fieldValue = wrapFieldValueIfNecessary(fieldValue);
+
+                    return fieldValue;
+                });
+
+                // Join the record data by the field delimiter
+                return generateCsvRowFromRecord(processedRecordData);
+            }).join(options.delimiter.eol);
+
+        return params;
     }
 
     /**
@@ -167,17 +195,31 @@ const Json2Csv = function (options) {
             recordValues.push(recordFieldValue);
         });
 
-        return Promise.resolve(recordValues);
+        return recordValues;
     }
 
+    /**
+     * Converts a record field value to its string representation
+     * @param fieldValue
+     * @returns {*}
+     */
     function recordFieldValueToString (fieldValue) {
         if (_.isArray(fieldValue) || _.isObject(fieldValue)) {
             return JSON.stringify(fieldValue);
+        } else if (_.isUndefined(fieldValue)) {
+            return 'undefined';
+        } else if (_.isNull(fieldValue)) {
+            return 'null';
         } else {
             return fieldValue.toString();
         }
     }
 
+    /**
+     * Trims the record field value, if specified by the user's provided options
+     * @param fieldValue
+     * @returns {*}
+     */
     function trimRecordFieldValue (fieldValue) {
         if (options.trimFieldValues) {
             return fieldValue.trim();
@@ -185,85 +227,58 @@ const Json2Csv = function (options) {
         return fieldValue;
     }
 
+    /**
+     * Escapes quotation marks in the field value, if necessary, and appropriately
+     * wraps the record field value if it contains a comma (field delimiter),
+     * quotation mark (wrap delimiter), or a line break (CRLF)
+     * @param fieldValue
+     * @returns {*}
+     */
     function wrapFieldValueIfNecessary (fieldValue) {
+        const wrapDelimiter = options.delimiter.wrap;
+
         // eg. includes quotation marks (default delimiter)
         if (fieldValue.includes(options.delimiter.wrap)) {
             // add an additional quotation mark before each quotation mark appearing in the field value
+            fieldValue = fieldValue.replace(wrapDelimiterCheckRegex, wrapDelimiter + wrapDelimiter);
         }
-        // eg. contains a comma (default delimiter)
-        else if (fieldValue.includes(options.delimiter.field)) {
+        // if the field contains a comma (field delimiter), quotation mark (wrap delimiter), line break, or CRLF
+        //   then enclose it in quotation marks (wrap delimiter)
+        if (fieldValue.includes(options.delimiter.field) ||
+                fieldValue.includes(options.delimiter.wrap) ||
+                fieldValue.match(crlfSearchRegex)) {
             // wrap the field's value in a wrap delimiter (quotation marks by default)
+            fieldValue = wrapDelimiter + fieldValue + wrapDelimiter;
         }
+
+        return fieldValue;
     }
 
     /**
-     * Convert the given data with the given keys
-     * @param data
-     * @param keys
-     * @returns {Array}
+     * Generates the CSV record string by joining the field values together by the field delimiter
+     * @param recordFieldValues
      */
-    function convertData(data, keys) {
-        // Reduce each key in the data to its CSV value
-        return keys.reduce((output, key) => {
-            // Retrieve the appropriate field data
-            let fieldData = path.evaluatePath(data, key);
-            if (_.isUndefined(fieldData)) { fieldData = options.emptyFieldValue; }
-            // Add the CSV representation of the data at the key in the document to the output array
-            return output.concat(convertField(fieldData, options));
-        }, []);
+    function generateCsvRowFromRecord (recordFieldValues) {
+        return recordFieldValues.join(options.delimiter.field);
     }
 
+    /*** CSV COMPONENT COMBINER/FINAL PROCESSOR ***/
     /**
-     * Convert the given value to the CSV representation of the value
-     * @param value
-     */
-    function convertField(value) {
-        if (_.isArray(value)) { // We have an array of values
-            let result = [];
-            value.forEach(function(item) {
-                if (_.isObject(item)) {
-                    // use JSON stringify to convert objects in arrays, otherwise toString() will just return [object Object]
-                    result.push(JSON.stringify(item));
-                } else {
-                    result.push(convertValue(item, options));
-                }
-            });
-            return options.delimiter.wrap + '[' + result.join(options.delimiter.array) + ']' + options.delimiter.wrap;
-        } else if (_.isDate(value)) { // If we have a date
-            return options.delimiter.wrap + convertValue(value, options) + options.delimiter.wrap;
-        } else if (_.isObject(value)) { // If we have an object
-            return options.delimiter.wrap + convertData(value, Object.keys(value), options) + options.delimiter.wrap; // Push the recursively generated CSV
-        } else if (_.isNumber(value)) { // If we have a number (avoids 0 being converted to '')
-            return options.delimiter.wrap + convertValue(value, options) + options.delimiter.wrap;
-        } else if (_.isBoolean(value)) { // If we have a boolean (avoids false being converted to '')
-            return options.delimiter.wrap + convertValue(value, options) + options.delimiter.wrap;
-        }
-        value = options.delimiter.wrap && value ? value.replace(new RegExp(options.delimiter.wrap, 'g'), options.delimiter.wrap + options.delimiter.wrap) : value;
-        return options.delimiter.wrap + convertValue(value, options) + options.delimiter.wrap; // Otherwise push the current value
-    }
-
-    function convertValue(val) {
-        // Convert to string
-        val = _.isNull(val) || _.isUndefined(val) ? '' : val.toString();
-
-        // Trim, if necessary, and return the correct value
-        return options.trimFieldValues ? val.trim() : val;
-    }
-
-    /**
-     * Generate the CSV representing the given data.
+     * Performs the final CSV construction by combining the fields in the appropriate
+     * order depending on the provided options values and sends the generated CSV
+     * back to the user
      * @param params
-     * @returns {String} records in csv format
      */
-    function transformRecords(params) {
-        // Reduce each JSON document in data to a CSV string and append it to the CSV accumulator
-        params.records = params.records.reduce(function(csv, recordData) {
-            let recordFields = convertData(recordData, params.headerFields, options);
+    function generateCsvFromComponents(params) {
+        let header = params.header,
+            records = params.records,
 
-            return csv += recordFields.join(options.delimiter.field) + options.delimiter.eol;
-        }, '');
+            // If we are prepending the header, then add an EOL, otherwise just return the records
+            csv = (options.excelBOM ? '\ufeff' : '') +
+                (options.prependHeader ? header + options.delimiter.eol : '') +
+                records;
 
-        return params;
+        return params.callback(null, csv);
     }
 
     /*** MAIN CONVERTER FUNCTION ***/
@@ -285,23 +300,15 @@ const Json2Csv = function (options) {
             .then((headerFields) => {
                 return {
                     headerFields,
-                    records: data
+                    callback,
+                    records: data,
                 };
             })
-            .then(transformRecords)
+            .then(processRecords)
             .then(wrapHeaderFields)
             .then(trimHeaderFields)
-            .then((params) => {
-                let header = params.headerFields.join(options.delimiter.field),
-                    records = params.records,
-
-                    // If we are prepending the header, then add an EOL, otherwise just return the records
-                    csv = (options.excelBOM ? '\ufeff' : '') +
-                          (options.prependHeader ? header + options.delimiter.eol : '') +
-                          records;
-
-                return callback(null, csv);
-            })
+            .then(generateCsvHeader)
+            .then(generateCsvFromComponents)
             .catch(callback);
     }
 

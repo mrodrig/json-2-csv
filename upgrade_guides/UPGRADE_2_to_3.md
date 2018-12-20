@@ -26,6 +26,21 @@ DELIMITER.WRAP           --> delimiter.wrap
 DELIMITER.EOL            --> delimiter.eol
 ```
 
+* Schema Difference Check
+
+By default, the schema difference check for `json2csv` has now been disabled.
+As a result, if you wish to ensure that all documents have the same schema, you
+will need to specify `checkSchemaDifferences: true` in the options object you
+pass to the `json2csv` function.
+
+* RFC 4180 Compliance
+
+As of v3.0.0, the module is now compliant with RFC 4180, which means improved
+compatibility with spreadsheet applications, like Microsoft Excel. This is great
+news, however, it may mean that any applications or tools that depend on the
+previous CSV format that the module generated may need to be updated since they
+may break as a result.
+
 ## Improvements
 
 * Class-based functionality
