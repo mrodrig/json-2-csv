@@ -1,7 +1,6 @@
 {
   "errors" : {
 
-    "delimitersMustDiffer": "The field and array delimiters must differ.",
     "callbackRequired": "A callback is required!",
     "optionsRequired": "Options were not passed and are required.",
 
@@ -22,7 +21,6 @@
   "defaultOptions" : {
     "delimiter" : {
       "field" : ",",
-      "array" : ";",
       "wrap"  : "\"",
       "eol"   : "\n"
     },

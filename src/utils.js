@@ -23,10 +23,6 @@ function buildOptions(opts, callback) {
     // Note: _.defaults does a shallow default, we need to deep copy the DELIMITER object
     opts.delimiter = _.defaults(opts.delimiter, constants.defaultOptions.delimiter);
 
-    // If the delimiter fields are the same, report an error to the caller
-    if (opts.delimiter.field === opts.delimiter.array) {
-        return callback(new Error(constants.errors.delimitersMustDiffer));
-    }
     // Otherwise, send the options back
     return callback(null, opts);
 }
