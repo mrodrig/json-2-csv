@@ -13,6 +13,10 @@ Column headings will be automatically generated based on the keys of the JSON do
 It is also capable of converting CSV of the same form back into the original array of JSON documents.
 The columns headings will be used as the JSON document keys.  All lines must have the same exact number of CSV values.
 
+## Beta
+Want to try the latest code, which will be released in the coming week or two?
+Run `npm install json-2-csv@3.0.0-beta.0`!
+
 ## Installation
 
 ```bash
