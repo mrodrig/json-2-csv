@@ -15,6 +15,7 @@ The columns headings will be used as the JSON document keys.  All lines must hav
 
 ## Beta
 Want to try the latest code, which will be released in the coming week or two?
+
 Run `npm install json-2-csv@3.0.0-beta.0`!
 
 ## Installation
