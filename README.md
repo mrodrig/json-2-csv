@@ -2,21 +2,21 @@
 **Convert JSON to CSV _or_ CSV to JSON**
 
 [![Dependencies](https://img.shields.io/david/mrodrig/json-2-csv.svg?style=flat-square)](https://www.npmjs.org/package/json-2-csv)
-[![Build Status](https://travis-ci.org/mrodrig/json-2-csv.svg?branch=master)](https://travis-ci.org/mrodrig/json-2-csv)
 [![Downloads](http://img.shields.io/npm/dm/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![NPM version](https://img.shields.io/npm/v/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![Known Vulnerabilities](https://snyk.io/test/npm/json-2-csv/badge.svg)](https://snyk.io/test/npm/json-2-csv)
+[![Package Size](https://img.shields.io/bundlephobia/min/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
+
+[![Build Status](https://travis-ci.org/mrodrig/json-2-csv.svg?branch=master)](https://travis-ci.org/mrodrig/json-2-csv)
+[![Maintainability](https://api.codeclimate.com/v1/badges/8c0cc3699d054fb77abe/maintainability)](https://codeclimate.com/github/mrodrig/json-2-csv/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/8c0cc3699d054fb77abe/test_coverage)](https://codeclimate.com/github/mrodrig/json-2-csv/test_coverage)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=rodrigues.mi%40husky.neu.edu&item_name=Open+Source+Software+Development+-+Node+Modules&currency_code=USD&source=url)
 
 This node module will convert an array of JSON documents to a CSV string.
 Column headings will be automatically generated based on the keys of the JSON documents. Nested documents will have a '.' appended between the keys.
 
 It is also capable of converting CSV of the same form back into the original array of JSON documents.
 The columns headings will be used as the JSON document keys.  All lines must have the same exact number of CSV values.
-
-## Beta
-Want to try the latest code, which will be released in the coming week or two?
-
-Run `npm install json-2-csv@3.0.0-beta.0`!
 
 ## Installation
 
@@ -30,6 +30,10 @@ $ npm install json-2-csv
 let converter = require('json-2-csv');
 ```
 
+## Upgrading?
+
+Upgrading to v3 from v2? Check out the [upgrade guide](https://github.com/mrodrig/json-2-csv/blob/master/upgrade_guides/UPGRADE_2_to_3.md).
+
 ### API
 
 #### `converter.json2csv(array, callback, options)`
@@ -40,25 +44,22 @@ let converter = require('json-2-csv');
 * `options` - (Optional) A JSON document specifying any of the following key value pairs:
   * `delimiter` - Document - Specifies the different types of delimiters
     * `field` - String - Field Delimiter. 
-      * Default: `','`
-    * `array` - String - Array Value Delimiter. 
-      * Default: `';'`
+      * Default: `,`
     * `wrap` - String - Wrap values in the delimiter of choice (e.g. wrap values in quotes). 
-      * Default: `''`
+      * Default: `"`
     * `eol` - String - End of Line Delimiter. 
-      * Default: `'\n'`
+      * Default: `\n`
+  * `excelBOM` - Boolean - Should a unicode character be prepended to allow Excel to open a UTF-8 encoded file with non-ASCII characters present.
   * `prependHeader` - Boolean - Should the auto-generated header be prepended as the first line in the CSV?
     * Default: `true`
   * `sortHeader` - Boolean - Should the header keys be sorted in alphabetical order? 
     * Default: `false`
-  * `emptyFieldValue` - String - Value for fields without data _when not checking schemas_.
-    * Default: `'null'`
   * `trimHeaderFields` - Boolean - Should the header fields be trimmed? 
     * Default: `false`
   * `trimFieldValues` - Boolean - Should the field values be trimmed? (*in development*)
     * Default: `false`
   * `checkSchemaDifferences` - Boolean - Should all documents have the same schema?
-    * Default: `true`
+    * Default: `false`
     * Note: Change this to `false` if some documents are missing certain fields and you still want to convert the data.
   * `keys` - Array - Specify the keys (as strings) that should be converted. 
     * Default: `null`
@@ -69,7 +70,7 @@ let converter = require('json-2-csv');
 
 For examples, please refer to the [json2csv API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/json2csv-Documentation)
 
-#### Promisified Version: `converter.json2csvPromisified(array, options)`
+#### Promisified Version: `converter.json2csvAsync(array, options)`
 
 Available in version `2.2.0`, this functionality makes use of promises from the `bluebird` module.
 
@@ -80,13 +81,13 @@ Available in version `2.2.0`, this functionality makes use of promises from the 
 * `options` - (Optional) A JSON document specifying any of the following key value pairs:
   * `delimiter` - Document - Specifies the different types of delimiters
     * `field` - String - Field Delimiter. 
-      * Default: `','`
-    * `array` - String - Array Value Delimiter. 
-      * Default: `';'`
+      * Default: `,`
     * `wrap` - String - The character that field values are wrapped in. 
-      * Default: `''`
+      * Default: `"`
     * `eol` - String - End of Line Delimiter. 
-      * Default: `'\n'`
+      * Default: `\n`
+  * `excelBOM` - Boolean - Does the CSV contain a unicode character prepended in order to allow Excel to open a UTF-8 encoded file with non-ASCII characters present?
+  	* Default: `false`
   * `trimHeaderFields` - Boolean - Should the header fields be trimmed? 
     * Default: `false`
   * `trimFieldValues` - Boolean - Should the field values be trimmed? 
@@ -98,7 +99,7 @@ Available in version `2.2.0`, this functionality makes use of promises from the 
 
 For examples, please refer to the [csv2json API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/csv2json-Documentation)
 
-#### Promisified Version: `csv2jsonPromisified(csv, options)`
+#### Promisified Version: `csv2jsonAsync(csv, options)`
 
 Available in version `2.2.0`, this functionality makes use of promises from the `bluebird` module.
 
@@ -108,7 +109,7 @@ Available in version `2.2.0`, this functionality makes use of promises from the 
 $ npm test
 ```
 
-_Note_: This requires `mocha`, `should`, `async`, and `underscore`.
+_Note_: This requires `mocha`, `should`, and `underscore`.
 
 To see test coverage, please run:
 ```bash
@@ -117,10 +118,10 @@ $ npm run coverage
 
 Current Coverage is:
 ```
-Statements   : 94.69% ( 196/207 )
-Branches     : 93.55% ( 145/155 )
-Functions    : 100% ( 34/34 )
-Lines        : 95.38% ( 186/195 )
+Statements   : 100% ( 258/258 )
+Branches     : 100% ( 124/124 )
+Functions    : 100% ( 49/49 )
+Lines        : 100% ( 256/256 )
 ```
 
 ## Frequently Asked Questions (FAQ)
@@ -128,7 +129,7 @@ Please find the updated list (relocated to the Wiki) here: [Frequently Asked Que
 
 ## Features
 * Header Generation (per document keys)
-* Allows for conversion of specific keys in both json2csv and csv2json via the options.KEYS parameter (as of 1.1.2)
+* Allows for conversion of specific keys in both json2csv and csv2json via the options.keys parameter (as of 1.1.2)
 * Verifies all documents have same schema (schema field order does not matter as of 1.1.0)
 * Supports sub-documents natively
 * Supports arrays as document values for both json2csv and csv2json
@@ -138,5 +139,9 @@ Please find the updated list (relocated to the Wiki) here: [Frequently Asked Que
 * Promisifiable via bluebird's .promisify(<function>) and .promisifyAll(<object>) (as of 1.1.1)
 * Wrapped value support for json2csv and csv2json (as of 1.3.0)
 * Support for multiple different schemas (as of 1.4.0)
-* Promisified versions of the functions are now available by default: json2csvPromisified, csv2jsonPromisified (as of 2.2.0)
-* Nested quotes are escaped with an additional quote (per [RFC 4180](https://tools.ietf.org/html/rfc4180)) thanks to @eric-thelin (as of 2.3.0)
+* Promisified versions of the functions are now available by default: json2csvAsync, csv2jsonAsync (as of 2.2.0)
+* RFC 4180 Compliance (as of 3.0.0)
+* CLI functionality (as of 3.0.0)
+	* `csv2json test.csv -o output.json`
+	* *and*
+	* `json2csv test.json -o output.csv -W -k arrayOfStrings -o output.csv`

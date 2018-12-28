@@ -1,38 +1,39 @@
 {
-  "Errors" : {
+  "errors" : {
 
-    "delimitersMustDiffer": "The field and array delimiters must differ.",
     "callbackRequired": "A callback is required!",
     "optionsRequired": "Options were not passed and are required.",
 
     "json2csv": {
-      "cannotCallJson2CsvOn": "Cannot call json2csv on ",
-      "dataNotArrayOfDocuments": "Data provided was not an array of documents.",
+      "cannotCallOn": "Cannot call json2csv on ",
+      "dataCheckFailure": "Data provided was not an array of documents.",
       "notSameSchema": "Not all documents have the same schema."
     },
 
     "csv2json": {
-      "cannotCallCsv2JsonOn": "Cannot call csv2json on ",
-      "csvNotString": "CSV is not a string.",
-      "noDataRetrieveHeading": "No data provided to retrieve heading."
+      "cannotCallOn": "Cannot call csv2json on ",
+      "dataCheckFailure": "CSV is not a string."
     }
 
   },
 
-  "DefaultOptions" : {
-    "DELIMITER" : {
-      "FIELD" : ",",
-      "ARRAY" : ";",
-      "WRAP"  : "",
-      "EOL"   : "\n"
+  "defaultOptions" : {
+    "delimiter" : {
+      "field" : ",",
+      "wrap"  : "\"",
+      "eol"   : "\n"
     },
-    "PREPEND_HEADER" : true,
-    "TRIM_HEADER_FIELDS": false,
-    "TRIM_FIELD_VALUES" : false,
-    "SORT_HEADER" : false,
-    "PARSE_CSV_NUMBERS" : false,
-    "KEYS" : null,
-    "CHECK_SCHEMA_DIFFERENCES": true,
-    "EMPTY_FIELD_VALUE": "null"
+    "excelBOM": false,
+    "prependHeader" : true,
+    "trimHeaderFields": false,
+    "trimFieldValues" : false,
+    "sortHeader" : false,
+    "parseCsvNumbers" : false,
+    "keys" : null,
+    "checkSchemaDifferences": false
+  },
+
+  "values" : {
+    "excelBOM": "\ufeff"
   }
 }
