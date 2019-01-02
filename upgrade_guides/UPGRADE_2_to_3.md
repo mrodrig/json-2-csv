@@ -86,7 +86,7 @@ long-term.
 
 * Excel Byte Order Mark (BOM) Support
 
-Starting in v3, there's a new option `excelBom` which allows you to specify that
+Starting in v3, there's a new option `excelBOM` which allows you to specify that
 a Byte Order Mark (BOM) be prepended to the beginning of the CSV. This allows
 Microsoft Excel to open a UTF-8 encoded CSV file with non-ASCII characters,
 without them being scrambled. This, however, is not needed when using Apple's 
