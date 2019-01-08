@@ -12,7 +12,7 @@ available, however, you will need to update your code to use the new keys.
 The following lists the key name changes (left = old, right = new)
 
 ```
-EMPTY_FIELD_VALUE        --> * REMOVED *
+EMPTY_FIELD_VALUE        --> emptyFieldValue
 CHECK_SCHEMA_DIFFERENCES --> checkSchemaDifferences
 KEYS                     --> keys
 PARSE_CSV_NUMBERS        --> parseCsvNumbers
@@ -35,13 +35,6 @@ but it also allows for a more reliable interpretation of CSV data by `csv2json`.
 This was likely one of the least commonly used options and instead became a pain
 point since the array delimiter was required to be different from the field 
 delimiter prior to v3.0.0.
-
-* Empty Field Value Option Removed
-
-The empty field value option was previously not being used by the json2csv
-function, so for simplicity, it has been removed in v3.0.0. Please open an issue
-on the GitHub repository `mrodrig/json-2-csv` if you have a valid use case for
-this option to be implemented.
 
 * Schema Difference Check
 

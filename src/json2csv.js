@@ -193,6 +193,11 @@ const Json2Csv = function(options) {
 
         fields.forEach((field) => {
             let recordFieldValue = path.evaluatePath(record, field);
+
+            if (!_.isUndefined(options.emptyFieldValue) && utils.isEmptyField(recordFieldValue)) {
+                recordFieldValue = options.emptyFieldValue;
+            }
+
             recordValues.push(recordFieldValue);
         });
 

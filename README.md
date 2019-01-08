@@ -42,6 +42,9 @@ Upgrading to v3 from v2? Check out the [upgrade guide](https://github.com/mrodri
 * `callback` - A function of the form `function (err, csv)`; 
   * This function will receive any errors and/or the string of CSV generated.
 * `options` - (Optional) A JSON document specifying any of the following key value pairs:
+  * `checkSchemaDifferences` - Boolean - Should all documents have the same schema?
+    * Default: `false`
+    * Note: An error will be thrown if some documents have differing schemas when this is set to `true`.
   * `delimiter` - Document - Specifies the different types of delimiters
     * `field` - String - Field Delimiter. 
       * Default: `,`
@@ -49,7 +52,13 @@ Upgrading to v3 from v2? Check out the [upgrade guide](https://github.com/mrodri
       * Default: `"`
     * `eol` - String - End of Line Delimiter. 
       * Default: `\n`
+  * `emptyFieldValue` - Any - Value that, if specified, will be substituted in for field values that are `undefined`, `null`, or an empty string.
+    * Default: none
   * `excelBOM` - Boolean - Should a unicode character be prepended to allow Excel to open a UTF-8 encoded file with non-ASCII characters present.
+  * `keys` - Array - Specify the keys (as strings) that should be converted. 
+    * Default: `null`
+    * If you have a nested object (ie. {info : {name: 'Mike'}}), then set this to ['info.name']
+    * If you want all keys to be converted, then specify ```null``` or don't specify the option to utilize the default.
   * `prependHeader` - Boolean - Should the auto-generated header be prepended as the first line in the CSV?
     * Default: `true`
   * `sortHeader` - Boolean - Should the header keys be sorted in alphabetical order? 
@@ -58,14 +67,6 @@ Upgrading to v3 from v2? Check out the [upgrade guide](https://github.com/mrodri
     * Default: `false`
   * `trimFieldValues` - Boolean - Should the field values be trimmed? (*in development*)
     * Default: `false`
-  * `checkSchemaDifferences` - Boolean - Should all documents have the same schema?
-    * Default: `false`
-    * Note: Change this to `false` if some documents are missing certain fields and you still want to convert the data.
-  * `keys` - Array - Specify the keys (as strings) that should be converted. 
-    * Default: `null`
-    * If you have a nested object (ie. {info : {name: 'Mike'}}), then set this to ['info.name']
-    * If you want all keys to be converted, then specify ```null``` or don't specify the option to utilize the default.
-    
 
 
 For examples, please refer to the [json2csv API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/json2csv-Documentation)
@@ -87,15 +88,15 @@ Available in version `2.2.0`, this functionality makes use of promises from the 
     * `eol` - String - End of Line Delimiter. 
       * Default: `\n`
   * `excelBOM` - Boolean - Does the CSV contain a unicode character prepended in order to allow Excel to open a UTF-8 encoded file with non-ASCII characters present?
-  	* Default: `false`
-  * `trimHeaderFields` - Boolean - Should the header fields be trimmed? 
-    * Default: `false`
-  * `trimFieldValues` - Boolean - Should the field values be trimmed? 
     * Default: `false`
   * `keys` - Array - Specify the keys (as strings) that should be converted. 
     * Default: `null`
     * If you have a nested object (ie. `{info : {name: 'Mike'}}`), then set this to `['info.name']`
     * If you want all keys to be converted, then specify `null` or don't specify the option to utilize the default.
+  * `trimHeaderFields` - Boolean - Should the header fields be trimmed? 
+    * Default: `false`
+  * `trimFieldValues` - Boolean - Should the field values be trimmed? 
+    * Default: `false`
 
 For examples, please refer to the [csv2json API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/csv2json-Documentation)
 
@@ -109,8 +110,6 @@ Available in version `2.2.0`, this functionality makes use of promises from the 
 $ npm test
 ```
 
-_Note_: This requires `mocha`, `should`, and `underscore`.
-
 To see test coverage, please run:
 ```bash
 $ npm run coverage
@@ -118,9 +117,9 @@ $ npm run coverage
 
 Current Coverage is:
 ```
-Statements   : 100% ( 258/258 )
-Branches     : 100% ( 124/124 )
-Functions    : 100% ( 49/49 )
+Statements   : 100% ( 261/261 )
+Branches     : 100% ( 131/131 )
+Functions    : 100% ( 47/47 )
 Lines        : 100% ( 256/256 )
 ```
 
@@ -130,13 +129,12 @@ Please find the updated list (relocated to the Wiki) here: [Frequently Asked Que
 ## Features
 * Header Generation (per document keys)
 * Allows for conversion of specific keys in both json2csv and csv2json via the options.keys parameter (as of 1.1.2)
-* Verifies all documents have same schema (schema field order does not matter as of 1.1.0)
+* Document schema verification functionality (field order is irrelevant) (as of 1.1.0)
 * Supports sub-documents natively
 * Supports arrays as document values for both json2csv and csv2json
 * Custom ordering of columns (see F.A.Q. for more information)
 * Ability to re-generate the JSON documents that were used to generate the CSV (including nested documents)
 * Allows for custom field delimiters, end of line delimiters, etc.
-* Promisifiable via bluebird's .promisify(<function>) and .promisifyAll(<object>) (as of 1.1.1)
 * Wrapped value support for json2csv and csv2json (as of 1.3.0)
 * Support for multiple different schemas (as of 1.4.0)
 * Promisified versions of the functions are now available by default: json2csvAsync, csv2jsonAsync (as of 2.2.0)
@@ -145,3 +143,4 @@ Please find the updated list (relocated to the Wiki) here: [Frequently Asked Que
 	* `csv2json test.csv -o output.json`
 	* *and*
 	* `json2csv test.json -o output.csv -W -k arrayOfStrings -o output.csv`
+* Empty field value option (as of 3.1.0)
