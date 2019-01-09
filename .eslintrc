@@ -12,7 +12,7 @@
   },
   "rules": {
     //Overrides "eslint:recommended"
-    "no-console": 0,                    // allow use of console.log
+    "no-console": ["error", { allow: ["warn", "error"] }], // allow use of console.warn and console.error
 
     //Add the rules associated with --fix not covered by "eslint:recommended" so we highlight them
     //during pre-test script

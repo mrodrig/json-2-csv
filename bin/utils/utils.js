@@ -79,7 +79,7 @@ function processOutput(params) {
         return writeToFile(params.output, JSON.stringify(params.outputData, null, 4));
     }
     // Otherwise, no output was specified so just send it to stdout via the console
-    console.log(params.outputData);
+    console.log(params.outputData); // eslint-disable-line no-console
 }
 
 function constructKeysList(key, keys) {
