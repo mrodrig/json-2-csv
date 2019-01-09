@@ -10,7 +10,8 @@ module.exports = {
     isDateRepresentation,
     computeSchemaDifferences,
     deepCopy,
-    convert
+    convert,
+    isEmptyField
 };
 
 /**
@@ -126,4 +127,14 @@ function isDateRepresentation(fieldValue) {
 function computeSchemaDifferences(schemaA, schemaB) {
     return _.difference(schemaA, schemaB)
         .concat(_.difference(schemaB, schemaA));
+}
+
+/**
+ * Utility function to check if a field is considered empty so that the emptyFieldValue can be used instead
+ * @param fieldValue
+ * @returns {boolean}
+ */
+function isEmptyField(fieldValue) {
+    console.log(fieldValue);
+    return _.isUndefined(fieldValue) || _.isNull(fieldValue) || fieldValue === '';
 }

@@ -343,6 +343,17 @@ function runTests(jsonTestData, csvTestData) {
                     keys: ['arrayOfStrings', 'object.subField']
                 });
             });
+
+            it('should use the specified empty field value, if provided', (done) => {
+                jsonTestData.emptyFieldValues[0].number = undefined;
+                converter.json2csv(jsonTestData.emptyFieldValues, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.emptyFieldValues);
+                    done();
+                }, {
+                    emptyFieldValue: ''
+                });
+            });
         });
     });
 
