@@ -135,6 +135,5 @@ function computeSchemaDifferences(schemaA, schemaB) {
  * @returns {boolean}
  */
 function isEmptyField(fieldValue) {
-    console.log(fieldValue);
     return _.isUndefined(fieldValue) || _.isNull(fieldValue) || fieldValue === '';
 }
