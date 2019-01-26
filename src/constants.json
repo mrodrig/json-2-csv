@@ -30,7 +30,8 @@
     "sortHeader" : false,
     "parseCsvNumbers" : false,
     "keys" : null,
-    "checkSchemaDifferences": false
+    "checkSchemaDifferences": false,
+    "expandArrayObjects": false
   },
 
   "values" : {

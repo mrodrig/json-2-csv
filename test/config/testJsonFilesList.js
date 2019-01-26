@@ -2,6 +2,7 @@ module.exports = {
     noData: require('../data/json/noData'),
     singleDocument: require('../data/json/singleDocument'),
     array: require('../data/json/array'),
+    arrayObjects: require('../data/json/arrayObjects'),
     date: require('../data/json/date'),
     null: require('../data/json/null'),
     undefined: require('../data/json/undefined'),
