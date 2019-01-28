@@ -10,7 +10,8 @@
       },
       {
         "cons": ["cost", "time"]
-      }
+      },
+      3
     ]
   },
   {
@@ -18,7 +19,8 @@
     "features": [
       {
         "name": "testing"
-      }
+      },
+      1
     ],
     "downloads": "5k/m"
   }

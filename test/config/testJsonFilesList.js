@@ -3,6 +3,7 @@ module.exports = {
     singleDocument: require('../data/json/singleDocument'),
     array: require('../data/json/array'),
     arrayObjects: require('../data/json/arrayObjects'),
+    arrayMixedObjNonObj: require('../data/json/arrayMixedObjNonObj'),
     date: require('../data/json/date'),
     null: require('../data/json/null'),
     undefined: require('../data/json/undefined'),
