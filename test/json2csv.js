@@ -354,6 +354,53 @@ function runTests(jsonTestData, csvTestData) {
                     emptyFieldValue: ''
                 });
             });
+
+            it('should expand array objects when specified - without objects', (done) => {
+                converter.json2csv(jsonTestData.array, (err, csv) => {
+                    if (err) done(err);
+                    let expectedCsv = csvTestData.array
+                        .replace('"[""json-2-csv""]"', 'json-2-csv')
+                        .replace('[]', '');
+                    csv.should.equal(expectedCsv);
+                    done();
+                }, {
+                    expandArrayObjects: true
+                });
+            });
+
+            it('should expand array objects when specified - with an object containing an empty array', (done) => {
+                // Change the features array to be empty
+                jsonTestData.arrayObjects[1].features = [];
+                converter.json2csv(jsonTestData.arrayObjects, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.arrayObjects.replace('testing', ''));
+                    done();
+                }, {
+                    expandArrayObjects: true
+                });
+            });
+
+            it('should expand array objects when specified - with objects containing an array of objects', (done) => {
+                converter.json2csv(jsonTestData.arrayMixedObjNonObj, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.arrayMixedObjNonObj);
+                    done();
+                }, {
+                    expandArrayObjects: true
+                });
+            });
+
+            it('should expand array objects when specified - with objects containing an array of objects', (done) => {
+                converter.json2csv(jsonTestData.arrayObjects, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.arrayObjects);
+                    done();
+                }, {
+                    expandArrayObjects: true
+                });
+            });
+
+            // TODO: additional tests
         });
     });
 

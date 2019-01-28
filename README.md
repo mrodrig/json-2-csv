@@ -55,6 +55,23 @@ Upgrading to v3 from v2? Check out the [upgrade guide](https://github.com/mrodri
   * `emptyFieldValue` - Any - Value that, if specified, will be substituted in for field values that are `undefined`, `null`, or an empty string.
     * Default: none
   * `excelBOM` - Boolean - Should a unicode character be prepended to allow Excel to open a UTF-8 encoded file with non-ASCII characters present.
+  * `expandArrayObjects` - Boolean - Should objects in array values be deep-converted to CSV?
+  	* Example:
+	```json
+	[
+		{ 
+			"specifications": [
+				{ "features": [...] },
+				{ "mileage": "5000" }
+			]
+		}
+	]
+	```
+  	* `true` uses the following keys:
+  		* `['specifications.features', 'specifications.mileage']`
+  	* `false` uses the following keys:
+  		* `['specifications']`
+	* Note: This may result in CSV output that does not map back exactly to the original JSON. See #102 for more information.
   * `keys` - Array - Specify the keys (as strings) that should be converted. 
     * Default: `null`
     * If you have a nested object (ie. {info : {name: 'Mike'}}), then set this to ['info.name']
@@ -117,10 +134,10 @@ $ npm run coverage
 
 Current Coverage is:
 ```
-Statements   : 100% ( 261/261 )
-Branches     : 100% ( 131/131 )
-Functions    : 100% ( 47/47 )
-Lines        : 100% ( 256/256 )
+Statements   : 100% ( 272/272 )
+Branches     : 100% ( 143/143 )
+Functions    : 100% ( 49/49 )
+Lines        : 100% ( 266/266 )
 ```
 
 ## Frequently Asked Questions (FAQ)

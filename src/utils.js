@@ -11,7 +11,8 @@ module.exports = {
     computeSchemaDifferences,
     deepCopy,
     convert,
-    isEmptyField
+    isEmptyField,
+    removeEmptyFields
 };
 
 /**
@@ -136,4 +137,8 @@ function computeSchemaDifferences(schemaA, schemaB) {
  */
 function isEmptyField(fieldValue) {
     return _.isUndefined(fieldValue) || _.isNull(fieldValue) || fieldValue === '';
+}
+
+function removeEmptyFields(fields) {
+    return _.filter(fields, (field) => !isEmptyField(field));
 }

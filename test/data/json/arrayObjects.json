@@ -1,0 +1,25 @@
+[
+  {
+    "name": "list",
+    "features": [
+      {
+        "name": "modules"
+      },
+      {
+        "pros": "efficiency"
+      },
+      {
+        "cons": ["cost", "time"]
+      }
+    ]
+  },
+  {
+    "name": "module",
+    "features": [
+      {
+        "name": "testing"
+      }
+    ],
+    "downloads": "5k/m"
+  }
+]
