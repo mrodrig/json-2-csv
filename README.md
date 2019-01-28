@@ -57,6 +57,7 @@ Upgrading to v3 from v2? Check out the [upgrade guide](https://github.com/mrodri
     * Default: none
   * `excelBOM` - Boolean - Should a unicode character be prepended to allow Excel to open a UTF-8 encoded file with non-ASCII characters present.
   * `expandArrayObjects` - Boolean - Should objects in array values be deep-converted to CSV?
+  	* Default: `false`
   	* Example:
 	```json
 	[
