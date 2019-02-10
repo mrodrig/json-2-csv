@@ -24,16 +24,16 @@ The columns headings will be used as the JSON document keys.  All lines must hav
 $ npm install json-2-csv
 ```
 
+## Upgrading?
+
+Upgrading to v3 from v2? Check out the [upgrade guide](https://github.com/mrodrig/json-2-csv/blob/master/upgrade_guides/UPGRADE_2_to_3.md).
+
 ## Usage
 
 ```javascript
 let converter = require('json-2-csv');
 ```
 Looking for examples? Check out the Wiki: [json-2-csv Wiki](https://github.com/mrodrig/json-2-csv/wiki)
-
-## Upgrading?
-
-Upgrading to v3 from v2? Check out the [upgrade guide](https://github.com/mrodrig/json-2-csv/blob/master/upgrade_guides/UPGRADE_2_to_3.md).
 
 ### API
 
@@ -122,6 +122,46 @@ For examples, please refer to the [csv2json API Documentation (Link)](https://gi
 #### Promisified Version: `csv2jsonAsync(csv, options)`
 
 Available in version `2.2.0`, this functionality makes use of promises from the `bluebird` module.
+
+### CLI
+#### json2csv
+```
+Usage: json2csv <jsonFile> [options]
+
+Options:
+  -V, --version                    output the version number
+  -o, --output [output]            Path of output file. If not provided, then stdout will be used
+  -f, --field <delimiter>          Optional field delimiter
+  -w, --wrap <delimiter>           Optional wrap delimiter
+  -e, --eol <delimiter>            Optional end of line delimiter
+  -b, --excel-bom                  Excel Byte Order Mark character prepended to CSV
+  -W, --without-header             Withhold the prepended header
+  -s, --sort-header                Sort the header fields
+  -H, --trim-header                Trim header fields
+  -F, --trim-fields                Trim field values
+  -S, --check-schema               Check for schema differences
+  -E, --empty-field-value <value>  Empty field value
+  -k, --keys [keys]                Keys of documents to convert to CSV
+  -h, --help                       output usage information
+```
+
+#### csv2json
+```
+Usage: csv2json <csvFile> [options]
+
+Options:
+  -V, --version            output the version number
+  -c, --csv <csv>          Path of json file to be converted
+  -o, --output [output]    Path of output file. If not provided, then stdout will be used
+  -f, --field <delimiter>  Optional field delimiter
+  -w, --wrap <delimiter>   Optional wrap delimiter
+  -e, --eol <delimiter>    Optional end of line delimiter
+  -b, --excel-bom          Excel Byte Order Mark character prepended to CSV
+  -H, --trim-header        Trim header fields
+  -F, --trim-fields        Trim field values
+  -k, --keys [keys]        Keys of documents to convert to CSV
+  -h, --help               output usage information
+```
 
 ## Tests
 
