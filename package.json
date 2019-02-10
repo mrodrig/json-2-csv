@@ -1,11 +1,17 @@
 {
-    "author": "mrodrig",
+    "author": {
+        "name": "Mike Rodrigues",
+        "email": "rodrigues.mi@husky.neu.edu"
+    },
     "name": "json-2-csv",
     "description": "A JSON to CSV and CSV to JSON converter that natively supports sub-documents and auto-generates the CSV heading.",
-    "version": "3.2.0",
+    "version": "3.3.0",
     "repository": {
         "type": "git",
-        "url": "http://github.com/mrodrig/json-2-csv.git"
+        "url": "https://github.com/mrodrig/json-2-csv.git"
+    },
+    "bugs": {
+        "url": "https://github.com/mrodrig/json-2-csv/issues"
     },
     "bin": {
         "json2csv": "./bin/json2csv.js",
@@ -19,14 +25,17 @@
     },
     "keywords": [
         "json",
+        "to",
         "csv",
         "converter",
+        "export",
         "json2csv",
         "csv2json",
-        "json2csv-converter",
-        "csv2json-converter",
+        "parse",
+        "parser",
         "json-2-csv",
-        "csv-2-json"
+        "csv-2-json",
+        "cli"
     ],
     "dependencies": {
         "deeks": "2.2.0",
