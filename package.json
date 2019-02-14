@@ -18,6 +18,7 @@
         "csv2json": "./bin/csv2json.js"
     },
     "main": "./src/converter.js",
+    "types": "./src/converter.d.ts",
     "scripts": {
         "test": "./node_modules/.bin/mocha test/tests.js",
         "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -R spec",
