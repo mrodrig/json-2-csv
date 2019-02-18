@@ -1,4 +1,4 @@
-export interface ReadOptions {
+export interface ISharedOptions {
   /**
    * Specifies the different types of delimiters
    */
@@ -36,7 +36,7 @@ export interface ReadOptions {
   trimFieldValues?: boolean;
 }
 
-export interface WriteOptions extends ReadOptions {
+export interface IFullOptions extends ISharedOptions {
   /**
    * Should all documents have the same schema?
    * @default false
@@ -68,10 +68,12 @@ export interface WriteOptions extends ReadOptions {
 
 }
 
-export function json2csv(data: object[], callback: (err?: Error, csv?: string) => void, options?: WriteOptions): void;
+export function json2csv(data: object[],
+                         callback: (err?: Error, csv?: string) => void, options?: IFullOptions): void;
 
-export function json2csvAsync(data: object[], options?: WriteOptions): Promise<string>;
+export function json2csvAsync(data: object[], options?: IFullOptions): Promise<string>;
 
-export function csv2json(csv: string, callback: (err?: Error, data?: unknown[]) => void, options?: ReadOptions): void;
+export function csv2json(csv: string,
+                         callback: (err?: Error, data?: Array<unknown>) => void, options?: ISharedOptions): void;
 
-export function csv2jsonAsync(csv: string, options?: ReadOptions): Promise<unknown[]>;
+export function csv2jsonAsync(csv: string, options?: ISharedOptions): Promise<Array<unknown>>;
