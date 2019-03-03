@@ -1,7 +1,7 @@
 # json-2-csv
 **Convert JSON to CSV _or_ CSV to JSON**
 
-[![Dependencies](https://img.shields.io/david/mrodrig/json-2-csv.svg?style=flat-square)](https://www.npmjs.org/package/json-2-csv)
+[![Dependencies](https://img.shields.io/david/mrodrig/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![Downloads](http://img.shields.io/npm/dm/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![NPM version](https://img.shields.io/npm/v/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![Known Vulnerabilities](https://snyk.io/test/npm/json-2-csv/badge.svg)](https://snyk.io/test/npm/json-2-csv)
