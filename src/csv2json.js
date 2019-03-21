@@ -95,7 +95,13 @@ const Csv2Json = function(options) {
 
             if (index === lastCharacterIndex) {
                 // If we reached the end of the line, add the remaining value
-                splitLine.push(line.substring(stateVariables.startIndex));
+
+                splitLine.push(
+                    // If we have an empty value, then add an empty string, otherwise add the last value
+                    stateVariables.startIndex === index && character === options.delimiter.field
+                        ? ''
+                        : line.substring(stateVariables.startIndex)
+                );
             } else if (character === options.delimiter.wrap && index === 0) {
                 // If the line starts with a wrap delimiter
                 stateVariables.insideWrapDelimiter = true;
@@ -121,12 +127,17 @@ const Csv2Json = function(options) {
                 // If we reached a field delimiter and are not inside the wrap delimiters (ie. *,*)
                 charAfter !== options.delimiter.wrap && !stateVariables.insideWrapDelimiter &&
                 stateVariables.parsingValue) {
+
+                // console.log('-----------------------');
+
                 // If we reached a field delimiter and are not inside the wrap delimiters (ie. *,*)
                 splitLine.push(line.substring(stateVariables.startIndex, index));
                 stateVariables.startIndex = index + 1;
+                // console.log(splitLine);
             } else if (character === options.delimiter.field && charBefore === options.delimiter.wrap &&
                 // If we reached a field delimiter, the previous character was a wrap delimiter, and the next character is not a wrap delimiter (ie. ",*)
                 charAfter !== options.delimiter.wrap && !stateVariables.parsingValue) {
+
                 stateVariables.insideWrapDelimiter = false;
                 stateVariables.parsingValue = true;
                 stateVariables.startIndex = index + 1;
