@@ -129,6 +129,14 @@ function runTests(jsonTestData, csvTestData) {
                     done();
                 });
             });
+
+            it('should properly convert the cases involving an empty field value in the csv', (done) => {
+                converter.json2csv(jsonTestData.csvEmptyLastValue, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.csvEmptyLastValue);
+                    done();
+                });
+            });
         });
 
         describe('Error Handling', () => {

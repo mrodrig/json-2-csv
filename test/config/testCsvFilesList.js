@@ -26,7 +26,8 @@ const fs = require('fs'),
         {key: 'extraLine', file: '../data/csv/extraLine.csv'},
         {key: 'noHeader', file: '../data/csv/noHeader.csv'},
         {key: 'sortedHeader', file: '../data/csv/sortedHeader.csv'},
-        {key: 'emptyFieldValues', file: '../data/csv/emptyFieldValues.csv'}
+        {key: 'emptyFieldValues', file: '../data/csv/emptyFieldValues.csv'},
+        {key: 'csvEmptyLastValue', file: '../data/csv/csvEmptyLastValue.csv'}
     ];
 
 function readCsvFile(filePath) {

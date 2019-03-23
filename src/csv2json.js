@@ -93,40 +93,65 @@ const Csv2Json = function(options) {
             // Next character
             charAfter = index < lastCharacterIndex ? line[index + 1] : '';
 
-            if (index === lastCharacterIndex) {
-                // If we reached the end of the line, add the remaining value
+            if (index === lastCharacterIndex && character === options.delimiter.field) {
+                // If we reached the end of the line and the current character is a field delimiter...
+
+                // Push the value for the field that we were parsing
+                splitLine.push(
+                    // If the start index is the current index (and since the character is a comma),
+                    //   then the value being parsed is an empty value accordingly, add an empty string
+                    stateVariables.startIndex === index
+                        ? ''
+                        // Otherwise there is a valid value, but we do not want to include the current character (field delimiter)
+                        : line.substring(stateVariables.startIndex, index)
+                );
+
+                // Since the last character is a comma, there's still an additional implied field value trailing the comma.
+                //   Since this value is empty, we push an extra empty value
+                splitLine.push('');
+            } else if (index === lastCharacterIndex) {
+                // Otherwise if we reached the end of the line (and current character is not a field delimiter)
+
+                // Retrieve the remaining value and add it to the split line list of values
                 splitLine.push(line.substring(stateVariables.startIndex));
             } else if (character === options.delimiter.wrap && index === 0) {
-                // If the line starts with a wrap delimiter
+                // If the line starts with a wrap delimiter (ie. "*)
+
                 stateVariables.insideWrapDelimiter = true;
                 stateVariables.parsingValue = true;
                 stateVariables.startIndex = index;
             } else if (character === options.delimiter.wrap && charAfter === options.delimiter.field) {
                 // If we reached a wrap delimiter with a field delimiter after it (ie. *",)
+
                 splitLine.push(line.substring(stateVariables.startIndex, index + 1));
                 stateVariables.startIndex = index + 2; // next value starts after the field delimiter
                 stateVariables.insideWrapDelimiter = false;
                 stateVariables.parsingValue = false;
-            } else if (character === options.delimiter.wrap && charBefore === options.delimiter.field && !stateVariables.insideWrapDelimiter && stateVariables.parsingValue) {
+            } else if (character === options.delimiter.wrap && charBefore === options.delimiter.field &&
+                !stateVariables.insideWrapDelimiter && stateVariables.parsingValue) {
                 // If we reached a wrap delimiter with a field delimiter after it (ie. ,"*)
+
                 splitLine.push(line.substring(stateVariables.startIndex, index - 1));
                 stateVariables.insideWrapDelimiter = true;
                 stateVariables.parsingValue = true;
                 stateVariables.startIndex = index;
             } else if (character === options.delimiter.wrap && charAfter === options.delimiter.wrap) {
-                // If we run into an escaped quote
+                // If we run into an escaped quote (ie. "") skip past the second quote
+
                 index += 2;
                 continue;
             } else if (character === options.delimiter.field && charBefore !== options.delimiter.wrap &&
-                // If we reached a field delimiter and are not inside the wrap delimiters (ie. *,*)
                 charAfter !== options.delimiter.wrap && !stateVariables.insideWrapDelimiter &&
                 stateVariables.parsingValue) {
                 // If we reached a field delimiter and are not inside the wrap delimiters (ie. *,*)
+
                 splitLine.push(line.substring(stateVariables.startIndex, index));
                 stateVariables.startIndex = index + 1;
             } else if (character === options.delimiter.field && charBefore === options.delimiter.wrap &&
-                // If we reached a field delimiter, the previous character was a wrap delimiter, and the next character is not a wrap delimiter (ie. ",*)
                 charAfter !== options.delimiter.wrap && !stateVariables.parsingValue) {
+                // If we reached a field delimiter, the previous character was a wrap delimiter, and the
+                //   next character is not a wrap delimiter (ie. ",*)
+
                 stateVariables.insideWrapDelimiter = false;
                 stateVariables.parsingValue = true;
                 stateVariables.startIndex = index + 1;
