@@ -137,6 +137,15 @@ function runTests(jsonTestData, csvTestData) {
                     done();
                 });
             });
+
+            // Test case for #109
+            it('should properly handle the cases involving an empty field value', (done) => {
+                converter.csv2json(csvTestData.csvEmptyLastValue, (err, json) => {
+                    if (err) done(err);
+                    json.should.deepEqual(jsonTestData.csvEmptyLastValue);
+                    done();
+                });
+            });
         });
 
         describe('Error Handling', () => {

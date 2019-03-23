@@ -21,7 +21,7 @@
     "types": "./src/converter.d.ts",
     "scripts": {
         "test": "mocha test/tests.js",
-        "coverage": "istanbul cover mocha -- -R spec",
+        "coverage": "istanbul cover _mocha -- -R spec",
         "lint": "npm run lint:eslint && npm run lint:tslint",
         "lint:eslint": "eslint src bin test",
         "lint:tslint": "tslint -c tslint.json 'src/**/*.ts'"

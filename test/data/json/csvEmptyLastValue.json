@@ -1,0 +1,26 @@
+[
+  {
+    "Name": "Installation",
+    "Category": "Service",
+    "On Sale": "X",
+    "On Closeout": "",
+    "Outsourced": "",
+    "Certification Required": ""
+  },
+  {
+    "Name": "Wireless \"Wi-Fi\" Configuration",
+    "Category": "Service",
+    "On Sale": "X",
+    "On Closeout": "",
+    "Outsourced": "X",
+    "Certification Required": ""
+  },
+  {
+    "Name": "New Phone Setup",
+    "Category": "Service",
+    "On Sale": "X",
+    "On Closeout": "X",
+    "Outsourced": "X",
+    "Certification Required": "X"
+  }
+]
