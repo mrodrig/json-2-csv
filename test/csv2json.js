@@ -113,14 +113,21 @@ function runTests(jsonTestData, csvTestData) {
                 }, {excelBOM: false});
             });
 
-            // TODO: Issue #95
-            // it('should convert csv containing a field with eol characters to json', (done) => {
-            //     converter.csv2json(csvTestData.eol, (err, json) => {
-            //         if (err) done(err);
-            //         json.should.deepEqual(jsonTestData.eol);
-            //         done();
-            //     });
-            // });
+            it('should convert csv containing a field with eol characters to json', (done) => {
+                converter.csv2json(csvTestData.eol, (err, json) => {
+                    if (err) done(err);
+                    json.should.deepEqual(jsonTestData.eol);
+                    done();
+                });
+            });
+
+            it('should ignore empty lines and not convert them to json', (done) => {
+                converter.csv2json(csvTestData.eol + '\n', (err, json) => {
+                    if (err) done(err);
+                    json.should.deepEqual(jsonTestData.eol);
+                    done();
+                });
+            });
 
             it('should convert csv containing an assortment of values to json', (done) => {
                 converter.csv2json(csvTestData.assortedValues, (err, json) => {
