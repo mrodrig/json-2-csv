@@ -5,7 +5,7 @@
     },
     "name": "json-2-csv",
     "description": "A JSON to CSV and CSV to JSON converter that natively supports sub-documents and auto-generates the CSV heading.",
-    "version": "3.4.2",
+    "version": "3.5.0",
     "repository": {
         "type": "git",
         "url": "https://github.com/mrodrig/json-2-csv.git"
@@ -21,7 +21,7 @@
     "types": "./src/converter.d.ts",
     "scripts": {
         "test": "mocha test/tests.js",
-        "coverage": "istanbul cover _mocha -- -R spec",
+        "coverage": "nyc --reporter=lcov --reporter=text-summary --reporter=text _mocha",
         "lint": "npm run lint:eslint && npm run lint:tslint",
         "lint:eslint": "eslint src bin test",
         "lint:tslint": "tslint -c tslint.json 'src/**/*.ts'"
@@ -41,18 +41,18 @@
         "cli"
     ],
     "dependencies": {
-        "deeks": "2.2.0",
-        "doc-path": "2.0.0",
+        "deeks": "2.2.1",
+        "doc-path": "2.0.1",
         "underscore": "1.9.1"
     },
     "devDependencies": {
         "commander": "2.19.0",
-        "eslint": "5.15.3",
-        "istanbul": "0.4.5",
+        "eslint": "5.16.0",
+        "nyc": "13.3.0",
         "mocha": "5.2.0",
         "should": "13.2.3",
         "tslint": "5.14.0",
-        "typescript": "3.3.3"
+        "typescript": "3.4.1"
     },
     "engines": {
         "node": ">= 6"

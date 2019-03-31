@@ -5,4 +5,7 @@ npm-debug.log
 .eslintrc
 node_modules
 coverage
+.nyc_output
 upgrade_guides
+tslint.json
+_config.yml

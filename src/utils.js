@@ -12,7 +12,8 @@ module.exports = {
     deepCopy,
     convert,
     isEmptyField,
-    removeEmptyFields
+    removeEmptyFields,
+    getNCharacters
 };
 
 /**
@@ -112,6 +113,14 @@ function deepCopy(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
 
+/**
+ * Helper function that determines whether the provided value is a representation
+ *   of a string. Given the RFC4180 requirements, that means that the value is
+ *   wrapped in value wrap delimiters (usually a quotation mark on each side).
+ * @param fieldValue
+ * @param options
+ * @returns {boolean}
+ */
 function isStringRepresentation(fieldValue, options) {
     const firstChar = fieldValue[0],
         lastIndex = fieldValue.length - 1,
@@ -121,10 +130,22 @@ function isStringRepresentation(fieldValue, options) {
     return firstChar === options.delimiter.wrap && lastChar === options.delimiter.wrap;
 }
 
+/**
+ * Helper function that determines whether the provided value is a representation
+ *   of a date.
+ * @param fieldValue
+ * @returns {boolean}
+ */
 function isDateRepresentation(fieldValue) {
     return dateStringRegex.test(fieldValue);
 }
 
+/**
+ * Helper function that determines the schema differences between two objects.
+ * @param schemaA
+ * @param schemaB
+ * @returns {*}
+ */
 function computeSchemaDifferences(schemaA, schemaB) {
     return _.difference(schemaA, schemaB)
         .concat(_.difference(schemaB, schemaA));
@@ -139,6 +160,25 @@ function isEmptyField(fieldValue) {
     return _.isUndefined(fieldValue) || _.isNull(fieldValue) || fieldValue === '';
 }
 
+/**
+ * Helper function that removes empty field values from an array.
+ * @param fields
+ * @returns {Array}
+ */
 function removeEmptyFields(fields) {
     return _.filter(fields, (field) => !isEmptyField(field));
+}
+
+/**
+ * Helper function that retrieves the next n characters from the start index in
+ *   the string including the character at the start index. This is used to
+ *   check if are currently at an EOL value, since it could be multiple
+ *   characters in length (eg. '\r\n')
+ * @param str
+ * @param start
+ * @param n
+ * @returns {string}
+ */
+function getNCharacters(str, start, n) {
+    return str.substring(start, start + n);
 }
