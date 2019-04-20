@@ -356,7 +356,14 @@ function runTests(jsonTestData, csvTestData) {
                 jsonTestData.emptyFieldValues[0].number = undefined;
                 converter.json2csv(jsonTestData.emptyFieldValues, (err, csv) => {
                     if (err) done(err);
-                    csv.should.equal(csvTestData.emptyFieldValues);
+
+                    // Replace double quotation marks around the empty field which are used
+                    //   to verify that csv2json properly handles that case
+                    let expectedCsv = csvTestData.emptyFieldValues
+                        .replace(',"",', ',,')
+                        .replace(/\n"",/g, '\n,');
+
+                    csv.should.equal(expectedCsv);
                     done();
                 }, {
                     emptyFieldValue: ''
