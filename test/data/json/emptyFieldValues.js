@@ -12,5 +12,12 @@ module.exports = [
         number: 7,
         isBoolean: false,
         optionalField: null
+    },
+    {
+        arrayOfStrings: '',
+        object: { subField: 'test123' },
+        number: 13,
+        isBoolean: false,
+        optionalField: ''
     }
 ];

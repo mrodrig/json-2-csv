@@ -159,6 +159,12 @@ const Csv2Json = function(options) {
                 stateVariables.insideWrapDelimiter = false;
                 stateVariables.parsingValue = false;
             } else if (character === options.delimiter.wrap && charBefore === options.delimiter.field &&
+                !stateVariables.insideWrapDelimiter && !stateVariables.parsingValue) {
+
+                stateVariables.startIndex = index;
+                stateVariables.insideWrapDelimiter = true;
+                stateVariables.parsingValue = true;
+            } else if (character === options.delimiter.wrap && charBefore === options.delimiter.field &&
                 !stateVariables.insideWrapDelimiter && stateVariables.parsingValue) {
                 // If we reached a wrap delimiter with a field delimiter after it (ie. ,"*)
 
