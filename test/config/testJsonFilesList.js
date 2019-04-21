@@ -20,5 +20,6 @@ module.exports = {
     trimmedHeader: require('../data/json/trimmedHeader'),
     specifiedKeys: require('../data/json/specifiedKeys'),
     emptyFieldValues: require('../data/json/emptyFieldValues'),
+    quotedEmptyFieldValue: require('../data/json/quotedEmptyFieldValue'),
     csvEmptyLastValue: require('../data/json/csvEmptyLastValue')
 };
