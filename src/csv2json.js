@@ -14,7 +14,8 @@ const Csv2Json = function(options) {
      * @param headerKey
      * @returns {*}
      */
-    function trimHeaderKey(headerKey) {
+    function processHeaderKey(headerKey) {
+        headerKey = removeWrapDelimitersFromValue(headerKey);
         if (options.trimHeaderFields) {
             return headerKey.split('.')
                 .map((component) => component.trim())
@@ -33,7 +34,7 @@ const Csv2Json = function(options) {
             // Generate and return the heading keys
             headerRow = params.lines[0];
         params.headerFields = headerRow.map((headerKey, index) => ({
-            value: trimHeaderKey(headerKey),
+            value: processHeaderKey(headerKey),
             index: index
         }));
 

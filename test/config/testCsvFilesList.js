@@ -27,6 +27,7 @@ const fs = require('fs'),
         {key: 'noHeader', file: '../data/csv/noHeader.csv'},
         {key: 'sortedHeader', file: '../data/csv/sortedHeader.csv'},
         {key: 'emptyFieldValues', file: '../data/csv/emptyFieldValues.csv'},
+        {key: 'quotedEmptyFieldValue', file: '../data/csv/quotedEmptyFieldValue.csv'},
         {key: 'csvEmptyLastValue', file: '../data/csv/csvEmptyLastValue.csv'}
     ];
 

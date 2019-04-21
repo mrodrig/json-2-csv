@@ -153,6 +153,15 @@ function runTests(jsonTestData, csvTestData) {
                     done();
                 });
             });
+
+            // Test case for #115
+            it('should properly handle quoted empty field values', (done) => {
+                converter.csv2json(csvTestData.quotedEmptyFieldValue, (err, json) => {
+                    if (err) done(err);
+                    json.should.deepEqual(jsonTestData.quotedEmptyFieldValue);
+                    done();
+                });
+            });
         });
 
         describe('Error Handling', () => {
