@@ -1,2 +1,5 @@
 "a","b","c"
+"","foo","bar"
 "foo","","bar"
+"foo","bar",""
+"goo","baz",""

@@ -125,7 +125,10 @@ const Csv2Json = function(options) {
                 stateVariables.startIndex = index + eolDelimiterLength;
                 stateVariables.parsingValue = true;
                 stateVariables.insideWrapDelimiter = charAfter === options.delimiter.wrap;
-            } else if (nextNChar === options.delimiter.eol && !stateVariables.insideWrapDelimiter || index === lastCharacterIndex) {
+            } else if (index === lastCharacterIndex || nextNChar === options.delimiter.eol &&
+                // if we aren't inside wrap delimiters or if we are but the character before was a wrap delimiter and we didn't just see two
+                (!stateVariables.insideWrapDelimiter ||
+                    stateVariables.insideWrapDelimiter && charBefore === options.delimiter.wrap && !stateVariables.justParsedDoubleQuote)) {
                 // Otherwise if we reached the end of the line or csv (and current character is not a field delimiter)
 
                 let toIndex = index !== lastCharacterIndex || charBefore === options.delimiter.wrap ? index : undefined;
@@ -161,6 +164,7 @@ const Csv2Json = function(options) {
                 stateVariables.parsingValue = false;
             } else if (character === options.delimiter.wrap && charBefore === options.delimiter.field &&
                 !stateVariables.insideWrapDelimiter && !stateVariables.parsingValue) {
+                // If we reached a wrap delimiter after a comma and we aren't inside a wrap delimiter
 
                 stateVariables.startIndex = index;
                 stateVariables.insideWrapDelimiter = true;
