@@ -20,6 +20,7 @@ program
     .option('-F, --trim-fields', 'Trim field values')
     .option('-S, --check-schema', 'Check for schema differences')
     .option('-E, --empty-field-value <value>', 'Empty field value')
+    .option('-A, --expand-array-objects', 'Expand array objects')
     .option('-k, --keys [keys]', 'Keys of documents to convert to CSV', utils.constructKeysList, undefined)
     .parse(process.argv);
 
@@ -38,6 +39,7 @@ Promise.resolve({
         trimHeaderFields: Boolean(program.trimHeader),
         trimFieldValues: Boolean(program.trimFields),
         checkSchemaDifferences: Boolean(program.checkSchema),
+        expandArrayObjects: Boolean(program.expandArrayObjects),
         emptyFieldValue: program.emptyFieldValue,
         keys: program.keys
     }
