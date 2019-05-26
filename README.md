@@ -141,6 +141,7 @@ Options:
   -F, --trim-fields                Trim field values
   -S, --check-schema               Check for schema differences
   -E, --empty-field-value <value>  Empty field value
+  -A, --expand-array-objects       Expand array objects
   -k, --keys [keys]                Keys of documents to convert to CSV
   -h, --help                       output usage information
 ```
