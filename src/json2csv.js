@@ -236,7 +236,7 @@ const Json2Csv = function(options) {
      * @returns {*}
      */
     function recordFieldValueToString(fieldValue) {
-        if (_.isArray(fieldValue) || _.isObject(fieldValue)) {
+        if (_.isArray(fieldValue) || _.isObject(fieldValue) && !_.isDate(fieldValue)) {
             return JSON.stringify(fieldValue);
         } else if (_.isUndefined(fieldValue)) {
             return 'undefined';
