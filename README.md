@@ -33,6 +33,10 @@ Upgrading to v3 from v2? Check out the [upgrade guide](https://github.com/mrodri
 ```javascript
 let converter = require('json-2-csv');
 ```
+or
+```javascript
+import { json2csv } from 'json-2-csv';
+```
 Looking for examples? Check out the Wiki: [json-2-csv Wiki](https://github.com/mrodrig/json-2-csv/wiki)
 
 ### API
