@@ -74,6 +74,6 @@ export function json2csv(data: object[],
 export function json2csvAsync(data: object[], options?: IFullOptions): Promise<string>;
 
 export function csv2json(csv: string,
-                         callback: (err?: Error, data?: undefined[]) => void, options?: ISharedOptions): void;
+                         callback: (err?: Error, data?: any[]) => void, options?: ISharedOptions): void;
 
-export function csv2jsonAsync(csv: string, options?: ISharedOptions): Promise<undefined[]>;
+export function csv2jsonAsync(csv: string, options?: ISharedOptions): Promise<any[]>;
