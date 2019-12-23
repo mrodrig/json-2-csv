@@ -24,6 +24,11 @@ The columns headings will be used as the JSON document keys.  All lines must hav
 $ npm install json-2-csv
 ```
 
+CLI:
+```bash
+$ npm install @mrodrig/json-2-csv-cli
+```
+
 ## Upgrading?
 
 Upgrading to v3 from v2? Check out the [upgrade guide](https://github.com/mrodrig/json-2-csv/blob/master/upgrade_guides/UPGRADE_2_to_3.md).
@@ -128,6 +133,13 @@ For examples, please refer to the [csv2json API Documentation (Link)](https://gi
 Available in version `2.2.0`, this functionality makes use of promises from the `bluebird` module.
 
 ### CLI
+Note: As of `3.5.8`, the command line interface functionality has been pulled out to a separate package. Please be sure to
+install the `@mrodrig/json-2-csv-cli` NPM package if you wish to use the CLI functionality shown below:
+
+```bash
+$ npm install @mrodrig/json-2-csv-cli
+``` 
+
 #### json2csv
 ```
 Usage: json2csv <jsonFile> [options]
