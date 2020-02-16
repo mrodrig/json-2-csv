@@ -1,7 +1,8 @@
 'use strict';
 
 let constants = require('./constants.json'),
-    _ = require('underscore');
+    _ = require('underscore'),
+    path = require('doc-path');
 
 const dateStringRegex = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/;
 
@@ -13,7 +14,8 @@ module.exports = {
     convert,
     isEmptyField,
     removeEmptyFields,
-    getNCharacters
+    getNCharacters,
+    unwind
 };
 
 /**
@@ -181,4 +183,66 @@ function removeEmptyFields(fields) {
  */
 function getNCharacters(str, start, n) {
     return str.substring(start, start + n);
+}
+
+/**
+ * The following unwind functionality is a heavily modified version of @edwincen's
+ * unwind extension for lodash. Since lodash is a large package to require in,
+ * and all of the required functionality was already being imported, either
+ * natively or with doc-path, I decided to rewrite the majority of the logic
+ * so that an additional dependency would not be required. The original code
+ * with the lodash dependency can be found here:
+ *
+ * https://github.com/edwincen/unwind/blob/master/index.js
+ */
+
+/**
+ * Helper function which creates a deep clone of the provided item
+ * @param item {any}
+ * @returns {any}
+ */
+function cloneItem(item) {
+    let itemToClone = item;
+
+    if (typeof item.toObject === 'function') {
+        itemToClone = item.toObject();
+    } else if (typeof item.toJSON === 'function') {
+        itemToClone = item.toJSON();
+    }
+
+    return JSON.parse(JSON.stringify(itemToClone));
+}
+
+/**
+ * Core function that unwinds an item at the provided path
+ * @param accumulator {Array<any>}
+ * @param item {any}
+ * @param fieldPath {String}
+ */
+function unwindItem(accumulator, item, fieldPath) {
+    const valueToUnwind = path.evaluatePath(item, fieldPath);
+    let cloned = cloneItem(item);
+
+    if (Array.isArray(valueToUnwind)) {
+        valueToUnwind.forEach((val) => {
+            cloned = cloneItem(item);
+            accumulator.push(path.setPath(cloned, fieldPath, val));
+        });
+    } else {
+        accumulator.push(cloned);
+    }
+}
+
+/**
+ * Main unwind function which takes an array and a field to unwind.
+ * @param array {Array<any>}
+ * @param field {String}
+ * @returns {Array<any>}
+ */
+function unwind(array, field) {
+    const result = [];
+    array.forEach((item) => {
+        unwindItem(result, item, field);
+    });
+    return result;
 }
