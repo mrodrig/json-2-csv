@@ -4,10 +4,11 @@
 [![Dependencies](https://img.shields.io/david/mrodrig/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![Downloads](http://img.shields.io/npm/dm/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![NPM version](https://img.shields.io/npm/v/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
-[![Known Vulnerabilities](https://snyk.io/test/npm/json-2-csv/badge.svg)](https://snyk.io/test/npm/json-2-csv)
+[![Minzipped Size](https://flat.badgen.net/bundlephobia/minzip/json-2-csv)](https://bundlephobia.com/result?p=json-2-csv@3.5.9)
 [![Package Size](https://img.shields.io/bundlephobia/min/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![Typings](https://shields-staging.herokuapp.com/npm/types/json-2-csv.svg?style=flat)](https://www.npmjs.org/package/json-2-csv)
 
+[![Known Vulnerabilities](https://snyk.io/test/npm/json-2-csv/badge.svg)](https://snyk.io/test/npm/json-2-csv)
 [![Build Status](https://travis-ci.org/mrodrig/json-2-csv.svg?branch=master)](https://travis-ci.org/mrodrig/json-2-csv)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8c0cc3699d054fb77abe/maintainability)](https://codeclimate.com/github/mrodrig/json-2-csv/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8c0cc3699d054fb77abe/test_coverage)](https://codeclimate.com/github/mrodrig/json-2-csv/test_coverage)
