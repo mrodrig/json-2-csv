@@ -4,7 +4,7 @@
 [![Dependencies](https://img.shields.io/david/mrodrig/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![Downloads](http://img.shields.io/npm/dm/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![NPM version](https://img.shields.io/npm/v/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
-[![Minzipped Size](https://flat.badgen.net/bundlephobia/minzip/json-2-csv)](https://bundlephobia.com/result?p=json-2-csv@3.5.9)
+[![Minzipped Size](https://flat.badgen.net/bundlephobia/minzip/json-2-csv)](https://bundlephobia.com/result?p=json-2-csv)
 [![Package Size](https://img.shields.io/bundlephobia/min/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![Typings](https://shields-staging.herokuapp.com/npm/types/json-2-csv.svg?style=flat)](https://www.npmjs.org/package/json-2-csv)
 
