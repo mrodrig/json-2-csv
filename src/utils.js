@@ -197,23 +197,6 @@ function getNCharacters(str, start, n) {
  */
 
 /**
- * Helper function which creates a deep clone of the provided item
- * @param item {any}
- * @returns {any}
- */
-function cloneItem(item) {
-    let itemToClone = item;
-
-    if (typeof item.toObject === 'function') {
-        itemToClone = item.toObject();
-    } else if (typeof item.toJSON === 'function') {
-        itemToClone = item.toJSON();
-    }
-
-    return JSON.parse(JSON.stringify(itemToClone));
-}
-
-/**
  * Core function that unwinds an item at the provided path
  * @param accumulator {Array<any>}
  * @param item {any}
@@ -221,11 +204,11 @@ function cloneItem(item) {
  */
 function unwindItem(accumulator, item, fieldPath) {
     const valueToUnwind = path.evaluatePath(item, fieldPath);
-    let cloned = cloneItem(item);
+    let cloned = deepCopy(item);
 
     if (Array.isArray(valueToUnwind)) {
         valueToUnwind.forEach((val) => {
-            cloned = cloneItem(item);
+            cloned = deepCopy(item);
             accumulator.push(path.setPath(cloned, fieldPath, val));
         });
     } else {

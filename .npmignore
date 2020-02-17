@@ -9,6 +9,3 @@ coverage
 upgrade_guides
 tslint.json
 _config.yml
-manual-test.js
-js-unwind-lib-test.js
-unwind.js

@@ -28,7 +28,9 @@ const fs = require('fs'),
         {key: 'sortedHeader', file: '../data/csv/sortedHeader.csv'},
         {key: 'emptyFieldValues', file: '../data/csv/emptyFieldValues.csv'},
         {key: 'quotedEmptyFieldValue', file: '../data/csv/quotedEmptyFieldValue.csv'},
-        {key: 'csvEmptyLastValue', file: '../data/csv/csvEmptyLastValue.csv'}
+        {key: 'csvEmptyLastValue', file: '../data/csv/csvEmptyLastValue.csv'},
+        {key: 'unwind', file: '../data/csv/unwind.csv'},
+        {key: 'unwindWithSpecifiedKeys', file: '../data/csv/unwindWithSpecifiedKeys.csv'}
     ];
 
 function readCsvFile(filePath) {

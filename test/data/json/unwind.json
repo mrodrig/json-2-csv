@@ -1,0 +1,10 @@
+[
+  {
+    "_id": {"$oid": "5cf7ca3616c91100018844af"},
+    "data": {"category": "Computers", "options": [{"name": "MacBook Pro 15"}, {"name": "MacBook Air 13"}]}
+  },
+  {
+    "_id": {"$oid": "5cf7ca3616c91100018844bf"},
+    "data": {"category": "Cars", "options": [{"name": "Supercharger"}, {"name": "Turbocharger"}]}
+  }
+]
