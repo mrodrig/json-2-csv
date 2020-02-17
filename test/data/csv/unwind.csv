@@ -1,0 +1,5 @@
+_id.$oid,data.category,data.options.name
+5cf7ca3616c91100018844af,Computers,MacBook Pro 15
+5cf7ca3616c91100018844af,Computers,MacBook Air 13
+5cf7ca3616c91100018844bf,Cars,Supercharger
+5cf7ca3616c91100018844bf,Cars,Turbocharger

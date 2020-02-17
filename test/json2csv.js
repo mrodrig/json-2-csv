@@ -415,7 +415,26 @@ function runTests(jsonTestData, csvTestData) {
                 });
             });
 
-            // TODO: additional tests
+            it('should unwind array values when specified', (done) => {
+                converter.json2csv(jsonTestData.unwind, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.unwind);
+                    done();
+                }, {
+                    unwindArrays: true
+                });
+            });
+
+            it('should unwind array values when specified - with keys specified', (done) => {
+                converter.json2csv(jsonTestData.unwind, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.unwindWithSpecifiedKeys);
+                    done();
+                }, {
+                    unwindArrays: true,
+                    keys: ['data.category', 'data.options.name']
+                });
+            });
         });
     });
 

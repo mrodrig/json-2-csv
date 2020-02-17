@@ -9,9 +9,10 @@ let constants = require('./constants.json'),
 const Json2Csv = function(options) {
     const wrapDelimiterCheckRegex = new RegExp(options.delimiter.wrap, 'g'),
         crlfSearchRegex = /\r?\n|\r/,
+        expandingWithoutUnwinding = options.expandArrayObjects && !options.unwindArrays,
         deeksOptions = {
-            expandArrayObjects: options.expandArrayObjects,
-            ignoreEmptyArraysWhenExpanding: options.expandArrayObjects
+            expandArrayObjects: expandingWithoutUnwinding,
+            ignoreEmptyArraysWhenExpanding: expandingWithoutUnwinding
         };
 
     /** HEADER FIELD FUNCTIONS **/
@@ -140,7 +141,7 @@ const Json2Csv = function(options) {
      * @returns {Promise}
      */
     function retrieveHeaderFields(data) {
-        if (options.keys) {
+        if (options.keys && !options.unwindArrays) {
             return Promise.resolve(options.keys)
                 .then(sortHeaderFields);
         }
@@ -151,6 +152,42 @@ const Json2Csv = function(options) {
     }
 
     /** RECORD FIELD FUNCTIONS **/
+
+    /**
+     * Unwinds objects in arrays within record objects if the user specifies the
+     *   expandArrayObjects option. If not specified, this passes the params
+     *   argument through to the next function in the promise chain.
+     * @param params {Object}
+     * @returns {Promise}
+     */
+    function unwindRecordsIfNecessary(params) {
+        if (options.unwindArrays) {
+            const originalRecordsLength = params.records.length;
+
+            // Unwind each of the documents at the given headerField
+            _.each(params.headerFields, (headerField) => {
+                params.records = utils.unwind(params.records, headerField);
+            });
+
+            return retrieveHeaderFields(params.records)
+                .then((headerFields) => {
+                    params.headerFields = headerFields;
+
+                    // If we were able to unwind more arrays, then try unwinding again...
+                    if (originalRecordsLength !== params.records.length) {
+                        return unwindRecordsIfNecessary(params);
+                    }
+                    // Otherwise, we didn't unwind any additional arrays, so continue...
+
+                    // If keys were provided, set the headerFields to the provided keys:
+                    if (options.keys) {
+                        params.headerFields = options.keys;
+                    }
+                    return params;
+                });
+        }
+        return params;
+    }
 
     /**
      * Main function which handles the processing of a record, or document to be converted to CSV format
@@ -339,6 +376,7 @@ const Json2Csv = function(options) {
                 callback,
                 records: data
             }))
+            .then(unwindRecordsIfNecessary)
             .then(processRecords)
             .then(wrapHeaderFields)
             .then(trimHeaderFields)

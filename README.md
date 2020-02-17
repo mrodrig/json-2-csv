@@ -4,10 +4,11 @@
 [![Dependencies](https://img.shields.io/david/mrodrig/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![Downloads](http://img.shields.io/npm/dm/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![NPM version](https://img.shields.io/npm/v/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
-[![Known Vulnerabilities](https://snyk.io/test/npm/json-2-csv/badge.svg)](https://snyk.io/test/npm/json-2-csv)
+[![Minzipped Size](https://flat.badgen.net/bundlephobia/minzip/json-2-csv)](https://bundlephobia.com/result?p=json-2-csv@3.5.9)
 [![Package Size](https://img.shields.io/bundlephobia/min/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![Typings](https://shields-staging.herokuapp.com/npm/types/json-2-csv.svg?style=flat)](https://www.npmjs.org/package/json-2-csv)
 
+[![Known Vulnerabilities](https://snyk.io/test/npm/json-2-csv/badge.svg)](https://snyk.io/test/npm/json-2-csv)
 [![Build Status](https://travis-ci.org/mrodrig/json-2-csv.svg?branch=master)](https://travis-ci.org/mrodrig/json-2-csv)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8c0cc3699d054fb77abe/maintainability)](https://codeclimate.com/github/mrodrig/json-2-csv/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8c0cc3699d054fb77abe/test_coverage)](https://codeclimate.com/github/mrodrig/json-2-csv/test_coverage)
@@ -82,7 +83,37 @@ Looking for examples? Check out the Wiki: [json-2-csv Wiki](https://github.com/m
   		* `['specifications.features', 'specifications.mileage']`
   	* `false` uses the following keys:
   		* `['specifications']`
-	* Note: This may result in CSV output that does not map back exactly to the original JSON. See #102 for more information.
+    * Note: This may result in CSV output that does not map back exactly to the original JSON. See #102 for more information.
+  * `unwindArrays` - Boolean - Should array values be "unwound" such that there is one line per value in the array?
+    * Default: `false`
+    * Example:
+    ```json
+    [
+        {
+            "_id": {"$oid": "5cf7ca3616c91100018844af"},
+            "data": {"category": "Computers", "options": [{"name": "MacBook Pro 15"}, {"name": "MacBook Air 13"}]}
+        },
+        {
+            "_id": {"$oid": "5cf7ca3616c91100018844bf"},
+            "data": {"category": "Cars", "options": [{"name": "Supercharger"}, {"name": "Turbocharger"}]}
+        }
+    ]
+    ```
+    * `true` will unwind the JSON to four objects, and therefore four lines of CSV values:
+    ```csv
+    _id.$oid,data.category,data.options.name
+    5cf7ca3616c91100018844af,Computers,MacBook Pro 15
+    5cf7ca3616c91100018844af,Computers,MacBook Air 13
+    5cf7ca3616c91100018844bf,Cars,Supercharger
+    5cf7ca3616c91100018844bf,Cars,Turbocharger
+    ```
+    * `false` will leave the values unwound and will convert the array as-is (when this option is used without expandArrayObjects):
+    ```csv
+    _id.$oid,data.category,data.options
+    5cf7ca3616c91100018844af,Computers,"[{""name"":""MacBook Pro 15""},{""name"":""MacBook Air 13""}]"
+    5cf7ca3616c91100018844bf,Cars,"[{""name"":""Supercharger""},{""name"":""Turbocharger""}]"
+    ```
+	* Note: This may result in CSV output that does not map back exactly to the original JSON.
   * `keys` - Array - Specify the keys (as strings) that should be converted. 
     * Default: `null`
     * If you have a nested object (ie. {info : {name: 'Mike'}}), then set this to ['info.name']

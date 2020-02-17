@@ -31,7 +31,8 @@
     "parseCsvNumbers" : false,
     "keys" : null,
     "checkSchemaDifferences": false,
-    "expandArrayObjects": false
+    "expandArrayObjects": false,
+    "unwindArrays": false
   },
 
   "values" : {
