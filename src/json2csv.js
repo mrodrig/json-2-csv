@@ -1,10 +1,9 @@
 'use strict';
 
-let constants = require('./constants.json'),
-    utils = require('./utils'),
-    _ = require('underscore'),
-    path = require('doc-path'),
-    deeks = require('deeks');
+let path = require('doc-path'),
+    deeks = require('deeks'),
+    constants = require('./constants.json'),
+    utils = require('./utils');
 
 const Json2Csv = function(options) {
     const wrapDelimiterCheckRegex = new RegExp(options.delimiter.wrap, 'g'),
@@ -40,7 +39,7 @@ const Json2Csv = function(options) {
             return checkSchemaDifferences(documentSchemas);
         } else {
             // Otherwise, we do not care if the schemas are different, so we should get the unique list of keys
-            let uniqueFieldNames = _.uniq(_.flatten(documentSchemas));
+            let uniqueFieldNames = utils.unique(utils.flatten(documentSchemas));
             return Promise.resolve(uniqueFieldNames);
         }
     }
@@ -165,7 +164,7 @@ const Json2Csv = function(options) {
             const originalRecordsLength = params.records.length;
 
             // Unwind each of the documents at the given headerField
-            _.each(params.headerFields, (headerField) => {
+            params.headerFields.forEach((headerField) => {
                 params.records = utils.unwind(params.records, headerField);
             });
 
@@ -255,7 +254,7 @@ const Json2Csv = function(options) {
         fields.forEach((field) => {
             let recordFieldValue = path.evaluatePath(record, field);
 
-            if (!_.isUndefined(options.emptyFieldValue) && utils.isEmptyField(recordFieldValue)) {
+            if (!utils.isUndefined(options.emptyFieldValue) && utils.isEmptyField(recordFieldValue)) {
                 recordFieldValue = options.emptyFieldValue;
             } else if (options.expandArrayObjects && Array.isArray(recordFieldValue)) {
                 recordFieldValue = processRecordFieldDataForExpandedArrayObject(recordFieldValue);
@@ -273,11 +272,11 @@ const Json2Csv = function(options) {
      * @returns {*}
      */
     function recordFieldValueToString(fieldValue) {
-        if (_.isArray(fieldValue) || _.isObject(fieldValue) && !_.isDate(fieldValue)) {
+        if (Array.isArray(fieldValue) || utils.isObject(fieldValue) && !utils.isDate(fieldValue)) {
             return JSON.stringify(fieldValue);
-        } else if (_.isUndefined(fieldValue)) {
+        } else if (utils.isUndefined(fieldValue)) {
             return 'undefined';
-        } else if (_.isNull(fieldValue)) {
+        } else if (utils.isNull(fieldValue)) {
             return 'null';
         } else {
             return fieldValue.toString();
@@ -291,9 +290,9 @@ const Json2Csv = function(options) {
      */
     function trimRecordFieldValue(fieldValue) {
         if (options.trimFieldValues) {
-            if (_.isArray(fieldValue)) {
+            if (Array.isArray(fieldValue)) {
                 return fieldValue.map(trimRecordFieldValue);
-            } else if (_.isString(fieldValue)) {
+            } else if (utils.isString(fieldValue)) {
                 return fieldValue.trim();
             }
             return fieldValue;
@@ -365,7 +364,7 @@ const Json2Csv = function(options) {
      */
     function convert(data, callback) {
         // Single document, not an array
-        if (_.isObject(data) && !data.length) {
+        if (utils.isObject(data) && !data.length) {
             data = [data]; // Convert to an array of the given document
         }
 
@@ -387,7 +386,7 @@ const Json2Csv = function(options) {
 
     return {
         convert,
-        validationFn: _.isObject,
+        validationFn: utils.isObject,
         validationMessages: constants.errors.json2csv
     };
 };
