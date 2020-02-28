@@ -35,10 +35,10 @@ module.exports = {
  * @return {Object} options object
  */
 function buildOptions(opts) {
-    opts = Object.assign({...constants.defaultOptions}, opts || {});
+    opts = {...constants.defaultOptions, ...opts || {}};
 
     // Note: Object.assign does a shallow default, we need to deep copy the delimiter object
-    opts.delimiter = Object.assign({...constants.defaultOptions.delimiter}, opts.delimiter);
+    opts.delimiter = {...constants.defaultOptions.delimiter, ...opts.delimiter};
 
     // Otherwise, send the options back
     return opts;
@@ -280,5 +280,5 @@ function unique(array) {
 }
 
 function flatten(array) {
-    return [].concat(...array)
+    return [].concat(...array);
 }
