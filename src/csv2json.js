@@ -1,9 +1,8 @@
 'use strict';
 
-let constants = require('./constants.json'),
-    utils = require('./utils'),
-    _ = require('underscore'),
-    path = require('doc-path');
+let path = require('doc-path'),
+    constants = require('./constants.json'),
+    utils = require('./utils');
 
 const Csv2Json = function(options) {
     const escapedWrapDelimiterRegex = new RegExp(options.delimiter.wrap + options.delimiter.wrap, 'g'),
@@ -243,7 +242,7 @@ const Csv2Json = function(options) {
         let parsedJson = parseValue(fieldValue);
         // If parsedJson is anything aside from an error, then we want to use the parsed value
         // This allows us to interpret values like 'null' --> null, 'false' --> false
-        if (!_.isError(parsedJson)) {
+        if (!utils.isError(parsedJson)) {
             fieldValue = parsedJson;
         } else if (fieldValue === 'undefined') {
             fieldValue = undefined;
@@ -258,7 +257,7 @@ const Csv2Json = function(options) {
      * @returns {String|null}
      */
     function trimRecordValue(fieldValue) {
-        if (options.trimFieldValues && !_.isNull(fieldValue)) {
+        if (options.trimFieldValues && !utils.isNull(fieldValue)) {
             return fieldValue.trim();
         }
         return fieldValue;
@@ -346,7 +345,7 @@ const Csv2Json = function(options) {
             let parsedJson = JSON.parse(value);
 
             // If the parsed value is an array, then we also need to trim record values, if specified
-            if (_.isArray(parsedJson)) {
+            if (Array.isArray(parsedJson)) {
                 return parsedJson.map(trimRecordValue);
             }
 
@@ -377,7 +376,7 @@ const Csv2Json = function(options) {
 
     return {
         convert,
-        validationFn: _.isString,
+        validationFn: utils.isString,
         validationMessages: constants.errors.csv2json
     };
 };

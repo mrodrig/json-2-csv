@@ -1,8 +1,7 @@
 'use strict';
 
-let constants = require('./constants.json'),
-    _ = require('underscore'),
-    path = require('doc-path');
+let path = require('doc-path'),
+    constants = require('./constants.json');
 
 const dateStringRegex = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/;
 
@@ -15,7 +14,17 @@ module.exports = {
     isEmptyField,
     removeEmptyFields,
     getNCharacters,
-    unwind
+    unwind,
+
+    // underscore replacements:
+    isString,
+    isNull,
+    isError,
+    isDate,
+    isUndefined,
+    isObject,
+    unique,
+    flatten
 };
 
 /**
@@ -26,10 +35,10 @@ module.exports = {
  * @return {Object} options object
  */
 function buildOptions(opts) {
-    opts = _.defaults(opts || {}, constants.defaultOptions);
+    opts = {...constants.defaultOptions, ...opts || {}};
 
-    // Note: _.defaults does a shallow default, we need to deep copy the DELIMITER object
-    opts.delimiter = _.defaults(opts.delimiter, constants.defaultOptions.delimiter);
+    // Note: Object.assign does a shallow default, we need to deep copy the delimiter object
+    opts.delimiter = {...constants.defaultOptions.delimiter, ...opts.delimiter};
 
     // Otherwise, send the options back
     return opts;
@@ -44,7 +53,7 @@ function buildOptions(opts) {
  */
 function parseArguments(arg1, arg2) {
     // If this was promisified (callback and opts are swapped) then fix the argument order.
-    if (_.isObject(arg1) && !_.isFunction(arg1)) {
+    if (isObject(arg1) && !isFunction(arg1)) {
         return {
             options: arg1,
             callback: arg2
@@ -149,8 +158,8 @@ function isDateRepresentation(fieldValue) {
  * @returns {*}
  */
 function computeSchemaDifferences(schemaA, schemaB) {
-    return _.difference(schemaA, schemaB)
-        .concat(_.difference(schemaB, schemaA));
+    return arrayDifference(schemaA, schemaB)
+        .concat(arrayDifference(schemaB, schemaA));
 }
 
 /**
@@ -159,7 +168,7 @@ function computeSchemaDifferences(schemaA, schemaB) {
  * @returns {boolean}
  */
 function isEmptyField(fieldValue) {
-    return _.isUndefined(fieldValue) || _.isNull(fieldValue) || fieldValue === '';
+    return isUndefined(fieldValue) || isNull(fieldValue) || fieldValue === '';
 }
 
 /**
@@ -168,7 +177,7 @@ function isEmptyField(fieldValue) {
  * @returns {Array}
  */
 function removeEmptyFields(fields) {
-    return _.filter(fields, (field) => !isEmptyField(field));
+    return fields.filter((field) => !isEmptyField(field));
 }
 
 /**
@@ -228,4 +237,48 @@ function unwind(array, field) {
         unwindItem(result, item, field);
     });
     return result;
+}
+
+/*
+ * Helper functions which were created to remove underscorejs from this package.
+ */
+
+function isString(value) {
+    return typeof value === 'string';
+}
+
+function isObject(value) {
+    return typeof value === 'object';
+}
+
+function isFunction(value) {
+    return typeof value === 'function';
+}
+
+function isNull(value) {
+    return value === null;
+}
+
+function isDate(value) {
+    return value instanceof Date;
+}
+
+function isUndefined(value) {
+    return typeof value === 'undefined';
+}
+
+function isError(value) {
+    return Object.prototype.toString.call(value) === '[object Error]';
+}
+
+function arrayDifference(a, b) {
+    return a.filter((x) => !b.includes(x));
+}
+
+function unique(array) {
+    return [...new Set(array)];
+}
+
+function flatten(array) {
+    return [].concat(...array);
 }
