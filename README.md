@@ -2,7 +2,7 @@
 **Convert JSON to CSV _or_ CSV to JSON**
 
 [![Dependencies](https://img.shields.io/david/mrodrig/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
-[![Downloads](http://img.shields.io/npm/dm/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
+[![Downloads](https://img.shields.io/npm/dm/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![NPM version](https://img.shields.io/npm/v/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![Minzipped Size](https://flat.badgen.net/bundlephobia/minzip/json-2-csv)](https://bundlephobia.com/result?p=json-2-csv)
 [![Package Size](https://img.shields.io/bundlephobia/min/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
