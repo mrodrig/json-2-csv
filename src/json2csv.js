@@ -279,7 +279,7 @@ const Json2Csv = function(options) {
         } else if (utils.isNull(fieldValue)) {
             return 'null';
         } else {
-            return fieldValue.toString();
+            return !options.useLocaleFormat ? fieldValue.toString() : fieldValue.toLocaleString();
         }
     }
 

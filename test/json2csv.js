@@ -435,6 +435,14 @@ function runTests(jsonTestData, csvTestData) {
                     keys: ['data.category', 'data.options.name']
                 });
             });
+
+            it('should use the locale format when specified', (done) => {
+                converter.json2csv(jsonTestData.localeFormat, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.localeFormat);
+                    done();
+                }, { useLocaleFormat: true, unwindArrays: true });
+            });
         });
     });
 

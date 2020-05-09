@@ -1,0 +1,4 @@
+name,features.name,price,createdAt,features.pros
+test1,modules,"12,345",2021-01-01T04:59:00.000Z,undefined
+test1,undefined,"12,345",2021-01-01T04:59:00.000Z,efficiency
+test2,testing,"35,000",2000-01-01T05:00:00.000Z,undefined
