@@ -32,7 +32,8 @@
     "keys" : null,
     "checkSchemaDifferences": false,
     "expandArrayObjects": false,
-    "unwindArrays": false
+    "unwindArrays": false,
+    "useLocaleFormat": false
   },
 
   "values" : {
