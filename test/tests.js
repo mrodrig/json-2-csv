@@ -4,6 +4,7 @@ let json2csvTests = require('./json2csv'),
     csvTestData = require('./config/testCsvFilesList');
 
 describe('json-2-csv Node Module', function() {
+    process.env.TZ = 'America/New_York';
     // Run JSON to CSV tests
     json2csvTests.runTests(jsonTestData, csvTestData);
 
