@@ -5,7 +5,7 @@
     },
     "name": "json-2-csv",
     "description": "A JSON to CSV and CSV to JSON converter that natively supports sub-documents and auto-generates the CSV heading.",
-    "version": "3.6.2",
+    "version": "3.7.0",
     "repository": {
         "type": "git",
         "url": "https://github.com/mrodrig/json-2-csv.git"
@@ -37,16 +37,16 @@
         "cli"
     ],
     "dependencies": {
-        "deeks": "2.2.4",
-        "doc-path": "2.0.2"
+        "deeks": "2.2.5",
+        "doc-path": "2.0.3"
     },
     "devDependencies": {
         "babel-eslint": "10.1.0",
-        "eslint": "6.8.0",
-        "mocha": "6.2.3",
+        "eslint": "7.0.0",
+        "mocha": "7.1.2",
         "nyc": "15.0.1",
         "should": "13.2.3",
-        "tslint": "6.1.1",
+        "tslint": "6.1.2",
         "typescript": "3.8.3"
     },
     "engines": {
