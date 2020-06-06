@@ -242,7 +242,7 @@ const Csv2Json = function(options) {
         let parsedJson = parseValue(fieldValue);
         // If parsedJson is anything aside from an error, then we want to use the parsed value
         // This allows us to interpret values like 'null' --> null, 'false' --> false
-        if (!utils.isError(parsedJson)) {
+        if (!utils.isError(parsedJson) && !utils.isInvalid(parsedJson)) {
             fieldValue = parsedJson;
         } else if (fieldValue === 'undefined') {
             fieldValue = undefined;
