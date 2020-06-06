@@ -162,6 +162,15 @@ function runTests(jsonTestData, csvTestData) {
                     done();
                 });
             });
+
+            // Test case for #149
+            it('should properly handle invalid parsed values', (done) => {
+                converter.csv2json(csvTestData.invalidParsedValues, (err, json) => {
+                    if (err) done(err);
+                    json.should.deepEqual(jsonTestData.invalidParsedValues);
+                    done();
+                });
+            });
         });
 
         describe('Error Handling', () => {

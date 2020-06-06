@@ -15,6 +15,7 @@ module.exports = {
     removeEmptyFields,
     getNCharacters,
     unwind,
+    isInvalid,
 
     // underscore replacements:
     isString,
@@ -281,4 +282,13 @@ function unique(array) {
 
 function flatten(array) {
     return [].concat(...array);
+}
+
+/**
+ * Used to help avoid incorrect values returned by JSON.parse when converting
+ * CSV back to JSON, such as '39e1804' which JSON.parse converts to Infinity
+ */
+function isInvalid(parsedJson) {
+    return parsedJson === Infinity ||
+        parsedJson === -Infinity;
 }
