@@ -415,6 +415,16 @@ function runTests(jsonTestData, csvTestData) {
                 });
             });
 
+            it('should handle unwinding empty array values when specified', (done) => {
+                converter.json2csv(jsonTestData.unwindEmptyArray, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.unwindEmptyArray);
+                    done();
+                }, {
+                    unwindArrays: true
+                });
+            });
+
             it('should unwind array values when specified', (done) => {
                 converter.json2csv(jsonTestData.unwind, (err, csv) => {
                     if (err) done(err);

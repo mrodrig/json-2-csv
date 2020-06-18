@@ -30,6 +30,7 @@ const fs = require('fs'),
         {key: 'quotedEmptyFieldValue', file: '../data/csv/quotedEmptyFieldValue.csv'},
         {key: 'csvEmptyLastValue', file: '../data/csv/csvEmptyLastValue.csv'},
         {key: 'unwind', file: '../data/csv/unwind.csv'},
+        {key: 'unwindEmptyArray', file: '../data/csv/unwindEmptyArray.csv'},
         {key: 'unwindWithSpecifiedKeys', file: '../data/csv/unwindWithSpecifiedKeys.csv'},
         {key: 'localeFormat', file: '../data/csv/localeFormat.csv'},
         {key: 'invalidParsedValues', file: '../data/csv/invalidParsedValues.csv'}
