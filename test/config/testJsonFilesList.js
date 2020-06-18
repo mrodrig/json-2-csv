@@ -23,6 +23,7 @@ module.exports = {
     quotedEmptyFieldValue: require('../data/json/quotedEmptyFieldValue'),
     csvEmptyLastValue: require('../data/json/csvEmptyLastValue'),
     unwind: require('../data/json/unwind'),
+    unwindEmptyArray: require('../data/json/unwindEmptyArray'),
     localeFormat: require('../data/json/localeFormat'),
     invalidParsedValues: require('../data/json/invalidParsedValues')
 };

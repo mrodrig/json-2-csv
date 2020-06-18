@@ -216,11 +216,15 @@ function unwindItem(accumulator, item, fieldPath) {
     const valueToUnwind = path.evaluatePath(item, fieldPath);
     let cloned = deepCopy(item);
 
-    if (Array.isArray(valueToUnwind)) {
+    if (Array.isArray(valueToUnwind) && valueToUnwind.length) {
         valueToUnwind.forEach((val) => {
             cloned = deepCopy(item);
             accumulator.push(path.setPath(cloned, fieldPath, val));
         });
+    } else if (Array.isArray(valueToUnwind) && valueToUnwind.length === 0) {
+        // Push an empty string so the value is empty since there are no values
+        path.setPath(cloned, fieldPath, '');
+        accumulator.push(cloned);
     } else {
         accumulator.push(cloned);
     }
