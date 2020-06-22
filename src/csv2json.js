@@ -148,7 +148,7 @@ const Csv2Json = function(options) {
                 stateVariables.insideWrapDelimiter = false;
                 stateVariables.parsingValue = false;
                 // Next iteration will substring, add the value to the line, and push the line onto the array of lines
-            } else if (character === options.delimiter.wrap && (index === 0 || utils.getNCharacters(csv, index - 1, eolDelimiterLength) === options.delimiter.eol)) {
+            } else if (character === options.delimiter.wrap && (index === 0 || utils.getNCharacters(csv, index - eolDelimiterLength, eolDelimiterLength) === options.delimiter.eol)) {
                 // If the line starts with a wrap delimiter (ie. "*)
 
                 stateVariables.insideWrapDelimiter = true;
