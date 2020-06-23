@@ -308,6 +308,17 @@ function runTests(jsonTestData, csvTestData) {
                 });
             });
 
+            // Test case for #153
+            it('should wrap first column with crlf line break', (done) => {
+                converter.csv2json(csvTestData.firstColumnWrapCRLF, (err, json) => {
+                    if (err) done(err);
+                    json.should.deepEqual(jsonTestData.firstColumnWrapCRLF);
+                    done();
+                }, {
+                    delimiter: { eol: '\r\n' }
+                });
+            });
+
             it('should strip the excel byte order mark character, if specified, and convert to json', (done) => {
                 converter.csv2json(csvTestData.excelBOM, (err, json) => {
                     if (err) done(err);
