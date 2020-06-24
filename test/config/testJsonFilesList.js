@@ -26,5 +26,6 @@ module.exports = {
     unwindEmptyArray: require('../data/json/unwindEmptyArray'),
     localeFormat: require('../data/json/localeFormat'),
     invalidParsedValues: require('../data/json/invalidParsedValues'),
-    firstColumnWrapCRLF: require('../data/json/firstColumnWrapCRLF.json')
+    firstColumnWrapCRLF: require('../data/json/firstColumnWrapCRLF.json'),
+    emptyLastFieldValue: require('../data/json/emptyLastFieldValue.json')
 };

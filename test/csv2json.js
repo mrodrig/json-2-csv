@@ -171,6 +171,15 @@ function runTests(jsonTestData, csvTestData) {
                     done();
                 });
             });
+
+            // Test case for #155
+            it('should properly convert empty field values if they occur at the end of the csv', (done) => {
+                converter.csv2json(csvTestData.emptyLastFieldValue, (err, json) => {
+                    if (err) done(err);
+                    json.should.deepEqual(jsonTestData.emptyLastFieldValue);
+                    done();
+                });
+            });
         });
 
         describe('Error Handling', () => {

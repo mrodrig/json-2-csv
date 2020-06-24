@@ -124,6 +124,16 @@ const Csv2Json = function(options) {
                 stateVariables.startIndex = index + eolDelimiterLength;
                 stateVariables.parsingValue = true;
                 stateVariables.insideWrapDelimiter = charAfter === options.delimiter.wrap;
+            } else if (index === lastCharacterIndex && character === options.delimiter.field) {
+                // If we reach the end of the CSV and the current character is a field delimiter
+
+                // Parse the previously seen value and add it to the line
+                let parsedValue = csv.substring(stateVariables.startIndex, index);
+                splitLine.push(parsedValue);
+
+                // Then add an empty string to the line since the last character being a field delimiter indicates an empty field
+                splitLine.push('');
+                lines.push(splitLine);
             } else if (index === lastCharacterIndex || nextNChar === options.delimiter.eol &&
                 // if we aren't inside wrap delimiters or if we are but the character before was a wrap delimiter and we didn't just see two
                 (!stateVariables.insideWrapDelimiter ||
