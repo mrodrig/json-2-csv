@@ -17,6 +17,7 @@ export interface ISharedOptions {
    *  @default false
    */
   excelBOM?: boolean;
+
   /**
    * Specify the keys (as strings) that should be converted
    *
@@ -24,11 +25,13 @@ export interface ISharedOptions {
    * * If you want all keys to be converted, then specify null or don't specify the option to utilize the default.
    */
   keys?: string[];
+
   /**
    * Should the header fields be trimmed
    * @default false
    */
   trimHeaderFields?: boolean;
+
   /**
    * Should the field values be trimmed? (in development)
    * @default false
@@ -60,11 +63,24 @@ export interface IFullOptions extends ISharedOptions {
    * @default true
    */
   prependHeader?: boolean;
+
   /**
    * Should the header keys be sorted in alphabetical order
    * @default false
    */
   sortHeader?: boolean;
+
+  /**
+   * Should array values be "unwound" such that there is one line per value in the array?
+   * @default false
+   */
+  unwindArrays?: boolean;
+
+  /**
+   * Should values be converted to a locale specific string?
+   * @default false
+   */
+  useLocaleFormat?: boolean;
 
 }
 
