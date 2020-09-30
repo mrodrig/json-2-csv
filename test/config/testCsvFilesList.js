@@ -35,7 +35,8 @@ const fs = require('fs'),
         {key: 'localeFormat', file: '../data/csv/localeFormat.csv'},
         {key: 'invalidParsedValues', file: '../data/csv/invalidParsedValues.csv'},
         {key: 'firstColumnWrapCRLF', file: '../data/csv/firstColumnWrapCRLF.csv'},
-        {key: 'emptyLastFieldValue', file: '../data/csv/emptyLastFieldValue.csv'}
+        {key: 'emptyLastFieldValue', file: '../data/csv/emptyLastFieldValue.csv'},
+        {key: 'emptyLastFieldValueNoEol', file: '../data/csv/emptyLastFieldValueNoEol.csv'}
     ];
 
 function readCsvFile(filePath) {

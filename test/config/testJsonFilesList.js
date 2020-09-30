@@ -27,5 +27,6 @@ module.exports = {
     localeFormat: require('../data/json/localeFormat'),
     invalidParsedValues: require('../data/json/invalidParsedValues'),
     firstColumnWrapCRLF: require('../data/json/firstColumnWrapCRLF.json'),
-    emptyLastFieldValue: require('../data/json/emptyLastFieldValue.json')
+    emptyLastFieldValue: require('../data/json/emptyLastFieldValue.json'),
+    emptyLastFieldValueNoEol: require('../data/json/emptyLastFieldValueNoEol.json')
 };
