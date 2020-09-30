@@ -180,6 +180,15 @@ function runTests(jsonTestData, csvTestData) {
                     done();
                 });
             });
+
+            // Test case for #161
+            it('should properly convert empty field values if they occur at the end of the csv with no EOL at the end', (done) => {
+                converter.csv2json(csvTestData.emptyLastFieldValueNoEol, (err, json) => {
+                    if (err) done(err);
+                    json.should.deepEqual(jsonTestData.emptyLastFieldValueNoEol);
+                    done();
+                });
+            });
         });
 
         describe('Error Handling', () => {

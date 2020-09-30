@@ -106,13 +106,16 @@ const Csv2Json = function(options) {
 
                 // If the start index is the current index (and since the previous character is a comma),
                 //   then the value being parsed is an empty value accordingly, add an empty string
-                let parsedValue = nextNChar === options.delimiter.eol && stateVariables.startIndex === index
-                    ? ''
+                if (nextNChar === options.delimiter.eol && stateVariables.startIndex === index) {
+                    splitLine.push('');
+                } else if (character === options.delimiter.field) {
+                    // If we reached the end of the CSV, there's no new line, and the current character is a comma
+                    // then add an empty string for the current value
+                    splitLine.push('');
+                } else {
                     // Otherwise, there's a valid value, and the start index isn't the current index, grab the whole value
-                    : csv.substr(stateVariables.startIndex);
-
-                // Push the value for the field that we were parsing
-                splitLine.push(parsedValue);
+                    splitLine.push(csv.substr(stateVariables.startIndex));
+                }
 
                 // Since the last character is a comma, there's still an additional implied field value trailing the comma.
                 //   Since this value is empty, we push an extra empty value
