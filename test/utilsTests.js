@@ -14,7 +14,7 @@ function runTests() {
                     result = utils.flatten(nested);
 
                 result.should.deepEqual(expected);
-                done()
+                done();
             });
 
             it('should handle extremely large arrays', (done) => {
