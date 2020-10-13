@@ -181,9 +181,9 @@ const Json2Csv = function(options) {
                     // Run a final time in case the earlier unwinding exposed additional
                     // arrays to unwind...
                     if (!finalPass) {
-                        return unwindRecordsIfNecessary(params, true)
+                        return unwindRecordsIfNecessary(params, true);
                     }
-                
+
                     // If keys were provided, set the headerFields to the provided keys:
                     if (options.keys) {
                         params.headerFields = options.keys;
