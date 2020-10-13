@@ -4,6 +4,7 @@ let path = require('doc-path'),
     constants = require('./constants.json');
 
 const dateStringRegex = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/;
+const MAX_ARRAY_LENGTH = 100000
 
 module.exports = {
     isStringRepresentation,
@@ -285,6 +286,13 @@ function unique(array) {
 }
 
 function flatten(array) {
+    if (array.length > MAX_ARRAY_LENGTH) {
+        let safeArray = []
+        for (let a = 0; a < array.length; a += MAX_ARRAY_LENGTH) {
+            safeArray = safeArray.concat(...array.slice(a, a + MAX_ARRAY_LENGTH))
+        }
+        return safeArray
+    }
     return [].concat(...array);
 }
 
