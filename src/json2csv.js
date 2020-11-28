@@ -279,7 +279,11 @@ const Json2Csv = function(options) {
         } else if (utils.isNull(fieldValue)) {
             return 'null';
         } else {
-            return !options.useLocaleFormat ? fieldValue.toString() : fieldValue.toLocaleString();
+           if (utils.isDate(fieldValue) && options.useDateIso8601Format) {
+                return new Date(fieldValue).toISOString();
+            } else {
+                return !options.useLocaleFormat ? fieldValue.toString() : fieldValue.toLocaleString();
+            }
         }
     }
 
