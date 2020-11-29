@@ -182,7 +182,16 @@ function runTests(jsonTestData, csvTestData) {
             });
 
             // Test case for #161
-            it('should properly convert empty field values if they occur at the end of the csv with no EOL at the end', (done) => {
+            it('should properly convert an empty field value if it occurs at the end of the csv with no EOL at the end', (done) => {
+                converter.csv2json(csvTestData.lastCharFieldDelimiter, (err, json) => {
+                    if (err) done(err);
+                    json.should.deepEqual(jsonTestData.emptyLastFieldValue);
+                    done();
+                });
+            });
+
+            // Test case for #161
+            it('should properly convert two empty field values if they occur at the end of the csv with no EOL at the end', (done) => {
                 converter.csv2json(csvTestData.emptyLastFieldValueNoEol, (err, json) => {
                     if (err) done(err);
                     json.should.deepEqual(jsonTestData.emptyLastFieldValueNoEol);
