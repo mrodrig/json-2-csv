@@ -272,12 +272,15 @@ const Json2Csv = function(options) {
      * @returns {*}
      */
     function recordFieldValueToString(fieldValue) {
-        if (Array.isArray(fieldValue) || utils.isObject(fieldValue) && !utils.isDate(fieldValue)) {
+        const isD = utils.isDate(fieldValue); // store to avoid checking twice
+        if (Array.isArray(fieldValue) || utils.isObject(fieldValue) && !isD) {
             return JSON.stringify(fieldValue);
         } else if (utils.isUndefined(fieldValue)) {
             return 'undefined';
         } else if (utils.isNull(fieldValue)) {
             return 'null';
+        } else if (isD && options.useDateIso8601Format) {
+            return new Date(fieldValue).toISOString();
         } else {
             return !options.useLocaleFormat ? fieldValue.toString() : fieldValue.toLocaleString();
         }

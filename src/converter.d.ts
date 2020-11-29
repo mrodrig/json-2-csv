@@ -82,6 +82,12 @@ export interface IFullOptions extends ISharedOptions {
    */
   useLocaleFormat?: boolean;
 
+  /**
+   * Should dates be output in ISO 8601 "Z" format:
+   * @default false
+   */
+   useDateIso8601Format?: boolean;
+
 }
 
 export function json2csv(data: object[],
