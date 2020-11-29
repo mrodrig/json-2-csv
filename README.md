@@ -124,6 +124,9 @@ Looking for examples? Check out the Wiki: [json-2-csv Wiki](https://github.com/m
       5cf7ca3616c91100018844bf,Cars,"[{""name"":""Supercharger""},{""name"":""Turbocharger""}]"
       ```
   	* Note: This may result in CSV output that does not map back exactly to the original JSON.
+  * `useDateIso8601Format` - Boolean - Should date values be converted to an ISO8601 date string?
+    * Default: `false`
+    * Note: If selected, values will be converted using `toISOString()` rather than `toString()` or `toLocaleString()` depending on the other options provided.
   * `useLocaleFormat` - Boolean - Should values be converted to a locale specific string?
     * Default: `false`
     * Note: If selected, values will be converted using `toLocaleString()` rather than `toString()`

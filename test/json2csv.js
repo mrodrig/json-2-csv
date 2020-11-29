@@ -453,6 +453,17 @@ function runTests(jsonTestData, csvTestData) {
                     done();
                 }, { useLocaleFormat: true, unwindArrays: true });
             });
+
+            it('should convert objects with dates to iso8601 format correctly', (done) => {
+                // Convert to a date since the `dob` value is imported as a string by default for some reason
+                jsonTestData.date.dob = new Date('1990-01-01T05:00:00.000Z');
+
+                converter.json2csv(jsonTestData.date, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.date);
+                    done();
+                }, { useDateIso8601Format: true });
+            });
         });
     });
 
