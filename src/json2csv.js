@@ -159,7 +159,7 @@ const Json2Csv = function(options) {
      * @param params {Object}
      * @returns {Promise}
      */
-    function unwindRecordsIfNecessary(params) {
+    function unwindRecordsIfNecessary(params, finalPass = false) {
         if (options.unwindArrays) {
             const originalRecordsLength = params.records.length;
 
@@ -177,6 +177,12 @@ const Json2Csv = function(options) {
                         return unwindRecordsIfNecessary(params);
                     }
                     // Otherwise, we didn't unwind any additional arrays, so continue...
+
+                    // Run a final time in case the earlier unwinding exposed additional
+                    // arrays to unwind...
+                    if (!finalPass) {
+                        return unwindRecordsIfNecessary(params, true);
+                    }
 
                     // If keys were provided, set the headerFields to the provided keys:
                     if (options.keys) {

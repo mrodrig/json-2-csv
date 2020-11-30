@@ -435,6 +435,16 @@ function runTests(jsonTestData, csvTestData) {
                 });
             });
 
+            it('should unwind nested array values when the earlier array has a length of 1', (done) => {
+                converter.json2csv(jsonTestData.arraySingleArray, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.arraySingleArray);
+                    done();
+                }, {
+                    unwindArrays: true
+                });
+            });
+
             it('should unwind array values when specified - with keys specified', (done) => {
                 converter.json2csv(jsonTestData.unwind, (err, csv) => {
                     if (err) done(err);

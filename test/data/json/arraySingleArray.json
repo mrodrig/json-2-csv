@@ -1,0 +1,16 @@
+{
+  "list": [
+    {
+      "name": "Shopping List",
+      "features": [
+        {
+          "name": "Television",
+          "price": {
+            "currency": "USD",
+            "amount": 100
+          }
+        }
+      ]
+    }
+  ]
+}
