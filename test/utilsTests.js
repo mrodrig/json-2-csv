@@ -3,6 +3,7 @@
 /* eslint no-unused-vars: ["error", { "varsIgnorePattern": "should" }]*/
 
 let should = require('should'),
+    nestedFlatteningTestData = require('./data/json/nestedFlattening'),
     utils = require('../src/utils');
 
 function runTests() {
@@ -18,15 +19,8 @@ function runTests() {
             });
 
             it('should handle extremely large arrays', (done) => {
-                const nested = [],
-                    expected = [];
-                for (let a = 0; a < 234567; a++) {
-                    nested.push([a]);
-                    expected.push(a);
-                }
-
-                const result = utils.flatten(nested);
-                result.should.deepEqual(expected);
+                const result = utils.flatten(nestedFlatteningTestData.nested);
+                result.should.deepEqual(nestedFlatteningTestData.expected);
                 done();
             });
         });
