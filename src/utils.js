@@ -286,6 +286,12 @@ function unique(array) {
 }
 
 function flatten(array) {
+    // Node 11+ - use the native array flattening function
+    if (array.flat) {
+        return array.flat();
+    }
+
+    // #167 - allow browsers to flatten very long 200k+ element arrays
     if (array.length > MAX_ARRAY_LENGTH) {
         let safeArray = [];
         for (let a = 0; a < array.length; a += MAX_ARRAY_LENGTH) {
