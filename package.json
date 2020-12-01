@@ -18,6 +18,7 @@
     "scripts": {
         "test": "mocha test/tests.js",
         "coverage": "nyc --reporter=lcov --reporter=text-summary --reporter=text _mocha",
+        "coveralls": "nyc report --reporter=text-lcov | coveralls",
         "lint": "npm run lint:eslint && npm run lint:tslint",
         "lint:eslint": "eslint src test",
         "lint:tslint": "tslint -c tslint.json 'src/**/*.ts'"
@@ -42,6 +43,7 @@
     },
     "devDependencies": {
         "babel-eslint": "10.1.0",
+        "coveralls": "3.1.0",
         "eslint": "7.14.0",
         "mocha": "8.2.1",
         "nyc": "15.1.0",
