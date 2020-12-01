@@ -7,8 +7,8 @@
 [![Minzipped Size](https://flat.badgen.net/bundlephobia/minzip/json-2-csv)](https://bundlephobia.com/result?p=json-2-csv)
 
 [![Build Status](https://travis-ci.org/mrodrig/json-2-csv.svg?branch=master)](https://travis-ci.org/mrodrig/json-2-csv)
+[![Coverage Status](https://coveralls.io/repos/github/mrodrig/json-2-csv/badge.svg?branch=stable)](https://coveralls.io/github/mrodrig/json-2-csv?branch=stable)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8c0cc3699d054fb77abe/maintainability)](https://codeclimate.com/github/mrodrig/json-2-csv/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/8c0cc3699d054fb77abe/test_coverage)](https://codeclimate.com/github/mrodrig/json-2-csv/test_coverage)
 [![Typings](https://shields-staging.herokuapp.com/npm/types/json-2-csv.svg?style=flat)](https://www.npmjs.org/package/json-2-csv)
 
 This node module will convert an array of JSON documents to a CSV string.
