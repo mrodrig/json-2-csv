@@ -5,7 +5,8 @@
     },
     "name": "json-2-csv",
     "description": "A JSON to CSV and CSV to JSON converter that natively supports sub-documents and auto-generates the CSV heading.",
-    "version": "3.7.12",
+    "version": "3.7.13",
+    "homepage": "https://mrodrig.github.io/json-2-csv",
     "repository": {
         "type": "git",
         "url": "https://github.com/mrodrig/json-2-csv.git"
@@ -13,15 +14,15 @@
     "bugs": {
         "url": "https://github.com/mrodrig/json-2-csv/issues"
     },
-    "main": "./src/converter.js",
-    "types": "./src/converter.d.ts",
+    "main": "lib/converter.js",
+    "types": "./lib/converter.d.ts",
     "scripts": {
         "test": "mocha test/tests.js",
         "coverage": "nyc --reporter=lcov --reporter=text-summary --reporter=text _mocha",
         "coveralls": "nyc report --reporter=text-lcov | coveralls",
         "lint": "npm run lint:eslint && npm run lint:tslint",
-        "lint:eslint": "eslint src test",
-        "lint:tslint": "tslint -c tslint.json 'src/**/*.ts'"
+        "lint:eslint": "eslint lib test",
+        "lint:tslint": "tslint -c tslint.json 'lib/**/*.ts'"
     },
     "keywords": [
         "json",

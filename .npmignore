@@ -9,3 +9,4 @@ coverage
 upgrade_guides
 tslint.json
 _config.yml
+.coveralls.yml
