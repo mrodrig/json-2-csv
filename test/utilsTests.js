@@ -4,7 +4,7 @@
 
 let should = require('should'),
     nestedFlatteningTestData = require('./data/json/nestedFlattening'),
-    utils = require('../src/utils');
+    utils = require('../lib/utils');
 
 function runTests() {
     describe('utils', () => {

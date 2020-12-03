@@ -3,9 +3,9 @@
 /* eslint no-unused-vars: ["error", { "varsIgnorePattern": "should" }]*/
 
 let should = require('should'),
-    converter = require('../src/converter'),
-    constants = require('../src/constants'),
-    utils = require('../src/utils'),
+    converter = require('../lib/converter'),
+    constants = require('../lib/constants'),
+    utils = require('../lib/utils'),
     defaultOptions = constants.defaultOptions;
 
 function runTests(jsonTestData, csvTestData) {
