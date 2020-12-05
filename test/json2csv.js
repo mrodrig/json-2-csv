@@ -474,6 +474,76 @@ function runTests(jsonTestData, csvTestData) {
                     done();
                 }, { useDateIso8601Format: true });
             });
+
+            it('should allow keys to be specified without titles', (done) => {
+                converter.json2csv(jsonTestData.unwind, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.unwindWithSpecifiedKeys);
+                    done();
+                }, {
+                    unwindArrays: true,
+                    keys: [
+                        {field: 'data.category'},
+                        'data.options.name'
+                    ]
+                });
+            });
+
+            it('should allow titles to be specified for certain keys, but not others when not unwinding arrays', (done) => {
+                converter.json2csv(jsonTestData.unwind, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.withSpecifiedKeys.replace('data.category,data.options.name', 'Category,data.options.name'));
+                    done();
+                }, {
+                    unwindArrays: false,
+                    keys: [
+                        {field: 'data.category', title: 'Category'},
+                        'data.options.name'
+                    ]
+                });
+            });
+
+            it('should allow titles to be specified for certain keys, but not others', (done) => {
+                converter.json2csv(jsonTestData.unwind, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.unwindWithSpecifiedKeys.replace('data.category,data.options.name', 'Category,data.options.name'));
+                    done();
+                }, {
+                    unwindArrays: true,
+                    keys: [
+                        {field: 'data.category', title: 'Category'},
+                        'data.options.name'
+                    ]
+                });
+            });
+
+            it('should allow titles to be specified', (done) => {
+                converter.json2csv(jsonTestData.unwind, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.withSpecifiedKeys.replace('data.category,data.options.name', 'Category,Option Name'));
+                    done();
+                }, {
+                    unwindArrays: false,
+                    keys: [
+                        {field: 'data.category', title: 'Category'},
+                        {field: 'data.options.name', title: 'Option Name'}
+                    ]
+                });
+            });
+
+            it('should allow titles to be specified when not unwinding arrays', (done) => {
+                converter.json2csv(jsonTestData.unwind, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.unwindWithSpecifiedKeys.replace('data.category,data.options.name', 'Category,Option Name'));
+                    done();
+                }, {
+                    unwindArrays: true,
+                    keys: [
+                        {field: 'data.category', title: 'Category'},
+                        {field: 'data.options.name', title: 'Option Name'}
+                    ]
+                });
+            });
         });
     });
 
