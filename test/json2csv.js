@@ -544,6 +544,56 @@ function runTests(jsonTestData, csvTestData) {
                     ]
                 });
             });
+
+            it('should exclude specified keys from the output', (done) => {
+                // Change the features array to be empty
+                const updatedCsvPerOptions = csvTestData.arrayObjects.replace('features.cons,', '')
+                    .replace('"[""cost"",""time""]",', '')
+                    .replace(',,,', ',,');
+
+                converter.json2csv(jsonTestData.arrayObjects, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(updatedCsvPerOptions);
+                    done();
+                }, {
+                    expandArrayObjects: true,
+                    keys: ['name', 'features.name', 'features.pros', 'features.cons', 'downloads'],
+                    excludeKeys: ['features.cons']
+                });
+            });
+
+            it('should exclude specified keys from the output when unwinding arrays', (done) => {
+                const updatedCsv = csvTestData.unwind.replace(',data.options.name', '')
+                    .replace(/,MacBook (Pro|Air) \d+/g, '')
+                    .replace(/,(Super|Turbo)charger/g, '')
+                    // De-duplicate the lines since the field isn't unwound due to being excluded
+                    .replace('5cf7ca3616c91100018844af,Computers\n', '')
+                    .replace('5cf7ca3616c91100018844bf,Cars\n', '');
+
+                converter.json2csv(jsonTestData.unwind, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(updatedCsv);
+                    done();
+                }, {
+                    unwindArrays: true,
+                    excludeKeys: ['data.options.name', 'data.options']
+                });
+            });
+
+            it('should exclude specified deeply nested key from the output when unwinding arrays', (done) => {
+                const updatedCsv = csvTestData.unwind.replace(',data.options.name', '')
+                    .replace(/,MacBook (Pro|Air) \d+/g, '')
+                    .replace(/,(Super|Turbo)charger/g, '');
+
+                converter.json2csv(jsonTestData.unwind, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(updatedCsv);
+                    done();
+                }, {
+                    unwindArrays: true,
+                    excludeKeys: ['data.options.name']
+                });
+            });
         });
     });
 

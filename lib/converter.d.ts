@@ -19,7 +19,7 @@ export interface ISharedOptions {
   excelBOM?: boolean;
 
   /**
-   * Specify the keys (as strings) that should be converted
+   * Specify the keys that should be converted
    *
    * * If you have a nested object (ie. {info : {name: 'Mike'}}), then set this to ['info.name']
    * * If you want all keys to be converted, then specify null or don't specify the option to utilize the default.
@@ -87,6 +87,11 @@ export interface IFullOptions extends ISharedOptions {
    * @default false
    */
   useDateIso8601Format?: boolean;
+
+  /**
+   * Specify the keys that should be excluded from the output.
+   */
+  excludeKeys?: string[];
 }
 
 export function json2csv(data: object[],
