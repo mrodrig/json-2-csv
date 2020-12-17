@@ -64,6 +64,9 @@ Looking for examples? Check out the Wiki: [json-2-csv Wiki](https://github.com/m
   * `emptyFieldValue` - Any - Value that, if specified, will be substituted in for field values that are `undefined`, `null`, or an empty string.
     * Default: none
   * `excelBOM` - Boolean - Should a unicode character be prepended to allow Excel to open a UTF-8 encoded file with non-ASCII characters present.
+  * `excludeKeys` - Array - Specify the keys that should be excluded from the output.
+    * Default: `[]`
+    * Note: When used with `unwindArrays`, arrays present at excluded key paths will not be unwound.
   * `expandArrayObjects` - Boolean - Should objects in array values be deep-converted to CSV?
   	* Default: `false`
   	* Example:
@@ -82,7 +85,7 @@ Looking for examples? Check out the Wiki: [json-2-csv Wiki](https://github.com/m
   	* `false` uses the following keys:
   		* `['specifications']`
     * Note: This may result in CSV output that does not map back exactly to the original JSON. See #102 for more information.
-  * `keys` - Array - Specify the keys (as strings) that should be converted.
+  * `keys` - Array - Specify the keys that should be converted.
     * Default: These will be auto-detected from your data by default.
     * Keys can either be specified as a String representing the key path that should be converted, or as an Object with the `key` property specifying the path. When specifying keys as an Object, you can also optionally specify a `title` which will be used for that column in the header. The list specified can contain a combination of Objects and Strings. 
       * `[ 'key1', 'key2', ... ]`
