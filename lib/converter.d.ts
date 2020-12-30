@@ -26,7 +26,7 @@ export interface ISharedOptions {
    */
   keys?: (string | {
     field: string;
-    title?: string; 
+    title?: string;
   })[];
 
   /**
