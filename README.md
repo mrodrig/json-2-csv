@@ -87,9 +87,9 @@ Looking for examples? Check out the Wiki: [json-2-csv Wiki](https://github.com/m
     * Note: This may result in CSV output that does not map back exactly to the original JSON. See #102 for more information.
   * `keys` - Array - Specify the keys that should be converted.
     * Default: These will be auto-detected from your data by default.
-    * Keys can either be specified as a String representing the key path that should be converted, or as an Object with the `key` property specifying the path. When specifying keys as an Object, you can also optionally specify a `title` which will be used for that column in the header. The list specified can contain a combination of Objects and Strings. 
+    * Keys can either be specified as a String representing the key path that should be converted, or as an Object with the `field` property specifying the path. When specifying keys as an Object, you can also optionally specify a `title` which will be used for that column in the header. The list specified can contain a combination of Objects and Strings. 
       * `[ 'key1', 'key2', ... ]`
-      * `[ { key: 'key1', title: 'Key 1' }, { key: 'key2' }, 'key3', ... ]`
+      * `[ { field: 'key1', title: 'Key 1' }, { field: 'key2' }, 'key3', ... ]`
     * Key Paths - If you are converting a nested object (ie. {info : {name: 'Mike'}}), then set this to ['info.name']
   * `prependHeader` - Boolean - Should the auto-generated header be prepended as the first line in the CSV?
     * Default: `true`
