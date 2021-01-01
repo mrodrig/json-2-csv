@@ -24,7 +24,10 @@ export interface ISharedOptions {
    * * If you have a nested object (ie. {info : {name: 'Mike'}}), then set this to ['info.name']
    * * If you want all keys to be converted, then specify null or don't specify the option to utilize the default.
    */
-  keys?: string[];
+  keys?: (string | {
+    field: string;
+    title?: string;
+  })[];
 
   /**
    * Should the header fields be trimmed
