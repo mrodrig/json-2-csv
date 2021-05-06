@@ -91,6 +91,9 @@ Looking for examples? Check out the Wiki: [json-2-csv Wiki](https://github.com/m
       * `[ 'key1', 'key2', ... ]`
       * `[ { field: 'key1', title: 'Key 1' }, { field: 'key2' }, 'key3', ... ]`
     * Key Paths - If you are converting a nested object (ie. {info : {name: 'Mike'}}), then set this to ['info.name']
+  * `parseValue` - Function - Specify how values should be converted into CSV format. This function is provided a single field value at a time and must return a `String`.
+    * Default: A built-in method is used to parse out a variety of different value types to well-known formats.
+    * Note: Using this option may override other options, including `useDateIso8601Format` and `useLocaleFormat`.
   * `prependHeader` - Boolean - Should the auto-generated header be prepended as the first line in the CSV?
     * Default: `true`
   * `sortHeader` - Boolean - Should the header keys be sorted in alphabetical order? 
@@ -161,6 +164,8 @@ Available in version `2.2.0`, this functionality makes use of promises from the 
     * Default: `null`
     * If you have a nested object (ie. `{info : {name: 'Mike'}}`), then set this to `['info.name']`
     * If you want all keys to be converted, then specify `null` or don't specify the option to utilize the default.
+  * `parseValue` - Function - Specify how `String` representations of field values should be parsed when converting back to JSON. This function is provided a single `String` and can return any value.
+    * Default: `JSON.parse` - An attempt is made to convert the String back to its original value using `JSON.parse`.
   * `trimHeaderFields` - Boolean - Should the header fields be trimmed? 
     * Default: `false`
   * `trimFieldValues` - Boolean - Should the field values be trimmed? 
