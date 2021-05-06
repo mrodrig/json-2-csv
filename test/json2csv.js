@@ -594,6 +594,22 @@ function runTests(jsonTestData, csvTestData) {
                     excludeKeys: ['data.options.name']
                 });
             });
+
+            it('should use a custom value parser function when provided', (done) => {
+                let updatedCsv = csvTestData.trimmedFields.split('\n');
+                const textRow = 'Parsed Value,Parsed Value,Parsed Value,Parsed Value,Parsed Value';
+                updatedCsv[1] = textRow;
+                updatedCsv[2] = textRow;
+                updatedCsv = updatedCsv.join('\n');
+
+                converter.json2csv(jsonTestData.trimmedFields, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(updatedCsv);
+                    done();
+                }, {
+                    parseValue: () => 'Parsed Value'
+                });
+            });
         });
     });
 
