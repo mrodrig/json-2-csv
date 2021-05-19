@@ -39,7 +39,8 @@ const fs = require('fs'),
         {key: 'firstColumnWrapCRLF', file: '../data/csv/firstColumnWrapCRLF.csv'},
         {key: 'emptyLastFieldValue', file: '../data/csv/emptyLastFieldValue.csv'},
         {key: 'emptyLastFieldValueNoEol', file: '../data/csv/emptyLastFieldValueNoEol.csv'},
-        {key: 'lastCharFieldDelimiter', file: '../data/csv/lastCharFieldDelimiter.csv'}
+        {key: 'lastCharFieldDelimiter', file: '../data/csv/lastCharFieldDelimiter.csv'},
+        {key: 'nativeMapMethod', file: '../data/csv/nativeMapMethod.csv'}
     ];
 
 function readCsvFile(filePath) {
