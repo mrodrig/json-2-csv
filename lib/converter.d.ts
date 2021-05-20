@@ -19,6 +19,13 @@ export interface ISharedOptions {
   excelBOM?: boolean;
 
   /**
+   * Should boolean values be wrapped in wrap delimiters to prevent Excel from
+   * converting them to Excel's TRUE/FALSE Boolean values.
+   * @default false
+   */
+  wrapBooleans?: boolean;
+
+  /**
    * Specify the keys that should be converted
    *
    * * If you have a nested object (ie. {info : {name: 'Mike'}}), then set this to ['info.name']
