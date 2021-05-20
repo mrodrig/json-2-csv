@@ -138,6 +138,8 @@ Looking for examples? Check out the Wiki: [json-2-csv Wiki](https://github.com/m
   * `useLocaleFormat` - Boolean - Should values be converted to a locale specific string?
     * Default: `false`
     * Note: If selected, values will be converted using `toLocaleString()` rather than `toString()`
+  * `wrapBooleans` - Boolean - Should boolean values be wrapped in wrap delimiters to prevent Excel from converting them to Excel's TRUE/FALSE Boolean values.
+    * Default: `false`
 
 
 For examples, please refer to the [json2csv API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/json2csv-Documentation)
