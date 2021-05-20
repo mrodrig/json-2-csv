@@ -618,6 +618,25 @@ function runTests(jsonTestData, csvTestData) {
                     parseValue: () => 'Parsed Value'
                 });
             });
+
+            it('should wrap boolean values in wrap delimiters, if specified', (done) => {
+                converter.json2csv(jsonTestData.emptyFieldValues, (err, csv) => {
+                    if (err) done(err);
+
+                    // Replace raw boolean values with quoted versions
+                    let expectedCsv = csvTestData.emptyFieldValues
+                        .replace(',"",', ',,')
+                        .replace(/\n"",/g, '\n,')
+                        .replace(/false/g, '"false"')
+                        .replace(/true/g, '"true"');
+
+                    csv.should.equal(expectedCsv);
+                    done();
+                }, {
+                    emptyFieldValue: '',
+                    wrapBooleans: true
+                });
+            });
         });
     });
 

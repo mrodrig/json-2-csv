@@ -35,7 +35,8 @@
     "unwindArrays": false,
     "useDateIso8601Format": false,
     "useLocaleFormat": false,
-    "parseValue": null
+    "parseValue": null,
+    "wrapBooleans": false
   },
 
   "values" : {
