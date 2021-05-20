@@ -137,6 +137,14 @@ function runTests(jsonTestData, csvTestData) {
                     done();
                 });
             });
+
+            it('should properly handle headers with the same name as native Map methods', (done) => {
+                converter.json2csv(jsonTestData.nativeMapMethod, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.nativeMapMethod);
+                    done();
+                });
+            });
         });
 
         describe('Error Handling', () => {
