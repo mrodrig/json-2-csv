@@ -22,7 +22,7 @@ export interface ISharedOptions {
    * Should boolean values be wrapped in wrap delimiters to prevent Excel from
    * converting them to Excel's TRUE/FALSE Boolean values.
    * @default false
-  */
+   */
   wrapBooleans?: boolean;
 
   /**
@@ -105,11 +105,11 @@ export interface IFullOptions extends ISharedOptions {
 }
 
 export function json2csv(data: object[],
-  callback: (err?: Error, csv?: string) => void, options?: IFullOptions): void;
+                         callback: (err?: Error, csv?: string) => void, options?: IFullOptions): void;
 
 export function json2csvAsync(data: object[], options?: IFullOptions): Promise<string>;
 
 export function csv2json(csv: string,
-  callback: (err?: Error, data?: any[]) => void, options?: ISharedOptions): void;
+                         callback: (err?: Error, data?: any[]) => void, options?: ISharedOptions): void;
 
 export function csv2jsonAsync(csv: string, options?: ISharedOptions): Promise<any[]>;
