@@ -198,6 +198,15 @@ function runTests(jsonTestData, csvTestData) {
                     done();
                 });
             });
+
+            // Test case for #184
+            it('should properly convert keys with escaped/nested dots in them', (done) => {
+                converter.csv2json(csvTestData.nestedDotKeys, (err, json) => {
+                    if (err) done(err);
+                    json.should.deepEqual(jsonTestData.nestedDotKeys);
+                    done();
+                });
+            });
         });
 
         describe('Error Handling', () => {

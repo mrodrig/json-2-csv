@@ -145,6 +145,15 @@ function runTests(jsonTestData, csvTestData) {
                     done();
                 });
             });
+
+            // Test case for #184
+            it('should properly handle keys with nested dots in them', (done) => {
+                converter.json2csv(jsonTestData.nestedDotKeys, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.nestedDotKeys);
+                    done();
+                });
+            });
         });
 
         describe('Error Handling', () => {
