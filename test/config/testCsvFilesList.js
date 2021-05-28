@@ -40,7 +40,10 @@ const fs = require('fs'),
         {key: 'emptyLastFieldValue', file: '../data/csv/emptyLastFieldValue.csv'},
         {key: 'emptyLastFieldValueNoEol', file: '../data/csv/emptyLastFieldValueNoEol.csv'},
         {key: 'lastCharFieldDelimiter', file: '../data/csv/lastCharFieldDelimiter.csv'},
-        {key: 'nativeMapMethod', file: '../data/csv/nativeMapMethod.csv'}
+        {key: 'nativeMapMethod', file: '../data/csv/nativeMapMethod.csv'},
+        {key: 'nestedDotKeys', file: '../data/csv/nestedDotKeys.csv'},
+        {key: 'nestedDotKeysWithArray', file: '../data/csv/nestedDotKeysWithArray.csv'},
+        {key: 'nestedDotKeysWithArrayExpandedUnwound', file: '../data/csv/nestedDotKeysWithArrayExpandedUnwound.csv'}
     ];
 
 function readCsvFile(filePath) {

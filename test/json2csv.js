@@ -145,6 +145,24 @@ function runTests(jsonTestData, csvTestData) {
                     done();
                 });
             });
+
+            // Test case for #184
+            it('should properly handle keys with nested dots in them', (done) => {
+                converter.json2csv(jsonTestData.nestedDotKeys, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.nestedDotKeys);
+                    done();
+                });
+            });
+
+            // Test case for #184
+            it('should properly handle keys with nested dots in them even when they appear in array fields', (done) => {
+                converter.json2csv(jsonTestData.nestedDotKeysWithArray, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.nestedDotKeysWithArray);
+                    done();
+                });
+            });
         });
 
         describe('Error Handling', () => {
@@ -635,6 +653,22 @@ function runTests(jsonTestData, csvTestData) {
                 }, {
                     emptyFieldValue: '',
                     wrapBooleans: true
+                });
+            });
+
+            // Test case for #184
+            it('should handle keys with nested dots when expanding and unwinding arrays', (done) => {
+                converter.json2csv(jsonTestData.nestedDotKeysWithArrayExpandedUnwound, (err, csv) => {
+                    if (err) done(err);
+
+                    // Replace raw boolean values with quoted versions
+                    let expectedCsv = csvTestData.nestedDotKeysWithArrayExpandedUnwound;
+
+                    csv.should.equal(expectedCsv);
+                    done();
+                }, {
+                    expandArrayObjects: true,
+                    unwindArrays: true
                 });
             });
         });

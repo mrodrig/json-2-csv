@@ -198,6 +198,33 @@ function runTests(jsonTestData, csvTestData) {
                     done();
                 });
             });
+
+            // Test case for #184
+            it('should properly convert keys with escaped/nested dots in them', (done) => {
+                converter.csv2json(csvTestData.nestedDotKeys, (err, json) => {
+                    if (err) done(err);
+                    json.should.deepEqual(jsonTestData.nestedDotKeys);
+                    done();
+                });
+            });
+
+            // Test case for #184
+            it('should properly convert keys with escaped/nested dots in them even when they appear in an array', (done) => {
+                converter.csv2json(csvTestData.nestedDotKeysWithArray, (err, json) => {
+                    if (err) done(err);
+                    json.should.deepEqual(jsonTestData.nestedDotKeysWithArray);
+                    done();
+                });
+            });
+
+            // Test case for #184
+            it('should properly convert keys with escaped/nested dots in them even when they appear in an expanded, unwound array', (done) => {
+                converter.csv2json(csvTestData.nestedDotKeysWithArrayExpandedUnwound, (err, json) => {
+                    if (err) done(err);
+                    json.should.deepEqual(jsonTestData.nestedDotKeysWithArrayExpandedUnwound);
+                    done();
+                });
+            });
         });
 
         describe('Error Handling', () => {
