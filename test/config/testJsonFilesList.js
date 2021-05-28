@@ -30,5 +30,8 @@ module.exports = {
     firstColumnWrapCRLF: require('../data/json/firstColumnWrapCRLF.json'),
     emptyLastFieldValue: require('../data/json/emptyLastFieldValue.json'),
     emptyLastFieldValueNoEol: require('../data/json/emptyLastFieldValueNoEol.json'),
-    nativeMapMethod: require('../data/json/nativeMapMethod.json')
+    nativeMapMethod: require('../data/json/nativeMapMethod.json'),
+    nestedDotKeys: require('../data/json/nestedDotKeys.json'),
+    nestedDotKeysWithArray: require('../data/json/nestedDotKeysWithArray.json'),
+    nestedDotKeysWithArrayExpandedUnwound: require('../data/json/nestedDotKeysWithArrayExpandedUnwound.json')
 };
