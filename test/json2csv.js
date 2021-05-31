@@ -656,15 +656,24 @@ function runTests(jsonTestData, csvTestData) {
                 });
             });
 
+            // Test case for #168
+            it('should ignore empty arrays when specified when unwinding arrays', (done) => {
+                converter.json2csv(jsonTestData.unwindIgnoreEmptyArrays, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.unwindIgnoreEmptyArrays);
+                    done();
+                }, {
+                    expandArrayObjects: true,
+                    unwindArrays: true,
+                    unwindIgnoreEmptyArrays: true
+                });
+            });
+
             // Test case for #184
             it('should handle keys with nested dots when expanding and unwinding arrays', (done) => {
                 converter.json2csv(jsonTestData.nestedDotKeysWithArrayExpandedUnwound, (err, csv) => {
                     if (err) done(err);
-
-                    // Replace raw boolean values with quoted versions
-                    let expectedCsv = csvTestData.nestedDotKeysWithArrayExpandedUnwound;
-
-                    csv.should.equal(expectedCsv);
+                    csv.should.equal(csvTestData.nestedDotKeysWithArrayExpandedUnwound);
                     done();
                 }, {
                     expandArrayObjects: true,

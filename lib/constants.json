@@ -33,6 +33,7 @@
     "checkSchemaDifferences": false,
     "expandArrayObjects": false,
     "unwindArrays": false,
+    "unwindIgnoreEmptyArrays": false,
     "useDateIso8601Format": false,
     "useLocaleFormat": false,
     "parseValue": null,

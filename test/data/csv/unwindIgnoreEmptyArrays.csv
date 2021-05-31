@@ -1,0 +1,3 @@
+entities.id,entities.name,entities.siblings.entity.name,entities.siblings.relationship_set.relationships.relationship.name
+4,Zeus,Exo,Senior
+4,Zeus,Chrono,

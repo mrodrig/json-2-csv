@@ -1,0 +1,33 @@
+[
+    {
+      "entities":
+        {
+          "id": 4,
+          "name": "Zeus",
+          "siblings": [
+            {
+              "entity": {
+                "name": "Exo"
+              },
+              "relationship_set": {
+                "relationships": [
+                  {
+                    "relationship": {
+                      "name": "Senior"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "entity": {
+                "name": "Chrono"
+              },
+              "relationship_set": {
+                "relationships": []
+              }
+            }
+          ]
+        }
+    }
+]
