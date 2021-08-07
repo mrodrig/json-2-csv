@@ -33,5 +33,6 @@ module.exports = {
     nativeMapMethod: require('../data/json/nativeMapMethod.json'),
     nestedDotKeys: require('../data/json/nestedDotKeys.json'),
     nestedDotKeysWithArray: require('../data/json/nestedDotKeysWithArray.json'),
-    nestedDotKeysWithArrayExpandedUnwound: require('../data/json/nestedDotKeysWithArrayExpandedUnwound.json')
+    nestedDotKeysWithArrayExpandedUnwound: require('../data/json/nestedDotKeysWithArrayExpandedUnwound.json'),
+    emptyColumns: require('../data/json/emptyColumns.json')
 };

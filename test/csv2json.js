@@ -225,6 +225,14 @@ function runTests(jsonTestData, csvTestData) {
                     done();
                 });
             });
+
+            it('should drop any values with empty column headers', (done) => {
+                converter.csv2json(csvTestData.emptyColumns, (err, json) => {
+                    if (err) done(err);
+                    json.should.deepEqual(jsonTestData.emptyColumns);
+                    done();
+                });
+            });
         });
 
         describe('Error Handling', () => {
