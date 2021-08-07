@@ -43,7 +43,8 @@ const fs = require('fs'),
         {key: 'nativeMapMethod', file: '../data/csv/nativeMapMethod.csv'},
         {key: 'nestedDotKeys', file: '../data/csv/nestedDotKeys.csv'},
         {key: 'nestedDotKeysWithArray', file: '../data/csv/nestedDotKeysWithArray.csv'},
-        {key: 'nestedDotKeysWithArrayExpandedUnwound', file: '../data/csv/nestedDotKeysWithArrayExpandedUnwound.csv'}
+        {key: 'nestedDotKeysWithArrayExpandedUnwound', file: '../data/csv/nestedDotKeysWithArrayExpandedUnwound.csv'},
+        {key: 'emptyColumns', file: '../data/csv/emptyColumns.csv'}
     ];
 
 function readCsvFile(filePath) {
