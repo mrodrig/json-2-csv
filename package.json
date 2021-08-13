@@ -39,8 +39,8 @@
         "cli"
     ],
     "dependencies": {
-        "deeks": "2.4.1",
-        "doc-path": "3.0.1"
+        "deeks": "2.5.1",
+        "doc-path": "3.0.2"
     },
     "devDependencies": {
         "babel-eslint": "10.1.0",
