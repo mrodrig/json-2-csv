@@ -36,7 +36,8 @@
     "useDateIso8601Format": false,
     "useLocaleFormat": false,
     "parseValue": null,
-    "wrapBooleans": false
+    "wrapBooleans": false,
+    "preventCsvInjection": false
   },
 
   "values" : {
