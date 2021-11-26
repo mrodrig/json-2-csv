@@ -48,11 +48,11 @@ export interface ISharedOptions {
    */
   trimFieldValues?: boolean;
 
-    /**
+  /**
    * Should CSV injection be prevented by left trimming these characters:
    * Equals (=), Plus (+), Minus (-), At (@), Tab (0x09), Carriage return (0x0D).
    * @default false
-  */
+   */
   preventCsvInjection?: boolean;
 }
 
