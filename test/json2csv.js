@@ -761,6 +761,19 @@ function runTests(jsonTestData, csvTestData) {
                 });
             });
 
+            it('should not left trim a combination of csv injection characters if preventCsvInjection is not specified', (done) => {
+                let originalValue = String.fromCharCode(9) + String.fromCharCode(13) + '=+-@Bob';
+                converter.json2csv([{name: originalValue}], (err, csv) => {
+                    if (err) done(err);
+
+                    let expectedCsv = `name\n"${originalValue}"`;
+
+                    csv.should.equal(expectedCsv);
+                    done();
+                }, {
+                });
+            });
+
             // Test case for #184
             it('should handle keys with nested dots when expanding and unwinding arrays', (done) => {
                 converter.json2csv(jsonTestData.nestedDotKeysWithArrayExpandedUnwound, (err, csv) => {
