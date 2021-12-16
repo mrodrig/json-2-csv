@@ -656,6 +656,124 @@ function runTests(jsonTestData, csvTestData) {
                 });
             });
 
+            // Test cases for https://github.com/mrodrig/json-2-csv/issues/209
+            it('should left trim equals (=) if preventCsvInjection is specified', (done) => {
+                converter.json2csv([{name: '=Bob'}], (err, csv) => {
+                    if (err) done(err);
+
+                    let expectedCsv = 'name\nBob';
+
+                    csv.should.equal(expectedCsv);
+                    done();
+                }, {
+                    preventCsvInjection: true
+                });
+            });
+
+            it('should left trim plus (+) if preventCsvInjection is specified', (done) => {
+                converter.json2csv([{name: '+Bob'}], (err, csv) => {
+                    if (err) done(err);
+
+                    let expectedCsv = 'name\nBob';
+
+                    csv.should.equal(expectedCsv);
+                    done();
+                }, {
+                    preventCsvInjection: true
+                });
+            });
+
+            it('should left trim minus (-) if preventCsvInjection is specified', (done) => {
+                converter.json2csv([{name: '-Bob'}], (err, csv) => {
+                    if (err) done(err);
+
+                    let expectedCsv = 'name\nBob';
+
+                    csv.should.equal(expectedCsv);
+                    done();
+                }, {
+                    preventCsvInjection: true
+                });
+            });
+
+            it('should left trim at (@) if preventCsvInjection is specified', (done) => {
+                converter.json2csv([{name: '@Bob'}], (err, csv) => {
+                    if (err) done(err);
+
+                    let expectedCsv = 'name\nBob';
+
+                    csv.should.equal(expectedCsv);
+                    done();
+                }, {
+                    preventCsvInjection: true
+                });
+            });
+
+            it('should left trim tab (0x09) if preventCsvInjection is specified', (done) => {
+                converter.json2csv([{name: String.fromCharCode(9) + 'Bob'}], (err, csv) => {
+                    if (err) done(err);
+
+                    let expectedCsv = 'name\nBob';
+
+                    csv.should.equal(expectedCsv);
+                    done();
+                }, {
+                    preventCsvInjection: true
+                });
+            });
+
+            it('should left trim carriage return (0x0D) if preventCsvInjection is specified', (done) => {
+                converter.json2csv([{name: String.fromCharCode(13) + 'Bob'}], (err, csv) => {
+                    if (err) done(err);
+
+                    let expectedCsv = 'name\nBob';
+
+                    csv.should.equal(expectedCsv);
+                    done();
+                }, {
+                    preventCsvInjection: true
+                });
+            });
+
+            it('should left trim a combination of csv injection characters if preventCsvInjection is specified', (done) => {
+                converter.json2csv([{name: String.fromCharCode(9) + String.fromCharCode(13) + '=+-@Bob'}], (err, csv) => {
+                    if (err) done(err);
+
+                    let expectedCsv = 'name\nBob';
+
+                    csv.should.equal(expectedCsv);
+                    done();
+                }, {
+                    preventCsvInjection: true
+                });
+            });
+
+            it('should not alter numbers by removing minus (-) even if preventCsvInjection is specified', (done) => {
+                converter.json2csv([{temperature: -10}], (err, csv) => {
+                    if (err) done(err);
+
+                    let expectedCsv = 'temperature\n-10';
+
+                    csv.should.equal(expectedCsv);
+                    done();
+                }, {
+                    preventCsvInjection: true
+                });
+            });
+
+            it('should not left trim a combination of csv injection characters if preventCsvInjection is not specified', (done) => {
+                let originalValue = String.fromCharCode(9) + String.fromCharCode(13) + '=+-@Bob';
+                converter.json2csv([{name: originalValue}], (err, csv) => {
+                    if (err) done(err);
+
+                    let expectedCsv = `name\n"${originalValue}"`;
+
+                    csv.should.equal(expectedCsv);
+                    done();
+                }, {
+                });
+            });
+
             // Test case for #184
             it('should handle keys with nested dots when expanding and unwinding arrays', (done) => {
                 converter.json2csv(jsonTestData.nestedDotKeysWithArrayExpandedUnwound, (err, csv) => {
