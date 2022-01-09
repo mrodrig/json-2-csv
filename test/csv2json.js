@@ -226,10 +226,20 @@ function runTests(jsonTestData, csvTestData) {
                 });
             });
 
+            // Test case for #204
             it('should drop any values with empty column headers', (done) => {
                 converter.csv2json(csvTestData.emptyColumns, (err, json) => {
                     if (err) done(err);
                     json.should.deepEqual(jsonTestData.emptyColumns);
+                    done();
+                });
+            });
+
+            // Test case for #214
+            it('should handle quoted fields with nested EOL characters', (done) => {
+                converter.csv2json(csvTestData.quotedFieldWithNewline, (err, json) => {
+                    if (err) done(err);
+                    json.should.deepEqual(jsonTestData.quotedFieldWithNewline);
                     done();
                 });
             });
