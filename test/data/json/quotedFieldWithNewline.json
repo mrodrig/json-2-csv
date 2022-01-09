@@ -1,0 +1,5 @@
+[ 
+    { "first": "hello\n", "second": "world", "third": "test" },
+    { "first": "first", "second": "world\n\n", "third": "test"},
+    { "first": "world", "second": "test", "third": "hello\n"}
+ ]

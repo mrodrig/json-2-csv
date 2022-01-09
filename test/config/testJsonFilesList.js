@@ -34,5 +34,6 @@ module.exports = {
     nestedDotKeys: require('../data/json/nestedDotKeys.json'),
     nestedDotKeysWithArray: require('../data/json/nestedDotKeysWithArray.json'),
     nestedDotKeysWithArrayExpandedUnwound: require('../data/json/nestedDotKeysWithArrayExpandedUnwound.json'),
-    emptyColumns: require('../data/json/emptyColumns.json')
+    emptyColumns: require('../data/json/emptyColumns.json'),
+    quotedFieldWithNewline: require('../data/json/quotedFieldWithNewline.json')
 };
