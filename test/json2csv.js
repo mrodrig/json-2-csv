@@ -328,6 +328,16 @@ function runTests(jsonTestData, csvTestData) {
                 });
             });
 
+            it('should sort the header with a custom function in the csv', (done) => {
+                converter.json2csv(jsonTestData.assortedValues, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.sortedHeaderCustom);
+                    done();
+                }, {
+                    sortHeader: (a, b) => b.localeCompare(a)
+                });
+            });
+
             it('should trim the header fields when specified', (done) => {
                 converter.json2csv(jsonTestData.trimHeader, (err, csv) => {
                     if (err) done(err);

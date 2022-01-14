@@ -96,7 +96,7 @@ Looking for examples? Check out the Wiki: [json-2-csv Wiki](https://github.com/m
     * Note: Using this option may override other options, including `useDateIso8601Format` and `useLocaleFormat`.
   * `prependHeader` - Boolean - Should the auto-generated header be prepended as the first line in the CSV?
     * Default: `true`
-  * `sortHeader` - Boolean - Should the header keys be sorted in alphabetical order? 
+  * `sortHeader` - Boolean or Function - Should the header keys be sorted in alphabetical order? or pass a function to use a custom sorting function
     * Default: `false`
   * `trimFieldValues` - Boolean - Should the field values be trimmed?
     * Default: `false`
