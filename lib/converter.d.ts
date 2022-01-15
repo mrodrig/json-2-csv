@@ -85,7 +85,7 @@ export interface IFullOptions extends ISharedOptions {
    * Should the header keys be sorted in alphabetical order
    * @default false
    */
-  sortHeader?: boolean;
+  sortHeader?: boolean|((a: any, b: any) => number);
 
   /**
    * Should array values be "unwound" such that there is one line per value in the array?
