@@ -91,7 +91,7 @@ Looking for examples? Check out the Wiki: [json-2-csv Wiki](https://github.com/m
       * `[ 'key1', 'key2', ... ]`
       * `[ { field: 'key1', title: 'Key 1' }, { field: 'key2' }, 'key3', ... ]`
     * Key Paths - If you are converting a nested object (ie. {info : {name: 'Mike'}}), then set this to ['info.name']
-  * `parseValue` - Function - Specify how values should be converted into CSV format. This function is provided a single field value at a time and must return a `String`.
+  * `parseValue` - Function - Specify how values should be converted into CSV format. This function is provided a single field value at a time and must return a `String`. The built-in parsing method is provided as the second argument for cases where default parsing is preferred.
     * Default: A built-in method is used to parse out a variety of different value types to well-known formats.
     * Note: Using this option may override other options, including `useDateIso8601Format` and `useLocaleFormat`.
   * `prependHeader` - Boolean - Should the auto-generated header be prepended as the first line in the CSV?
