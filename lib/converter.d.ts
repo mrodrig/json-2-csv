@@ -114,7 +114,10 @@ export interface IFullOptions extends ISharedOptions {
    * Specify how values should be converted into CSV format. This function is provided a single field value at a time and must return a `String`.
    * Note: Using this option may override other options, including `useDateIso8601Format` and `useLocaleFormat`.
    */
-  parseValue?: (fieldValue: any) => string;
+  parseValue?: (
+    fieldValue: any,
+    defaultParser: (fieldValue: any) => string
+  ) => string;
 }
 
 export function json2csv(data: object[],

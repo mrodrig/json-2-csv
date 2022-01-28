@@ -647,6 +647,16 @@ function runTests(jsonTestData, csvTestData) {
                 });
             });
 
+            it('should pass the default value parser to custom value parser function when provided', (done) => {
+                converter.json2csv(jsonTestData.trimmedFields, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.trimmedFields);
+                    done();
+                }, {
+                    parseValue: (fieldValue, defaultParser) => defaultParser(fieldValue)
+                });
+            });
+
             it('should wrap boolean values in wrap delimiters, if specified', (done) => {
                 converter.json2csv(jsonTestData.emptyFieldValues, (err, csv) => {
                     if (err) done(err);
