@@ -1,15 +1,15 @@
 # json-2-csv
 **Convert JSON to CSV _or_ CSV to JSON**
 
-[![Dependencies](https://img.shields.io/david/mrodrig/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
+[![Dependencies](https://img.shields.io/librariesio/release/npm/json-2-csv)](https://www.npmjs.org/package/json-2-csv)
 [![Downloads](https://img.shields.io/npm/dm/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![NPM version](https://img.shields.io/npm/v/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
-[![Minzipped Size](https://flat.badgen.net/bundlephobia/minzip/json-2-csv)](https://bundlephobia.com/result?p=json-2-csv)
+[![Minzipped Size](https://img.shields.io/bundlephobia/minzip/json-2-csv)](https://bundlephobia.com/result?p=json-2-csv)
 
 [![Build Status](https://travis-ci.org/mrodrig/json-2-csv.svg?branch=master)](https://travis-ci.org/mrodrig/json-2-csv)
 [![Coverage Status](https://coveralls.io/repos/github/mrodrig/json-2-csv/badge.svg?branch=stable)](https://coveralls.io/github/mrodrig/json-2-csv?branch=stable)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8c0cc3699d054fb77abe/maintainability)](https://codeclimate.com/github/mrodrig/json-2-csv/maintainability)
-[![Typings](https://shields-staging.herokuapp.com/npm/types/json-2-csv.svg?style=flat)](https://www.npmjs.org/package/json-2-csv)
+[![Typings](https://img.shields.io/npm/types/json-2-csv)](https://www.npmjs.org/package/json-2-csv)
 
 This node module will convert an array of JSON documents to a CSV string.
 Column headings will be automatically generated based on the keys of the JSON documents. Nested documents will have a '.' appended between the keys.
