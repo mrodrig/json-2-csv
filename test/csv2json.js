@@ -449,6 +449,59 @@ function runTests(jsonTestData, csvTestData) {
                     parseValue: () => 'Parsed Value'
                 });
             });
+
+            it('should be able to parse CSV with no header line provided', (done) => {
+                const headerlessCsv = csvTestData.unwindWithSpecifiedKeys.split(options.delimiter.eol)
+                    .splice(1)
+                    .join(options.delimiter.eol);
+
+                converter.csv2json(headerlessCsv, (err, json) => {
+                    if (err) done(err);
+                    json.should.deepEqual(jsonTestData.unwindWithSpecifiedKeys);
+                    done();
+                }, {
+                    headerFields: ['data.category', 'data.options.name']
+                });
+            });
+
+            it('should be able to parse CSV with no header line provided and different header fields', (done) => {
+                const headerlessCsv = csvTestData.unwindWithSpecifiedKeys.split(options.delimiter.eol)
+                        .splice(1)
+                        .join(options.delimiter.eol),
+                    expectedJson = jsonTestData.unwindWithSpecifiedKeys.map((doc) => {
+                        doc.category = doc.data.category;
+                        doc.product = doc.data.options.name;
+                        delete doc.data;
+                        return doc;
+                    });
+
+                converter.csv2json(headerlessCsv, (err, json) => {
+                    if (err) done(err);
+                    json.should.deepEqual(expectedJson);
+                    done();
+                }, {
+                    headerFields: ['category', 'product']
+                });
+            });
+
+            it('should be able to parse CSV with no header line provided and only some of the fields', (done) => {
+                const headerlessCsv = csvTestData.unwindWithSpecifiedKeys.split(options.delimiter.eol)
+                        .splice(1)
+                        .join(options.delimiter.eol),
+                    expectedJson = jsonTestData.unwindWithSpecifiedKeys.map((doc) => {
+                        doc.category = doc.data.category;
+                        delete doc.data;
+                        return doc;
+                    });
+
+                converter.csv2json(headerlessCsv, (err, json) => {
+                    if (err) done(err);
+                    json.should.deepEqual(expectedJson);
+                    done();
+                }, {
+                    headerFields: ['category']
+                });
+            });
         });
     });
 
