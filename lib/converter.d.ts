@@ -1,4 +1,4 @@
-export interface ISharedOptions {
+interface SharedConverterOptions {
   /**
    * Specifies the different types of delimiters
    */
@@ -56,7 +56,17 @@ export interface ISharedOptions {
   preventCsvInjection?: boolean;
 }
 
-export interface IFullOptions extends ISharedOptions {
+export interface Csv2JsonOptions extends SharedConverterOptions {
+  /**
+   * Specify the header fields in the event that the CSV does not container a header line
+   *
+   * If you want to generate a nested object (ie. {info : {name: 'Mike'}}), then use `.` characters in the string to denote a nested field, like ['info.name']
+   * If your CSV has a header line included, then don't specify the option to utilize the default values that will be parsed from the CSV.
+   */
+  headerFields?: string[];
+}
+
+export interface Json2CsvOptions extends SharedConverterOptions {
   /**
    * Should all documents have the same schema?
    * @default false
@@ -121,11 +131,11 @@ export interface IFullOptions extends ISharedOptions {
 }
 
 export function json2csv(data: object[],
-                         callback: (err?: Error, csv?: string) => void, options?: IFullOptions): void;
+                         callback: (err?: Error, csv?: string) => void, options?: Json2CsvOptions): void;
 
-export function json2csvAsync(data: object[], options?: IFullOptions): Promise<string>;
+export function json2csvAsync(data: object[], options?: Json2CsvOptions): Promise<string>;
 
 export function csv2json(csv: string,
-                         callback: (err?: Error, data?: any[]) => void, options?: ISharedOptions): void;
+                         callback: (err?: Error, data?: any[]) => void, options?: Csv2JsonOptions): void;
 
-export function csv2jsonAsync(csv: string, options?: ISharedOptions): Promise<any[]>;
+export function csv2jsonAsync(csv: string, options?: Csv2JsonOptions): Promise<any[]>;

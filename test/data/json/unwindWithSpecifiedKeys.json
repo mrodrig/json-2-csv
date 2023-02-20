@@ -1,0 +1,34 @@
+[
+    {
+        "data": {
+            "category": "Computers",
+            "options": {
+                "name": "MacBook Pro 15"
+            }
+        }
+    },
+    {
+        "data": {
+            "category": "Computers",
+            "options": {
+                "name": "MacBook Air 13"
+            }
+        }
+    },
+    {
+        "data": {
+            "category": "Cars",
+            "options": {
+                "name": "Supercharger"
+            }
+        }
+    },
+    {
+        "data": {
+            "category": "Cars",
+            "options": {
+                "name": "Turbocharger"
+            }
+        }
+    }
+]

@@ -164,6 +164,10 @@ Available in version `2.2.0`, this functionality makes use of promises from the 
       * Default: `\n`
   * `excelBOM` - Boolean - Does the CSV contain a unicode character prepended in order to allow Excel to open a UTF-8 encoded file with non-ASCII characters present?
     * Default: `false`
+  * `headerFields` - Array - Specify the field names (as strings) in place of a header line in the CSV itself.
+    * Default: Parses the header fields directly from the CSV string
+    * If you want to generate a nested object (ie. `{info : {name: 'Mike'}}`), then use `.` characters in the string to denote a nested field, like ['info.name']
+    * If your CSV has a header line included, then don't specify the option to utilize the default values that will be parsed from the CSV.
   * `keys` - Array - Specify the keys (as strings) that should be converted. 
     * Default: `null`
     * If you have a nested object (ie. `{info : {name: 'Mike'}}`), then set this to `['info.name']`

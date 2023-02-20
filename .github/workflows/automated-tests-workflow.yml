@@ -1,0 +1,42 @@
+name: Automated Node Version Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [16, 18, 19]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install NPM Modules
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Test
+        run: |
+          npm run coverage
+      - name: Coveralls Parallel
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.github_token }}
+          flag-name: node-${{ runner.os }}-${{ matrix.node }}
+          parallel: true
+  
+  coveralls-finished:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Coveralls Finished
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.github_token }}
+          parallel-finished: true
