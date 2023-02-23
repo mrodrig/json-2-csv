@@ -1,20 +1,19 @@
 'use strict';
 
-let path = require('doc-path'),
-    constants = require('./constants.json'),
-    utils = require('./utils');
+import { setPath } from 'doc-path';
+import { excelBOM } from './constants';
+import type { Csv2JsonParams, FullCsv2JsonOptions, HeaderField } from './types';
+import * as utils from './utils';
 
-const Csv2Json = function(options) {
+export const Csv2Json = function(options: FullCsv2JsonOptions) {
     const escapedWrapDelimiterRegex = new RegExp(options.delimiter.wrap + options.delimiter.wrap, 'g'),
-        excelBOMRegex = new RegExp('^' + constants.values.excelBOM),
+        excelBOMRegex = new RegExp('^' + excelBOM),
         valueParserFn = options.parseValue && typeof options.parseValue === 'function' ? options.parseValue : JSON.parse;
 
     /**
      * Trims the header key, if specified by the user via the provided options
-     * @param headerKey
-     * @returns {*}
      */
-    function processHeaderKey(headerKey) {
+    function processHeaderKey(headerKey: string) {
         headerKey = removeWrapDelimitersFromValue(headerKey);
         if (options.trimHeaderFields) {
             return headerKey.split('.')
@@ -26,67 +25,53 @@ const Csv2Json = function(options) {
 
     /**
      * Generate the JSON heading from the CSV
-     * @param lines {String[]} csv lines split by EOL delimiter
-     * @returns {*}
      */
-    function retrieveHeading(lines) {
-        let params = {lines};
+    function retrieveHeading(lines: string[][]): Csv2JsonParams {
+        let headerFields: HeaderField[] = [];
 
         if (options.headerFields) {
-            params.headerFields = options.headerFields.map((headerField, index) => ({
+            headerFields = options.headerFields.map((headerField, index): HeaderField => ({
                 value: processHeaderKey(headerField),
                 index
             }));
         } else {
             // Generate and return the heading keys
-            let headerRow = params.lines[0];
-            params.headerFields = headerRow.map((headerKey, index) => ({
+            const headerRow = lines[0];
+            headerFields = headerRow.map((headerKey, index) => ({
                 value: processHeaderKey(headerKey),
                 index
             }));
 
             // If the user provided keys, filter the generated keys to just the user provided keys so we also have the key index
             if (options.keys) {
-                params.headerFields = params.headerFields.filter((headerKey) => options.keys.includes(headerKey.value));
+                const keys = options.keys; // TypeScript type checking work around to get it to recognize the option is not undefined
+                headerFields = headerFields.filter((headerKey) => keys.includes(headerKey.value));
             }
         }
 
-        return params;
-    }
-
-    /**
-     * Splits the lines of the CSV string by the EOL delimiter and resolves and array of strings (lines)
-     * @param csv
-     * @returns {Promise.<String[]>}
-     */
-    function splitCsvLines(csv) {
-        return Promise.resolve(splitLines(csv));
+        return {
+            lines,
+            headerFields,
+            recordLines: [] as string[][],
+        };
     }
 
     /**
      * Removes the Excel BOM value, if specified by the options object
-     * @param csv
-     * @returns {Promise.<String>}
      */
-    function stripExcelBOM(csv) {
+    async function stripExcelBOM(csv: string) {
         if (options.excelBOM) {
-            return Promise.resolve(csv.replace(excelBOMRegex, ''));
+            return csv.replace(excelBOMRegex, '');
         }
-        return Promise.resolve(csv);
+        return csv;
     }
 
     /**
      * Helper function that splits a line so that we can handle wrapped fields
-     * @param csv
      */
-    function splitLines(csv) {
+    function splitLines(csv: string) {
         // Parse out the line...
-        let lines = [],
-            splitLine = [],
-            character,
-            charBefore,
-            charAfter,
-            nextNChar,
+        const lines = [],
             lastCharacterIndex = csv.length - 1,
             eolDelimiterLength = options.delimiter.eol.length,
             stateVariables = {
@@ -94,7 +79,13 @@ const Csv2Json = function(options) {
                 parsingValue: true,
                 justParsedDoubleQuote: false,
                 startIndex: 0
-            },
+            };
+        
+        let splitLine = [],
+            character,
+            charBefore,
+            charAfter,
+            nextNChar,
             index = 0;
 
         // Loop through each character in the line to identify where to split the values
@@ -140,7 +131,7 @@ const Csv2Json = function(options) {
                 // If we reach the end of the CSV and the current character is a field delimiter
 
                 // Parse the previously seen value and add it to the line
-                let parsedValue = csv.substring(stateVariables.startIndex, index);
+                const parsedValue = csv.substring(stateVariables.startIndex, index);
                 splitLine.push(parsedValue);
 
                 // Then add an empty string to the line since the last character being a field delimiter indicates an empty field
@@ -152,7 +143,7 @@ const Csv2Json = function(options) {
                     stateVariables.insideWrapDelimiter && charBefore === options.delimiter.wrap && !stateVariables.justParsedDoubleQuote)) {
                 // Otherwise if we reached the end of the line or csv (and current character is not a field delimiter)
 
-                let toIndex = index !== lastCharacterIndex || charBefore === options.delimiter.wrap ? index : undefined;
+                const toIndex = index !== lastCharacterIndex || charBefore === options.delimiter.wrap ? index : undefined;
 
                 // Retrieve the remaining value and add it to the split line list of values
                 splitLine.push(csv.substring(stateVariables.startIndex, toIndex));
@@ -231,10 +222,8 @@ const Csv2Json = function(options) {
 
     /**
      * Retrieves the record lines from the split CSV lines and sets it on the params object
-     * @param params
-     * @returns {*}
      */
-    function retrieveRecordLines(params) {
+    function retrieveRecordLines(params: Csv2JsonParams) {
         if (options.headerFields) { // This option is passed for instances where the CSV has no header line
             params.recordLines = params.lines;
         } else { // All lines except for the header line
@@ -246,12 +235,10 @@ const Csv2Json = function(options) {
 
     /**
      * Retrieves the value for the record from the line at the provided key.
-     * @param line {String[]} split line values for the record
-     * @param key {Object} {index: Number, value: String}
      */
-    function retrieveRecordValueFromLine(line, key) {
+    function retrieveRecordValueFromLine(headerField: HeaderField, line: string[]) {
         // If there is a value at the key's index, use it; otherwise, null
-        let value = line[key.index];
+        const value = line[headerField.index];
 
         // Perform any necessary value conversions on the record value
         return processRecordValue(value);
@@ -260,18 +247,16 @@ const Csv2Json = function(options) {
     /**
      * Processes the record's value by parsing the data to ensure the CSV is
      * converted to the JSON that created it.
-     * @param fieldValue {String}
-     * @returns {*}
      */
-    function processRecordValue(fieldValue) {
+    function processRecordValue(fieldValue: string) {
         // If the value is an array representation, convert it
-        let parsedJson = parseValue(fieldValue);
+        const parsedJson = parseValue(fieldValue);
         // If parsedJson is anything aside from an error, then we want to use the parsed value
         // This allows us to interpret values like 'null' --> null, 'false' --> false
         if (!utils.isError(parsedJson) && !utils.isInvalid(parsedJson)) {
-            fieldValue = parsedJson;
+            return parsedJson;
         } else if (fieldValue === 'undefined') {
-            fieldValue = undefined;
+            return undefined;
         }
 
         return fieldValue;
@@ -279,11 +264,9 @@ const Csv2Json = function(options) {
 
     /**
      * Trims the record value, if specified by the user via the options object
-     * @param fieldValue
-     * @returns {String|null}
      */
-    function trimRecordValue(fieldValue) {
-        if (options.trimFieldValues && !utils.isNull(fieldValue)) {
+    function trimRecordValue(fieldValue: string) {
+        if (options.trimFieldValues && fieldValue !== null) {
             return fieldValue.trim();
         }
         return fieldValue;
@@ -292,19 +275,17 @@ const Csv2Json = function(options) {
     /**
      * Create a JSON document with the given keys (designated by the CSV header)
      *   and the values (from the given line)
-     * @param keys String[]
-     * @param line String
      * @returns {Object} created json document
      */
-    function createDocument(keys, line) {
+    function createDocument(headerFields: HeaderField[], line: string[]) {
         // Reduce the keys into a JSON document representing the given line
-        return keys.reduce((document, key) => {
+        return headerFields.reduce((document, headerField) => {
             // If there is a value at the key's index in the line, set the value; otherwise null
-            let value = retrieveRecordValueFromLine(line, key);
+            const value = retrieveRecordValueFromLine(headerField, line);
 
             try {
                 // Otherwise add the key and value to the document
-                return path.setPath(document, key.value, value);
+                return setPath(document, headerField.value, value);
             } catch (error) {
                 // Catch any errors where key paths are null or '' and continue
                 return document;
@@ -315,11 +296,9 @@ const Csv2Json = function(options) {
     /**
      * Removes the outermost wrap delimiters from a value, if they are present
      * Otherwise, the non-wrapped value is returned as is
-     * @param fieldValue
-     * @returns {String}
      */
-    function removeWrapDelimitersFromValue(fieldValue) {
-        let firstChar = fieldValue[0],
+    function removeWrapDelimitersFromValue(fieldValue: string) {
+        const firstChar = fieldValue[0],
             lastIndex = fieldValue.length - 1,
             lastChar = fieldValue[lastIndex];
         // If the field starts and ends with a wrap delimiter
@@ -332,21 +311,19 @@ const Csv2Json = function(options) {
     /**
      * Unescapes wrap delimiters by replacing duplicates with a single (eg. "" -> ")
      * This is done in order to parse RFC 4180 compliant CSV back to JSON
-     * @param fieldValue
-     * @returns {String}
      */
-    function unescapeWrapDelimiterInField(fieldValue) {
+    function unescapeWrapDelimiterInField(fieldValue: string) {
         return fieldValue.replace(escapedWrapDelimiterRegex, options.delimiter.wrap);
     }
 
     /**
      * Main helper function to convert the CSV to the JSON document array
-     * @param params {Object} {lines: [String], callback: Function}
-     * @returns {Array}
      */
-    function transformRecordLines(params) {
-        params.json = params.recordLines.reduce((generatedJsonObjects, line) => { // For each line, create the document and add it to the array of documents
-            line = line.map((fieldValue) => {
+    function transformRecordLines(params: Csv2JsonParams) {
+        // For each line, create the document and add it to the array of documents
+        return params.recordLines.reduce((generatedJsonObjects: object[], line: string[]) => {
+
+            line = line.map((fieldValue: string) => {
                 // Perform the necessary operations on each line
                 fieldValue = removeWrapDelimitersFromValue(fieldValue);
                 fieldValue = unescapeWrapDelimiterInField(fieldValue);
@@ -355,25 +332,22 @@ const Csv2Json = function(options) {
                 return fieldValue;
             });
 
-            let generatedDocument = createDocument(params.headerFields, line);
+            const generatedDocument = createDocument(params.headerFields, line);
             return generatedJsonObjects.concat(generatedDocument);
-        }, []);
 
-        return params;
+        }, []);
     }
 
     /**
      * Attempts to parse the provided value. If it is not parsable, then an error is returned
-     * @param value
-     * @returns {*}
      */
-    function parseValue(value) {
+    function parseValue(value: string) {
         try {
             if (utils.isStringRepresentation(value, options) && !utils.isDateRepresentation(value)) {
                 return value;
             }
 
-            let parsedJson = valueParserFn(value);
+            const parsedJson = valueParserFn(value);
 
             // If the parsed value is an array, then we also need to trim record values, if specified
             if (Array.isArray(parsedJson)) {
@@ -388,28 +362,17 @@ const Csv2Json = function(options) {
 
     /**
      * Internally exported csv2json function
-     * Takes options as a document, data as a CSV string, and a callback that will be used to report the results
-     * @param data String csv string
-     * @param callback Function callback function
      */
-    function convert(data, callback) {
+    async function convert(data: string) {
         // Split the CSV into lines using the specified EOL option
-        // validateCsv(data, callback)
-        //     .then(stripExcelBOM)
-        stripExcelBOM(data)
-            .then(splitCsvLines)
+        return stripExcelBOM(data)
+            .then(splitLines)
             .then(retrieveHeading) // Retrieve the headings from the CSV, unless the user specified the keys
             .then(retrieveRecordLines) // Retrieve the record lines from the CSV
-            .then(transformRecordLines) // Retrieve the JSON document array
-            .then((params) => callback(null, params.json)) // Send the data back to the caller
-            .catch(callback);
+            .then(transformRecordLines); // Retrieve the JSON document array
     }
 
     return {
         convert,
-        validationFn: utils.isString,
-        validationMessages: constants.errors.csv2json
     };
 };
-
-module.exports = { Csv2Json };

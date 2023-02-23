@@ -1,0 +1,16 @@
+{
+    "check-coverage": true,
+    "all": true,
+    "include": [
+        "src/**/!(*.test.*).[tj]s?(x)"
+    ],
+    "exclude": [
+        "test/**/*.*"
+    ],
+    "reporter": [
+        "lcov",
+        "text-summary",
+        "text"
+    ],
+    "report-dir": "coverage"
+}
