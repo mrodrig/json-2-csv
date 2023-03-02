@@ -163,6 +163,15 @@ function runTests(jsonTestData, csvTestData) {
                     done();
                 });
             });
+
+            // Test case for #230
+            it('should properly handle falsy values in documents', (done) => {
+                converter.json2csv(jsonTestData.falsyValues, (err, csv) => {
+                    if (err) done(err);
+                    csv.should.equal(csvTestData.falsyValues);
+                    done();
+                });
+            });
         });
 
         describe('Error Handling', () => {

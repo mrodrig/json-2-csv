@@ -46,7 +46,8 @@ const fs = require('fs'),
         {key: 'nestedDotKeysWithArray', file: '../data/csv/nestedDotKeysWithArray.csv'},
         {key: 'nestedDotKeysWithArrayExpandedUnwound', file: '../data/csv/nestedDotKeysWithArrayExpandedUnwound.csv'},
         {key: 'emptyColumns', file: '../data/csv/emptyColumns.csv'},
-        {key: 'quotedFieldWithNewline', file: '../data/csv/quotedFieldWithNewline.csv'}
+        {key: 'quotedFieldWithNewline', file: '../data/csv/quotedFieldWithNewline.csv'},
+        {key: 'falsyValues', file: '../data/csv/falsyValues.csv'}
     ];
 
 function readCsvFile(filePath) {
