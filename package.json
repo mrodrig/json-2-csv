@@ -40,7 +40,7 @@
     ],
     "dependencies": {
         "deeks": "2.6.1",
-        "doc-path": "3.0.7"
+        "doc-path": "3.1.0"
     },
     "devDependencies": {
         "@babel/eslint-parser": "7.19.1",
