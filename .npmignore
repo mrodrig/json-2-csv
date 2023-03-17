@@ -3,6 +3,7 @@ npm-debug.log
 
 # Uncompiled Source Files
 src
+test
 
 # Node Modules
 node_modules/
@@ -24,3 +25,6 @@ lib/test
 # Github Configuration Files
 _config.yml
 .git*
+
+# Extra documentation files
+upgrade_guides/*
