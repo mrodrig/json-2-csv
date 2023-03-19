@@ -10,3 +10,6 @@ node_modules
 
 # Debug logs
 npm-debug.log
+
+# Built JavaScript files
+lib

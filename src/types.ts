@@ -1,15 +1,24 @@
+'use strict';
+
+interface DelimiterOptions {
+  /** @default ',' */
+  field?: string;
+  /** @default '"' */
+  wrap?: string;
+  /** @default '\n' */
+  eol?: string;
+}
+
+export type KeysList = (string | {
+  field: string;
+  title?: string;
+})[];
+
 interface SharedConverterOptions {
   /**
    * Specifies the different types of delimiters
    */
-  delimiter?: {
-    /** @default ',' */
-    field?: string;
-    /** @default '"' */
-    wrap?: string;
-    /** @default '\n' */
-    eol?: string;
-  };
+  delimiter?: DelimiterOptions;
 
   /**
    *  Should a unicode character be prepended to allow Excel to open
@@ -31,10 +40,7 @@ interface SharedConverterOptions {
    * * If you have a nested object (ie. {info : {name: 'Mike'}}), then set this to ['info.name']
    * * If you want all keys to be converted, then specify null or don't specify the option to utilize the default.
    */
-  keys?: (string | {
-    field: string;
-    title?: string;
-  })[];
+  keys?: KeysList;
 
   /**
    * Should the header fields be trimmed
@@ -55,8 +61,16 @@ interface SharedConverterOptions {
    */
   preventCsvInjection?: boolean;
 }
+  
+export interface Csv2JsonOptions extends Omit<SharedConverterOptions, 'keys'> {
+  /**
+   * Specify the keys that should be converted
+   *
+   * * If you have a nested object (ie. {info : {name: 'Mike'}}), then set this to ['info.name']
+   * * If you want all keys to be converted, then specify null or don't specify the option to utilize the default.
+   */
+  keys?: string[];
 
-export interface Csv2JsonOptions extends SharedConverterOptions {
   /**
    * Specify the header fields in the event that the CSV does not container a header line
    *
@@ -64,8 +78,13 @@ export interface Csv2JsonOptions extends SharedConverterOptions {
    * If your CSV has a header line included, then don't specify the option to utilize the default values that will be parsed from the CSV.
    */
   headerFields?: string[];
-}
 
+  /**
+   * Specify how String representations of field values should be parsed when converting back to JSON. This function is provided a single String and can return any value.
+   */
+  parseValue?: (fieldValue: string) => unknown;
+}
+  
 export interface Json2CsvOptions extends SharedConverterOptions {
   /**
    * Should all documents have the same schema?
@@ -77,7 +96,7 @@ export interface Json2CsvOptions extends SharedConverterOptions {
    * Value that, if specified, will be substituted in for field values
    * that are undefined, null, or an empty string
    */
-  emptyFieldValue?: any;
+  emptyFieldValue?: unknown;
 
   /**
    *  Should objects in array values be deep-converted to CSV
@@ -95,7 +114,7 @@ export interface Json2CsvOptions extends SharedConverterOptions {
    * Should the header keys be sorted in alphabetical order
    * @default false
    */
-  sortHeader?: boolean|((a: any, b: any) => number);
+  sortHeader?: boolean|((a: string, b: string) => number);
 
   /**
    * Should array values be "unwound" such that there is one line per value in the array?
@@ -125,17 +144,56 @@ export interface Json2CsvOptions extends SharedConverterOptions {
    * Note: Using this option may override other options, including `useDateIso8601Format` and `useLocaleFormat`.
    */
   parseValue?: (
-    fieldValue: any,
-    defaultParser: (fieldValue: any) => string
+    fieldValue: unknown,
+    defaultParser: (fieldValue: unknown) => string
   ) => string;
 }
 
-export function json2csv(data: object[],
-                         callback: (err?: Error, csv?: string) => void, options?: Json2CsvOptions): void;
+export interface BuiltCsv2JsonOptions extends Required<Csv2JsonOptions> {
+  delimiter: Required<DelimiterOptions>;
+}
+export interface BuiltJson2CsvOptions extends Required<Json2CsvOptions> {
+  delimiter: Required<DelimiterOptions>;
+}
 
-export function json2csvAsync(data: object[], options?: Json2CsvOptions): Promise<string>;
+export interface DefaultJson2CsvOptions extends
+  // Pick optional fields since there are no defaults set:
+  Pick<SharedConverterOptions, 'keys'>,
+  Pick<Json2CsvOptions, 'parseValue'>,
+  // Then extend the types with required fields and specific fields omitted:
+  Omit<Omit<BuiltJson2CsvOptions, 'keys'>, 'parseValue'> {}
 
-export function csv2json(csv: string,
-                         callback: (err?: Error, data?: any[]) => void, options?: Csv2JsonOptions): void;
+export interface DefaultCsv2JsonOptions extends
+  // Pick optional fields since there are no defaults set:
+  Pick<SharedConverterOptions, 'keys'>,
+  Pick<Csv2JsonOptions, 'headerFields'>,
+  Pick<Csv2JsonOptions, 'parseValue'>,
+  // Then extend the types with required fields and specific fields omitted:
+  Omit<Omit<Omit<BuiltCsv2JsonOptions, 'keys'>, 'headerFields'>, 'parseValue'> {}
 
-export function csv2jsonAsync(csv: string, options?: Csv2JsonOptions): Promise<any[]>;
+export interface FullJson2CsvOptions extends DefaultJson2CsvOptions {
+  /**
+   * Internal field that is used to map keys to user provided titles.
+   */
+  fieldTitleMap: Record<string, string>;
+}
+
+export type FullCsv2JsonOptions = DefaultCsv2JsonOptions
+
+export interface HeaderField {
+  value: string;
+  index: number;
+}
+
+export interface Json2CsvParams {
+  headerFields: string[];
+  header: string;
+  records: object[];
+  recordString: string;
+}
+
+export interface Csv2JsonParams {
+  headerFields: HeaderField[];
+  lines: string[][];
+  recordLines: string[][];
+}

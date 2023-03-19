@@ -1,13 +1,17 @@
-module.exports = {
+import date from '../data/json/date';
+import localeFormat from '../data/json/localeFormat';
+import undefined from '../data/json/undefined';
+
+export default {
     noData: require('../data/json/noData'),
     singleDocument: require('../data/json/singleDocument'),
     array: require('../data/json/array'),
     arrayObjects: require('../data/json/arrayObjects'),
     arrayMixedObjNonObj: require('../data/json/arrayMixedObjNonObj'),
     arraySingleArray: require('../data/json/arraySingleArray'),
-    date: require('../data/json/date'),
+    date,
     null: require('../data/json/null'),
-    undefined: require('../data/json/undefined'),
+    undefined,
     nested: require('../data/json/nested'),
     nestedMissingField: require('../data/json/nestedMissingField'),
     comma: require('../data/json/comma'),
@@ -26,7 +30,7 @@ module.exports = {
     unwind: require('../data/json/unwind'),
     unwindEmptyArray: require('../data/json/unwindEmptyArray'),
     unwindWithSpecifiedKeys: require('../data/json/unwindWithSpecifiedKeys'),
-    localeFormat: require('../data/json/localeFormat'),
+    localeFormat,
     invalidParsedValues: require('../data/json/invalidParsedValues'),
     firstColumnWrapCRLF: require('../data/json/firstColumnWrapCRLF.json'),
     emptyLastFieldValue: require('../data/json/emptyLastFieldValue.json'),

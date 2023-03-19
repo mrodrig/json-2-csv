@@ -5,7 +5,7 @@
     },
     "name": "json-2-csv",
     "description": "A JSON to CSV and CSV to JSON converter that natively supports sub-documents and auto-generates the CSV heading.",
-    "version": "3.20.0",
+    "version": "4.0.0",
     "homepage": "https://mrodrig.github.io/json-2-csv",
     "repository": {
         "type": "git",
@@ -14,15 +14,15 @@
     "bugs": {
         "url": "https://github.com/mrodrig/json-2-csv/issues"
     },
-    "main": "lib/converter.js",
+    "main": "./lib/converter.js",
     "types": "./lib/converter.d.ts",
     "scripts": {
-        "test": "mocha test/tests.js",
-        "coverage": "nyc --reporter=lcov --reporter=text-summary --reporter=text _mocha",
-        "coveralls": "nyc report --reporter=text-lcov | coveralls",
-        "lint": "npm run lint:eslint && npm run lint:tslint",
-        "lint:eslint": "eslint lib test",
-        "lint:tslint": "tslint -c tslint.json 'lib/**/*.ts'"
+        "build": "npm run lint && npm run test && npm run compile",
+        "compile": "tsc -p tsconfig.build.json",
+        "coverage": "nyc npm run test",
+        "lint": "eslint --ext .js,.ts src test",
+        "prepublishOnly": "npm run build",
+        "test": "mocha -r ts-node/register test/index.ts"
     },
     "keywords": [
         "json",
@@ -39,21 +39,24 @@
         "cli"
     ],
     "dependencies": {
-        "deeks": "2.6.1",
-        "doc-path": "3.1.0"
+        "deeks": "3.0.0",
+        "doc-path": "4.0.0"
     },
     "devDependencies": {
-        "@babel/eslint-parser": "7.19.1",
-        "coveralls": "3.1.1",
-        "eslint": "8.34.0",
+        "@types/mocha": "10.0.1",
+        "@types/node": "18.15.3",
+        "@typescript-eslint/eslint-plugin": "5.55.0",
+        "@typescript-eslint/parser": "5.55.0",
+        "eslint": "8.36.0",
+        "eslint-config-google": "0.14.0",
+        "eslint-plugin-import": "2.27.5",
         "mocha": "10.2.0",
         "nyc": "15.1.0",
-        "should": "13.2.3",
-        "tslint": "6.1.3",
-        "typescript": "4.9.5"
+        "ts-node": "10.9.1",
+        "typescript": "5.0.2"
     },
     "engines": {
-        "node": ">= 12"
+        "node": ">= 16"
     },
     "license": "MIT"
 }

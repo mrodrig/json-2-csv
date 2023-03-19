@@ -1,15 +1,14 @@
 # json-2-csv
 **Convert JSON to CSV _or_ CSV to JSON**
 
-[![Dependencies](https://img.shields.io/librariesio/release/npm/json-2-csv)](https://www.npmjs.org/package/json-2-csv)
-[![Downloads](https://img.shields.io/npm/dm/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![NPM version](https://img.shields.io/npm/v/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
+[![Typings](https://img.shields.io/npm/types/json-2-csv)](https://www.npmjs.org/package/json-2-csv)
+[![Downloads](https://img.shields.io/npm/dm/json-2-csv.svg)](https://www.npmjs.org/package/json-2-csv)
 [![Minzipped Size](https://img.shields.io/bundlephobia/minzip/json-2-csv)](https://bundlephobia.com/result?p=json-2-csv)
 
 [![Build Status](https://travis-ci.org/mrodrig/json-2-csv.svg?branch=master)](https://travis-ci.org/mrodrig/json-2-csv)
 [![Coverage Status](https://coveralls.io/repos/github/mrodrig/json-2-csv/badge.svg?branch=stable)](https://coveralls.io/github/mrodrig/json-2-csv?branch=stable)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8c0cc3699d054fb77abe/maintainability)](https://codeclimate.com/github/mrodrig/json-2-csv/maintainability)
-[![Typings](https://img.shields.io/npm/types/json-2-csv)](https://www.npmjs.org/package/json-2-csv)
 
 This node module will convert an array of JSON documents to a CSV string.
 Column headings will be automatically generated based on the keys of the JSON documents. Nested documents will have a '.' appended between the keys.
@@ -30,12 +29,13 @@ $ npm install @mrodrig/json-2-csv-cli
 
 ## Upgrading?
 
-Upgrading to v3 from v2? Check out the [upgrade guide](https://github.com/mrodrig/json-2-csv/blob/master/upgrade_guides/UPGRADE_2_to_3.md).
+Upgrading to v4 from v3? Check out the [upgrade guide](https://github.com/mrodrig/json-2-csv/blob/master/upgrade_guides/UPGRADE_3_to_4.md).
 
 ## Usage
 
 ```javascript
 let converter = require('json-2-csv');
+const csv = await converter.json2csv(data, options);
 ```
 or
 ```javascript
@@ -45,11 +45,9 @@ Looking for examples? Check out the Wiki: [json-2-csv Wiki](https://github.com/m
 
 ### API
 
-#### `converter.json2csv(array, callback, options)`
+#### `json2csv(array, options)`
 
 * `array` - An array of JSON documents to be converted to CSV.
-* `callback` - A function of the form `function (err, csv)`; 
-  * This function will receive any errors and/or the string of CSV generated.
 * `options` - (Optional) A JSON document specifying any of the following key value pairs:
   * `checkSchemaDifferences` - Boolean - Should all documents have the same schema?
     * Default: `false`
@@ -146,14 +144,9 @@ Looking for examples? Check out the Wiki: [json-2-csv Wiki](https://github.com/m
 
 For examples, please refer to the [json2csv API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/json2csv-Documentation)
 
-#### Promisified Version: `converter.json2csvAsync(array, options)`
-
-Available in version `2.2.0`, this functionality makes use of promises from the `bluebird` module.
-
-#### `converter.csv2json(csv, callback, options)`
+#### `csv2json(csv, options)`
 
 * `csv` - A string of CSV
-* `callback` - A function of the form `function (err, array)`; This function will receive any errors and/or the array of JSON documents generated.
 * `options` - (Optional) A JSON document specifying any of the following key value pairs:
   * `delimiter` - Document - Specifies the different types of delimiters
     * `field` - String - Field Delimiter. 
@@ -180,10 +173,6 @@ Available in version `2.2.0`, this functionality makes use of promises from the 
     * Default: `false`
 
 For examples, please refer to the [csv2json API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/csv2json-Documentation)
-
-#### Promisified Version: `csv2jsonAsync(csv, options)`
-
-Available in version `2.2.0`, this functionality makes use of promises from the `bluebird` module.
 
 ### CLI
 Note: As of `3.5.8`, the command line interface functionality has been pulled out to a separate package. Please be sure to
@@ -242,14 +231,6 @@ $ npm test
 To see test coverage, please run:
 ```bash
 $ npm run coverage
-```
-
-Current Coverage is:
-```
-Statements   : 100% ( 286/286 )
-Branches     : 100% ( 166/166 )
-Functions    : 100% ( 73/73 )
-Lines        : 100% ( 280/280 )
 ```
 
 ## Frequently Asked Questions (FAQ)
