@@ -45,7 +45,9 @@ Looking for examples? Check out the Wiki: [json-2-csv Wiki](https://github.com/m
 
 ### API
 
-#### `json2csv(array, options)`
+#### `json2csv(array, options)` => `Promise<string>`
+
+Returns a `Promise` that resolves with the CSV `string` or rejects with an `Error` if there was an issue.
 
 * `array` - An array of JSON documents to be converted to CSV.
 * `options` - (Optional) A JSON document specifying any of the following key value pairs:
@@ -144,7 +146,9 @@ Looking for examples? Check out the Wiki: [json-2-csv Wiki](https://github.com/m
 
 For examples, please refer to the [json2csv API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/json2csv-Documentation)
 
-#### `csv2json(csv, options)`
+#### `csv2json(csv, options)` => Promise<object[]>
+
+Returns a `Promise` that resolves with the JSON object array (`object[]`) or rejects with an `Error` if there was an issue.
 
 * `csv` - A string of CSV
 * `options` - (Optional) A JSON document specifying any of the following key value pairs:
