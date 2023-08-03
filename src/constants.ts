@@ -27,6 +27,7 @@ export const defaultJson2CsvOptions: DefaultJson2CsvOptions = {
     emptyFieldValue: undefined,
     excelBOM: false,
     excludeKeys: [],
+    expandNestedObjects: true,
     expandArrayObjects: false,
     prependHeader : true,
     preventCsvInjection: false,
