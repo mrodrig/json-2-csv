@@ -67,6 +67,27 @@ Returns a `Promise` that resolves with the CSV `string` or rejects with an `Erro
   * `excludeKeys` - Array - Specify the keys that should be excluded from the output.
     * Default: `[]`
     * Note: When used with `unwindArrays`, arrays present at excluded key paths will not be unwound.
+  * `expandNestedObjects` - Boolean - Should nested objects be deep-converted to CSV?
+  	* Default: `true`
+  	* Example:
+	```json
+	[
+		{
+      "make": "Nissan",
+      "model": "Murano",
+      "year": 2013,
+      "specifications": {
+        "mileage": 7106,
+        "trim": "S AWD"
+      }
+    }
+	]
+	```
+  	* `true` uses the following keys:
+  		* `['make', 'model', 'year', 'specifications.mileage', 'specifications.trim']`
+  	* `false` uses the following keys:
+  		* `['make', 'model', 'year', 'specifications']`
+    * Note: This may result in CSV output that does not map back exactly to the original JSON.
   * `expandArrayObjects` - Boolean - Should objects in array values be deep-converted to CSV?
   	* Default: `false`
   	* Example:

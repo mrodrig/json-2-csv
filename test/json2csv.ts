@@ -616,6 +616,14 @@ export function runTests() {
 
                 assert.equal(csv, expectedCsv);
             });
+
+            it('should respect the expandNestedObjects option being set to false', async () => {
+                const csv = await json2csv(jsonTestData.nested, {
+                    expandNestedObjects: false,
+                });
+
+                assert.equal(csv, csvTestData.nestedNotUnwoundObjects);
+            });
         });
     });
 
