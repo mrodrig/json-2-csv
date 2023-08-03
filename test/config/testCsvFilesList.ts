@@ -47,7 +47,8 @@ const csvFileConfig = [
     {key: 'nestedDotKeysWithArrayExpandedUnwound', file: '../data/csv/nestedDotKeysWithArrayExpandedUnwound.csv'},
     {key: 'emptyColumns', file: '../data/csv/emptyColumns.csv'},
     {key: 'quotedFieldWithNewline', file: '../data/csv/quotedFieldWithNewline.csv'},
-    {key: 'falsyValues', file: '../data/csv/falsyValues.csv'}
+    {key: 'falsyValues', file: '../data/csv/falsyValues.csv'},
+    {key: 'nestedNotUnwoundObjects', file: '../data/csv/nestedNotUnwoundObjects.csv'},
 ];
 
 function readCsvFile(filePath: string) {

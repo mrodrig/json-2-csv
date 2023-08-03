@@ -99,6 +99,12 @@ export interface Json2CsvOptions extends SharedConverterOptions {
   emptyFieldValue?: unknown;
 
   /**
+   *  Should nested objects be deep-converted to CSV
+   *  @default true
+   */
+  expandNestedObjects?: boolean;
+
+  /**
    *  Should objects in array values be deep-converted to CSV
    *  @default false
    */
