@@ -8,18 +8,18 @@ import { buildJ2COptions, buildC2JOptions, validate, isObject, isString } from '
 
 export type { Json2CsvOptions, Csv2JsonOptions } from './types';
 
-export async function json2csv(data: object[], options?: Json2CsvOptions): Promise<string> {
+export function json2csv(data: object[], options?: Json2CsvOptions): string {
     const builtOptions = buildJ2COptions(options ?? {});
-    
+
     // Validate the parameters before calling the converter's convert function
     validate(data, isObject, errors.json2csv);
 
     return Json2Csv(builtOptions).convert(data);
 }
 
-export async function csv2json(data: string, options?: Csv2JsonOptions): Promise<object[]> {
+export function csv2json(data: string, options?: Csv2JsonOptions): object[] {
     const builtOptions = buildC2JOptions(options ?? {});
-    
+
     // Validate the parameters before calling the converter's convert function
     validate(data, isString, errors.csv2json);
 

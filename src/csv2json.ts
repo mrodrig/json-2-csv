@@ -59,7 +59,7 @@ export const Csv2Json = function(options: FullCsv2JsonOptions) {
     /**
      * Removes the Excel BOM value, if specified by the options object
      */
-    async function stripExcelBOM(csv: string) {
+    function stripExcelBOM(csv: string) {
         if (options.excelBOM) {
             return csv.replace(excelBOMRegex, '');
         }
@@ -80,7 +80,7 @@ export const Csv2Json = function(options: FullCsv2JsonOptions) {
                 justParsedDoubleQuote: false,
                 startIndex: 0
             };
-        
+
         let splitLine = [],
             character,
             charBefore,
@@ -363,13 +363,14 @@ export const Csv2Json = function(options: FullCsv2JsonOptions) {
     /**
      * Internally exported csv2json function
      */
-    async function convert(data: string) {
+    function convert(data: string) {
         // Split the CSV into lines using the specified EOL option
-        return stripExcelBOM(data)
-            .then(splitLines)
-            .then(retrieveHeading) // Retrieve the headings from the CSV, unless the user specified the keys
-            .then(retrieveRecordLines) // Retrieve the record lines from the CSV
-            .then(transformRecordLines); // Retrieve the JSON document array
+        const stripped = stripExcelBOM(data);
+        const split = splitLines(stripped);
+        const heading = retrieveHeading(split); // Retrieve the headings from the CSV, unless the user specified the keys
+        const lines = retrieveRecordLines(heading); // Retrieve the record lines from the CSV
+
+        return transformRecordLines(lines); // Retrieve the JSON document array
     }
 
     return {

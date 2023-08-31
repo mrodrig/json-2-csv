@@ -16,7 +16,7 @@ export function runTests() {
         jsonTestData: typeof testJsonFiles,
         csvTestData: typeof testCsvFiles;
 
-    describe('json2csv Async/Await Usage', () => {
+    describe('json2csv Usage', () => {
         describe('Default Options', () => {
             beforeEach(() => {
                 options = utils.deepCopy(defaultOptions);
@@ -24,134 +24,134 @@ export function runTests() {
                 csvTestData = utils.deepCopy(testCsvFiles);
             });
 
-            it('should convert an empty array to an empty csv', async () => {
-                const csv = await json2csv(jsonTestData.noData);
+            it('should convert an empty array to an empty csv', () => {
+                const csv = json2csv(jsonTestData.noData);
                 assert.equal(csv, csvTestData.noData);
             });
 
-            it('should convert a single document to csv', async () => {
-                const csv = await json2csv(jsonTestData.singleDocument);
+            it('should convert a single document to csv', () => {
+                const csv = json2csv(jsonTestData.singleDocument);
                 assert.equal(csv, csvTestData.singleDocument);
             });
 
-            it('should convert objects with arrays to csv correctly', async () => {
-                const csv = await json2csv(jsonTestData.array);
+            it('should convert objects with arrays to csv correctly', () => {
+                const csv = json2csv(jsonTestData.array);
                 assert.equal(csv, csvTestData.array);
             });
 
-            it('should convert objects with dates to csv correctly', async () => {
-                const csv = await json2csv([jsonTestData.date]);
+            it('should convert objects with dates to csv correctly', () => {
+                const csv = json2csv([jsonTestData.date]);
                 assert.equal(csv, csvTestData.date);
             });
 
-            it('should convert objects with null to csv correctly', async () => {
-                const csv = await json2csv(jsonTestData.null);
+            it('should convert objects with null to csv correctly', () => {
+                const csv = json2csv(jsonTestData.null);
                 assert.equal(csv, csvTestData.null);
             });
 
-            it('should convert objects with undefined to csv correctly', async () => {
+            it('should convert objects with undefined to csv correctly', () => {
                 // Force the value to be set to undefined
                 jsonTestData.undefined.colorPreference = undefined;
 
-                const csv = await json2csv([jsonTestData.undefined]);
+                const csv = json2csv([jsonTestData.undefined]);
                 assert.equal(csv, csvTestData.undefined);
             });
 
-            it('should convert nested json documents to csv', async () => {
-                const csv = await json2csv(jsonTestData.nested);
+            it('should convert nested json documents to csv', () => {
+                const csv = json2csv(jsonTestData.nested);
                 assert.equal(csv, csvTestData.nested);
             });
 
-            it('should convert nested json documents with missing fields to csv', async () => {
-                const csv = await json2csv(jsonTestData.nestedMissingField);
+            it('should convert nested json documents with missing fields to csv', () => {
+                const csv = json2csv(jsonTestData.nestedMissingField);
                 assert.equal(csv, csvTestData.nestedMissingField);
             });
 
-            it('should convert a document with fields containing commas to csv', async () => {
-                const csv = await json2csv(jsonTestData.comma);
+            it('should convert a document with fields containing commas to csv', () => {
+                const csv = json2csv(jsonTestData.comma);
                 assert.equal(csv, csvTestData.comma);
             });
 
-            it('should convert a document with fields containing quotes to csv', async () => {
-                const csv = await json2csv(jsonTestData.quotes);
+            it('should convert a document with fields containing quotes to csv', () => {
+                const csv = json2csv(jsonTestData.quotes);
                 assert.equal(csv, csvTestData.quotes);
             });
 
-            it('should convert a document with fields containing quotes and commas to csv', async () => {
-                const csv = await json2csv(jsonTestData.quotesAndCommas);
+            it('should convert a document with fields containing quotes and commas to csv', () => {
+                const csv = json2csv(jsonTestData.quotesAndCommas);
                 assert.equal(csv, csvTestData.quotesAndCommas);
             });
 
-            it('should convert a document with fields containing an assortment of values to csv', async () => {
-                const csv = await json2csv(jsonTestData.assortedValues);
+            it('should convert a document with fields containing an assortment of values to csv', () => {
+                const csv = json2csv(jsonTestData.assortedValues);
                 assert.equal(csv, csvTestData.assortedValues);
             });
 
-            it('should convert a document with fields containing eol characters to csv', async () => {
-                const csv = await json2csv(jsonTestData.eol);
+            it('should convert a document with fields containing eol characters to csv', () => {
+                const csv = json2csv(jsonTestData.eol);
                 assert.equal(csv, csvTestData.eol);
             });
 
-            it('should properly convert the cases involving an empty field value in the csv', async () => {
-                const csv = await json2csv(jsonTestData.csvEmptyLastValue);
+            it('should properly convert the cases involving an empty field value in the csv', () => {
+                const csv = json2csv(jsonTestData.csvEmptyLastValue);
                 assert.equal(csv, csvTestData.csvEmptyLastValue);
             });
 
-            it('should properly handle headers with the same name as native Map methods', async () => {
-                const csv = await json2csv(jsonTestData.nativeMapMethod);
+            it('should properly handle headers with the same name as native Map methods', () => {
+                const csv = json2csv(jsonTestData.nativeMapMethod);
                 assert.equal(csv, csvTestData.nativeMapMethod);
             });
 
             // Test case for #184
-            it('should properly handle keys with nested dots in them', async () => {
-                const csv = await json2csv(jsonTestData.nestedDotKeys);
+            it('should properly handle keys with nested dots in them', () => {
+                const csv = json2csv(jsonTestData.nestedDotKeys);
                 assert.equal(csv, csvTestData.nestedDotKeys);
             });
 
             // Test case for #184
-            it('should properly handle keys with nested dots in them even when they appear in array fields', async () => {
-                const csv = await json2csv(jsonTestData.nestedDotKeysWithArray);
+            it('should properly handle keys with nested dots in them even when they appear in array fields', () => {
+                const csv = json2csv(jsonTestData.nestedDotKeysWithArray);
                 assert.equal(csv, csvTestData.nestedDotKeysWithArray);
             });
 
             // Test case for #230
-            it('should properly handle falsy values in documents', async () => {
-                const csv = await json2csv(jsonTestData.falsyValues);
+            it('should properly handle falsy values in documents', () => {
+                const csv = json2csv(jsonTestData.falsyValues);
                 assert.equal(csv, csvTestData.falsyValues);
             });
         });
 
         describe('Error Handling', () => {
-            it('should throw an error when the provided data is of the wrong type', async () => {
+            it('should throw an error when the provided data is of the wrong type', () => {
                 try {
-                    await json2csv(undefined as any);
+                    json2csv(undefined as any);
                     throw testFailureError;
                 } catch (error) {
                     assert.equal(error instanceof Error ? error.message : '', `${constants.errors.json2csv.cannotCallOn} undefined.`);
                 }
             });
 
-            it('should throw an error about not having been passed data - null', async () => {
+            it('should throw an error about not having been passed data - null', () => {
                 try {
-                    await json2csv(null as any);
+                    json2csv(null as any);
                     throw testFailureError;
                 } catch (error) {
                     assert.equal(error instanceof Error ? error.message : '', `${constants.errors.json2csv.cannotCallOn} null.`);
                 }
             });
 
-            it('should throw an error about not having been passed data - undefined', async () => {
+            it('should throw an error about not having been passed data - undefined', () => {
                 try {
-                    await json2csv(undefined as any);
+                    json2csv(undefined as any);
                     throw testFailureError;
                 } catch (error) {
                     assert.equal(error instanceof Error ? error.message : '', `${constants.errors.json2csv.cannotCallOn} undefined.`);
                 }
             });
 
-            it('should throw an error if the documents do not have the same schema', async () => {
+            it('should throw an error if the documents do not have the same schema', () => {
                 try {
-                    await json2csv(jsonTestData.nestedMissingField, {
+                    json2csv(jsonTestData.nestedMissingField, {
                         checkSchemaDifferences: true
                     });
                     throw testFailureError;
@@ -192,106 +192,106 @@ export function runTests() {
                 csvTestData = utils.deepCopy(testCsvFiles);
             });
 
-            it('should use the provided field delimiter and still convert to json', async () => {
+            it('should use the provided field delimiter and still convert to json', () => {
                 const testFieldDelimiter = '/',
                     replacementRegex = new RegExp(options.delimiter.field, 'g'),
                     testCsv = csvTestData.nested.replace(replacementRegex, testFieldDelimiter);
 
-                const csv = await json2csv(jsonTestData.nested, {
+                const csv = json2csv(jsonTestData.nested, {
                     delimiter: { field: testFieldDelimiter }
                 });
                 assert.equal(csv, testCsv);
             });
 
-            it('should use the provided wrap delimiter and still convert to json', async () => {
+            it('should use the provided wrap delimiter and still convert to json', () => {
                 const testWrapDelimiter = '\'',
                     replacementRegex = new RegExp(options.delimiter.wrap, 'g'),
                     testCsv = csvTestData.comma.replace(replacementRegex, testWrapDelimiter);
 
-                const csv = await json2csv(jsonTestData.comma, {
+                const csv = json2csv(jsonTestData.comma, {
                     delimiter: { wrap: testWrapDelimiter }
                 });
                 assert.equal(csv, testCsv);
             });
 
-            it('should use the provided end of line delimiter and still convert to json', async () => {
+            it('should use the provided end of line delimiter and still convert to json', () => {
                 const testEolDelimiter = '\r\n',
                     replacementRegex = new RegExp(options.delimiter.eol, 'g'),
                     testCsv = csvTestData.comma.replace(replacementRegex, testEolDelimiter);
 
-                const csv = await json2csv(jsonTestData.comma, {
+                const csv = json2csv(jsonTestData.comma, {
                     delimiter: { eol: testEolDelimiter }
                 });
                 assert.equal(csv, testCsv);
             });
 
-            it('should include an excel byte order mark character at the beginning of the csv', async () => {
-                const csv = await json2csv(jsonTestData.assortedValues, {
+            it('should include an excel byte order mark character at the beginning of the csv', () => {
+                const csv = json2csv(jsonTestData.assortedValues, {
                     excelBOM: true
                 });
                 assert.equal(csv, csvTestData.excelBOM);
             });
 
-            it('should not prepend a header if it the options indicate not to add one to the csv', async () => {
-                const csv = await json2csv(jsonTestData.assortedValues, {
+            it('should not prepend a header if it the options indicate not to add one to the csv', () => {
+                const csv = json2csv(jsonTestData.assortedValues, {
                     prependHeader: false
                 });
                 assert.equal(csv, csvTestData.noHeader);
             });
 
-            it('should sort the header in the csv', async () => {
-                const csv = await json2csv(jsonTestData.assortedValues, {
+            it('should sort the header in the csv', () => {
+                const csv = json2csv(jsonTestData.assortedValues, {
                     sortHeader: true
                 });
                 assert.equal(csv, csvTestData.sortedHeader);
             });
 
-            it('should sort the header with a custom function in the csv', async () => {
-                const csv = await json2csv(jsonTestData.assortedValues, {
+            it('should sort the header with a custom function in the csv', () => {
+                const csv = json2csv(jsonTestData.assortedValues, {
                     sortHeader: (a, b) => b.localeCompare(a)
                 });
                 assert.equal(csv, csvTestData.sortedHeaderCustom);
             });
 
-            it('should trim the header fields when specified', async () => {
-                const csv = await json2csv(jsonTestData.trimHeader, {
+            it('should trim the header fields when specified', () => {
+                const csv = json2csv(jsonTestData.trimHeader, {
                     trimHeaderFields: true
                 });
                 assert.equal(csv, csvTestData.trimmedHeader);
             });
 
-            it('should trim the field values when specified', async () => {
-                const csv = await json2csv(jsonTestData.trimFields, {
+            it('should trim the field values when specified', () => {
+                const csv = json2csv(jsonTestData.trimFields, {
                     trimFieldValues: true
                 });
                 assert.equal(csv, csvTestData.trimmedFields);
             });
 
-            it('should check schema differences when specified - no data', async () => {
-                const csv = await json2csv(jsonTestData.noData, {
+            it('should check schema differences when specified - no data', () => {
+                const csv = json2csv(jsonTestData.noData, {
                     checkSchemaDifferences: true
                 });
                 assert.equal(csv, csvTestData.noData);
             });
 
-            it('should check schema differences when specified - same schema', async () => {
-                const csv = await json2csv(jsonTestData.quotesAndCommas, {
+            it('should check schema differences when specified - same schema', () => {
+                const csv = json2csv(jsonTestData.quotesAndCommas, {
                     checkSchemaDifferences: true
                 });
                 assert.equal(csv, csvTestData.quotesAndCommas);
             });
 
-            it('should use the specified keys, if provided', async () => {
-                const csv = await json2csv(jsonTestData.assortedValues, {
+            it('should use the specified keys, if provided', () => {
+                const csv = json2csv(jsonTestData.assortedValues, {
                     keys: ['arrayOfStrings', 'object.subField']
                 });
                 assert.equal(csv, csvTestData.specifiedKeys);
             });
 
-            it('should use the specified empty field value, if provided', async () => {
+            it('should use the specified empty field value, if provided', () => {
                 jsonTestData.emptyFieldValues[0].number = undefined;
-                    
-                const csv = await json2csv(jsonTestData.emptyFieldValues, {
+
+                const csv = json2csv(jsonTestData.emptyFieldValues, {
                     emptyFieldValue: ''
                 });
 
@@ -304,8 +304,8 @@ export function runTests() {
                 assert.equal(csv, expectedCsv);
             });
 
-            it('should expand array objects when specified - without objects', async () => {
-                const csv = await json2csv(jsonTestData.array, {
+            it('should expand array objects when specified - without objects', () => {
+                const csv = json2csv(jsonTestData.array, {
                     expandArrayObjects: true
                 });
                 const expectedCsv = csvTestData.array
@@ -314,76 +314,76 @@ export function runTests() {
                 assert.equal(csv, expectedCsv);
             });
 
-            it('should expand array objects when specified - with an object containing an empty array', async () => {
+            it('should expand array objects when specified - with an object containing an empty array', () => {
                 // Change the features array to be empty
                 jsonTestData.arrayObjects[1].features = [];
-                const csv = await json2csv(jsonTestData.arrayObjects, {
+                const csv = json2csv(jsonTestData.arrayObjects, {
                     expandArrayObjects: true
                 });
                 assert.equal(csv, csvTestData.arrayObjects.replace('testing', ''));
             });
 
-            it('should expand array objects when specified - with objects containing an array of objects', async () => {
-                const csv = await json2csv(jsonTestData.arrayMixedObjNonObj, {
+            it('should expand array objects when specified - with objects containing an array of objects', () => {
+                const csv = json2csv(jsonTestData.arrayMixedObjNonObj, {
                     expandArrayObjects: true
                 });
                 assert.equal(csv, csvTestData.arrayMixedObjNonObj);
             });
 
-            it('should expand array objects when specified - with objects containing an array of objects', async () => {
-                const csv = await json2csv(jsonTestData.arrayObjects, {
+            it('should expand array objects when specified - with objects containing an array of objects', () => {
+                const csv = json2csv(jsonTestData.arrayObjects, {
                     expandArrayObjects: true
                 });
                 assert.equal(csv, csvTestData.arrayObjects);
             });
 
-            it('should handle unwinding empty array values when specified', async () => {
-                const csv = await json2csv(jsonTestData.unwindEmptyArray, {
+            it('should handle unwinding empty array values when specified', () => {
+                const csv = json2csv(jsonTestData.unwindEmptyArray, {
                     unwindArrays: true
                 });
                 assert.equal(csv, csvTestData.unwindEmptyArray);
             });
 
-            it('should unwind array values when specified', async () => {
-                const csv = await json2csv(jsonTestData.unwind, {
+            it('should unwind array values when specified', () => {
+                const csv = json2csv(jsonTestData.unwind, {
                     unwindArrays: true
                 });
                 assert.equal(csv, csvTestData.unwind);
             });
 
-            it('should unwind nested array values when the earlier array has a length of 1', async () => {
-                const csv = await json2csv(jsonTestData.arraySingleArray, {
+            it('should unwind nested array values when the earlier array has a length of 1', () => {
+                const csv = json2csv(jsonTestData.arraySingleArray, {
                     unwindArrays: true
                 });
                 assert.equal(csv, csvTestData.arraySingleArray);
             });
 
-            it('should unwind array values when specified - with keys specified', async () => {
-                const csv = await json2csv(jsonTestData.unwind, {
+            it('should unwind array values when specified - with keys specified', () => {
+                const csv = json2csv(jsonTestData.unwind, {
                     unwindArrays: true,
                     keys: ['data.category', 'data.options.name']
                 });
                 assert.equal(csv, csvTestData.unwindWithSpecifiedKeys);
             });
 
-            it('should use the locale format when specified', async () => {
-                const csv = await json2csv(jsonTestData.localeFormat, { 
+            it('should use the locale format when specified', () => {
+                const csv = json2csv(jsonTestData.localeFormat, {
                     useLocaleFormat: true,
                     unwindArrays: true
                 });
                 assert.equal(csv, csvTestData.localeFormat);
             });
 
-            it('should convert objects with dates to iso8601 format correctly', async () => {
+            it('should convert objects with dates to iso8601 format correctly', () => {
                 // Convert to a date since the `dob` value is imported as a string by default for some reason
                 jsonTestData.date.dob = new Date('1990-01-01T05:00:00.000Z');
 
-                const csv = await json2csv([jsonTestData.date], { useDateIso8601Format: true });
+                const csv = json2csv([jsonTestData.date], { useDateIso8601Format: true });
                 assert.equal(csv, csvTestData.date);
             });
 
-            it('should allow keys to be specified without titles', async () => {
-                const csv = await json2csv(jsonTestData.unwind, {
+            it('should allow keys to be specified without titles', () => {
+                const csv = json2csv(jsonTestData.unwind, {
                     unwindArrays: true,
                     keys: [
                         {field: 'data.category'},
@@ -393,8 +393,8 @@ export function runTests() {
                 assert.equal(csv, csvTestData.unwindWithSpecifiedKeys);
             });
 
-            it('should allow titles to be specified for certain keys, but not others when not unwinding arrays', async () => {
-                const csv = await json2csv(jsonTestData.unwind, {
+            it('should allow titles to be specified for certain keys, but not others when not unwinding arrays', () => {
+                const csv = json2csv(jsonTestData.unwind, {
                     unwindArrays: false,
                     keys: [
                         {field: 'data.category', title: 'Category'},
@@ -404,8 +404,8 @@ export function runTests() {
                 assert.equal(csv, csvTestData.withSpecifiedKeys.replace('data.category,data.options.name', 'Category,data.options.name'));
             });
 
-            it('should allow titles to be specified for certain keys, but not others', async () => {
-                const csv = await json2csv(jsonTestData.unwind, {
+            it('should allow titles to be specified for certain keys, but not others', () => {
+                const csv = json2csv(jsonTestData.unwind, {
                     unwindArrays: true,
                     keys: [
                         {field: 'data.category', title: 'Category'},
@@ -415,8 +415,8 @@ export function runTests() {
                 assert.equal(csv, csvTestData.unwindWithSpecifiedKeys.replace('data.category,data.options.name', 'Category,data.options.name'));
             });
 
-            it('should allow titles to be specified', async () => {
-                const csv = await json2csv(jsonTestData.unwind, {
+            it('should allow titles to be specified', () => {
+                const csv = json2csv(jsonTestData.unwind, {
                     unwindArrays: false,
                     keys: [
                         {field: 'data.category', title: 'Category'},
@@ -426,8 +426,8 @@ export function runTests() {
                 assert.equal(csv, csvTestData.withSpecifiedKeys.replace('data.category,data.options.name', 'Category,Option Name'));
             });
 
-            it('should allow titles to be specified when not unwinding arrays', async () => {
-                const csv = await json2csv(jsonTestData.unwind, {
+            it('should allow titles to be specified when not unwinding arrays', () => {
+                const csv = json2csv(jsonTestData.unwind, {
                     unwindArrays: true,
                     keys: [
                         {field: 'data.category', title: 'Category'},
@@ -437,13 +437,13 @@ export function runTests() {
                 assert.equal(csv, csvTestData.unwindWithSpecifiedKeys.replace('data.category,data.options.name', 'Category,Option Name'));
             });
 
-            it('should exclude specified keys from the output', async () => {
+            it('should exclude specified keys from the output', () => {
                 // Change the features array to be empty
                 const updatedCsvPerOptions = csvTestData.arrayObjects.replace('features.cons,', '')
                     .replace('"[""cost"",""time""]",', '')
                     .replace(',,,', ',,');
 
-                const csv = await json2csv(jsonTestData.arrayObjects, {
+                const csv = json2csv(jsonTestData.arrayObjects, {
                     expandArrayObjects: true,
                     keys: ['name', 'features.name', 'features.pros', 'features.cons', 'downloads'],
                     excludeKeys: ['features.cons']
@@ -451,7 +451,7 @@ export function runTests() {
                 assert.equal(csv, updatedCsvPerOptions);
             });
 
-            it('should exclude specified keys from the output when unwinding arrays', async () => {
+            it('should exclude specified keys from the output when unwinding arrays', () => {
                 const updatedCsv = csvTestData.unwind.replace(',data.options.name', '')
                     .replace(/,MacBook (Pro|Air) \d+/g, '')
                     .replace(/,(Super|Turbo)charger/g, '')
@@ -459,47 +459,47 @@ export function runTests() {
                     .replace('5cf7ca3616c91100018844af,Computers\n', '')
                     .replace('5cf7ca3616c91100018844bf,Cars\n', '');
 
-                const csv = await json2csv(jsonTestData.unwind, {
+                const csv = json2csv(jsonTestData.unwind, {
                     unwindArrays: true,
                     excludeKeys: ['data.options.name', 'data.options']
                 });
                 assert.equal(csv, updatedCsv);
             });
 
-            it('should exclude specified deeply nested key from the output when unwinding arrays', async () => {
+            it('should exclude specified deeply nested key from the output when unwinding arrays', () => {
                 const updatedCsv = csvTestData.unwind.replace(',data.options.name', '')
                     .replace(/,MacBook (Pro|Air) \d+/g, '')
                     .replace(/,(Super|Turbo)charger/g, '');
 
-                const csv = await json2csv(jsonTestData.unwind, {
+                const csv = json2csv(jsonTestData.unwind, {
                     unwindArrays: true,
                     excludeKeys: ['data.options.name']
                 });
                 assert.equal(csv, updatedCsv);
             });
 
-            it('should use a custom value parser function when provided', async () => {
+            it('should use a custom value parser function when provided', () => {
                 const updatedCsv = csvTestData.trimmedFields.split('\n');
                 const textRow = 'Parsed Value,Parsed Value,Parsed Value,Parsed Value,Parsed Value';
                 updatedCsv[1] = textRow;
                 updatedCsv[2] = textRow;
                 const expectedCsv = updatedCsv.join('\n');
 
-                const csv = await json2csv(jsonTestData.trimmedFields, {
+                const csv = json2csv(jsonTestData.trimmedFields, {
                     parseValue: () => 'Parsed Value'
                 });
                 assert.equal(csv, expectedCsv);
             });
 
-            it('should pass the default value parser to custom value parser function when provided', async () => {
-                const csv = await json2csv(jsonTestData.trimmedFields, {
+            it('should pass the default value parser to custom value parser function when provided', () => {
+                const csv = json2csv(jsonTestData.trimmedFields, {
                     parseValue: (fieldValue, defaultParser) => defaultParser(fieldValue)
                 });
                 assert.equal(csv, csvTestData.trimmedFields);
             });
 
-            it('should wrap boolean values in wrap delimiters, if specified', async () => {
-                const csv = await json2csv(jsonTestData.emptyFieldValues, {
+            it('should wrap boolean values in wrap delimiters, if specified', () => {
+                const csv = json2csv(jsonTestData.emptyFieldValues, {
                     emptyFieldValue: '',
                     wrapBooleans: true
                 });
@@ -510,83 +510,83 @@ export function runTests() {
                     .replace(/\n"",/g, '\n,')
                     .replace(/false/g, '"false"')
                     .replace(/true/g, '"true"');
-    
+
                 assert.equal(csv, expectedCsv);
             });
 
             // Test cases for https://github.com/mrodrig/json-2-csv/issues/209
-            it('should left trim equals (=) if preventCsvInjection is specified', async () => {
-                const csv = await json2csv([{name: '=Bob'}], {
+            it('should left trim equals (=) if preventCsvInjection is specified', () => {
+                const csv = json2csv([{name: '=Bob'}], {
                     preventCsvInjection: true
                 });
-    
+
                 const expectedCsv = 'name\nBob';
-    
+
                 assert.equal(csv, expectedCsv);
             });
 
-            it('should left trim plus (+) if preventCsvInjection is specified', async () => {
-                const csv = await json2csv([{name: '+Bob'}], {
+            it('should left trim plus (+) if preventCsvInjection is specified', () => {
+                const csv = json2csv([{name: '+Bob'}], {
                     preventCsvInjection: true
                 });
-    
+
                 const expectedCsv = 'name\nBob';
-    
+
                 assert.equal(csv, expectedCsv);
             });
 
-            it('should left trim minus (-) if preventCsvInjection is specified', async () => {
-                const csv = await json2csv([{name: '-Bob'}], {
+            it('should left trim minus (-) if preventCsvInjection is specified', () => {
+                const csv = json2csv([{name: '-Bob'}], {
                     preventCsvInjection: true
                 });
-    
+
                 const expectedCsv = 'name\nBob';
-    
+
                 assert.equal(csv, expectedCsv);
             });
 
-            it('should left trim at (@) if preventCsvInjection is specified', async () => {
-                const csv = await json2csv([{name: '@Bob'}], {
+            it('should left trim at (@) if preventCsvInjection is specified', () => {
+                const csv = json2csv([{name: '@Bob'}], {
                     preventCsvInjection: true
                 });
-    
+
                 const expectedCsv = 'name\nBob';
-    
+
                 assert.equal(csv, expectedCsv);
             });
 
-            it('should left trim tab (0x09) if preventCsvInjection is specified', async () => {
-                const csv = await json2csv([{name: String.fromCharCode(9) + 'Bob'}], {
+            it('should left trim tab (0x09) if preventCsvInjection is specified', () => {
+                const csv = json2csv([{name: String.fromCharCode(9) + 'Bob'}], {
                     preventCsvInjection: true
                 });
-    
+
                 const expectedCsv = 'name\nBob';
-    
+
                 assert.equal(csv, expectedCsv);
             });
 
-            it('should left trim carriage return (0x0D) if preventCsvInjection is specified', async () => {
-                const csv = await json2csv([{name: String.fromCharCode(13) + 'Bob'}], {
+            it('should left trim carriage return (0x0D) if preventCsvInjection is specified', () => {
+                const csv = json2csv([{name: String.fromCharCode(13) + 'Bob'}], {
                     preventCsvInjection: true
                 });
-    
+
                 const expectedCsv = 'name\nBob';
-    
+
                 assert.equal(csv, expectedCsv);
             });
 
-            it('should left trim a combination of csv injection characters if preventCsvInjection is specified', async () => {
-                const csv = await json2csv([{name: String.fromCharCode(9) + String.fromCharCode(13) + '=+-@Bob'}], {
+            it('should left trim a combination of csv injection characters if preventCsvInjection is specified', () => {
+                const csv = json2csv([{name: String.fromCharCode(9) + String.fromCharCode(13) + '=+-@Bob'}], {
                     preventCsvInjection: true
                 });
-    
+
                 const expectedCsv = 'name\nBob';
-    
+
                 assert.equal(csv, expectedCsv);
             });
 
-            it('should not alter numbers by removing minus (-) even if preventCsvInjection is specified', async () => {
-                const csv = await json2csv([{temperature: -10}], {
+            it('should not alter numbers by removing minus (-) even if preventCsvInjection is specified', () => {
+                const csv = json2csv([{temperature: -10}], {
                     preventCsvInjection: true
                 });
 
@@ -595,9 +595,9 @@ export function runTests() {
                 assert.equal(csv, expectedCsv);
             });
 
-            it('should not left trim a combination of csv injection characters if preventCsvInjection is not specified', async () => {
+            it('should not left trim a combination of csv injection characters if preventCsvInjection is not specified', () => {
                 const originalValue = String.fromCharCode(9) + String.fromCharCode(13) + '=+-@Bob';
-                const csv = await json2csv([{name: originalValue}], {});
+                const csv = json2csv([{name: originalValue}], {});
 
                 const expectedCsv = `name\n"${originalValue}"`;
 
@@ -605,8 +605,8 @@ export function runTests() {
             });
 
             // Test case for #184
-            it('should handle keys with nested dots when expanding and unwinding arrays', async () => {
-                const csv = await json2csv(jsonTestData.nestedDotKeysWithArrayExpandedUnwound, {
+            it('should handle keys with nested dots when expanding and unwinding arrays', () => {
+                const csv = json2csv(jsonTestData.nestedDotKeysWithArrayExpandedUnwound, {
                     expandArrayObjects: true,
                     unwindArrays: true
                 });
@@ -617,8 +617,8 @@ export function runTests() {
                 assert.equal(csv, expectedCsv);
             });
 
-            it('should respect the expandNestedObjects option being set to false', async () => {
-                const csv = await json2csv(jsonTestData.nested, {
+            it('should respect the expandNestedObjects option being set to false', () => {
+                const csv = json2csv(jsonTestData.nested, {
                     expandNestedObjects: false,
                 });
 
@@ -642,40 +642,42 @@ export function runTests() {
              * sent to the catch block.
              */
 
-            it('should still work with an empty array', async () => {
-                return json2csv(jsonTestData.noData)
-                    .then((csv) => {
-                        assert.equal(csv, csvTestData.noData);
-                    });
+            it('should still work with an empty array', () => {
+                const csv = json2csv(jsonTestData.noData);
+
+                assert.equal(csv, csvTestData.noData);
             });
 
-            it('should still work with an array of documents', async () => {
-                return json2csv(jsonTestData.array)
-                    .then((csv) => {
-                        assert.equal(csv, csvTestData.array);
-                    });
+            it('should still work with an array of documents', () => {
+                const csv = json2csv(jsonTestData.array);
+
+                assert.equal(csv, csvTestData.array);
             });
         });
 
         describe('Error Handling', () => {
-            it('should throw an error about not having been passed data', async () => {
-                return json2csv(undefined as any)
-                    .then(() => {
-                        throw testFailureError;
-                    })
-                    .catch((err) => {
-                        assert.equal(err.message, `${constants.errors.json2csv.cannotCallOn} undefined.`);
-                    });
+            it('should throw an error about not having been passed data', () => {
+                try {
+                    json2csv(undefined as any);
+                } catch (error) {
+                    assert.equal((error as Error).message, `${constants.errors.json2csv.cannotCallOn} undefined.`);
+
+                    return;
+                }
+
+                throw testFailureError;
             });
 
-            it('should throw an error about not having been passed data - null', async () => {
-                return json2csv(null as any)
-                    .then(() => {
-                        throw testFailureError;
-                    })
-                    .catch((err) => {
-                        assert.equal(err.message, `${constants.errors.json2csv.cannotCallOn} null.`);
-                    });
+            it('should throw an error about not having been passed data - null', () => {
+                try {
+                    json2csv(null as any);
+                } catch (error) {
+                    assert.equal((error as Error).message, `${constants.errors.json2csv.cannotCallOn} null.`);
+
+                    return;
+                }
+
+                throw testFailureError;
             });
         });
     });
