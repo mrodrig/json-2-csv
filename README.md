@@ -41,7 +41,6 @@ or
 ```javascript
 import { json2csv } from 'json-2-csv';
 ```
-Looking for examples? Check out the Wiki: [json-2-csv Wiki](https://github.com/mrodrig/json-2-csv/wiki)
 
 ### API
 
@@ -165,8 +164,6 @@ Returns the CSV `string` or rejects with an `Error` if there was an issue.
     * Default: `false`
 
 
-For examples, please refer to the [json2csv API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/json2csv-Documentation)
-
 #### `csv2json(csv, options)` => object[]
 
 Returns the JSON object array (`object[]`) or rejects with an `Error` if there was an issue.
@@ -196,8 +193,6 @@ Returns the JSON object array (`object[]`) or rejects with an `Error` if there w
     * Default: `false`
   * `trimFieldValues` - Boolean - Should the field values be trimmed? 
     * Default: `false`
-
-For examples, please refer to the [csv2json API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/csv2json-Documentation)
 
 ### CLI
 Note: As of `3.5.8`, the command line interface functionality has been pulled out to a separate package. Please be sure to
@@ -257,9 +252,6 @@ To see test coverage, please run:
 ```bash
 $ npm run coverage
 ```
-
-## Frequently Asked Questions (FAQ)
-Please find the updated list (relocated to the Wiki) here: [Frequently Asked Questions (Link)](https://github.com/mrodrig/json-2-csv/wiki/FAQ)
 
 ## Features
 * Header Generation (per document keys)
