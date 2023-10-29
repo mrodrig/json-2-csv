@@ -154,7 +154,21 @@ export const Csv2Json = function(options: FullCsv2JsonOptions) {
                 stateVariables.startIndex = index + eolDelimiterLength;
                 stateVariables.parsingValue = true;
                 stateVariables.insideWrapDelimiter = charAfter === options.delimiter.wrap;
-            } else if ((charBefore !== options.delimiter.wrap || stateVariables.justParsedDoubleQuote && charBefore === options.delimiter.wrap) &&
+            } else if (character === options.delimiter.wrap && charBefore === options.delimiter.field &&
+                !stateVariables.insideWrapDelimiter && !stateVariables.parsingValue) {
+                // If we reached a wrap delimiter after a comma and we aren't inside a wrap delimiter
+
+                stateVariables.startIndex = index;
+                stateVariables.insideWrapDelimiter = true;
+                stateVariables.parsingValue = true;
+
+                // If the next character(s) are an EOL delimiter, then skip them so we don't parse what we've seen as another value
+                if (utils.getNCharacters(csv, index + 1, eolDelimiterLength) === options.delimiter.eol) {
+                    index += options.delimiter.eol.length + 1; // Skip past EOL
+                }
+            }
+            
+            else if ((charBefore !== options.delimiter.wrap || stateVariables.justParsedDoubleQuote && charBefore === options.delimiter.wrap) &&
                 character === options.delimiter.wrap && utils.getNCharacters(csv, index + 1, eolDelimiterLength) === options.delimiter.eol) {
                 // If we reach a wrap which is not preceded by a wrap delim and the next character is an EOL delim (ie. *"\n)
 
@@ -174,13 +188,6 @@ export const Csv2Json = function(options: FullCsv2JsonOptions) {
                 stateVariables.startIndex = index + 2; // next value starts after the field delimiter
                 stateVariables.insideWrapDelimiter = false;
                 stateVariables.parsingValue = false;
-            } else if (character === options.delimiter.wrap && charBefore === options.delimiter.field &&
-                !stateVariables.insideWrapDelimiter && !stateVariables.parsingValue) {
-                // If we reached a wrap delimiter after a comma and we aren't inside a wrap delimiter
-
-                stateVariables.startIndex = index;
-                stateVariables.insideWrapDelimiter = true;
-                stateVariables.parsingValue = true;
             } else if (character === options.delimiter.wrap && charBefore === options.delimiter.field &&
                 !stateVariables.insideWrapDelimiter && stateVariables.parsingValue) {
                 // If we reached a wrap delimiter with a field delimiter after it (ie. ,"*)
