@@ -29,7 +29,7 @@ $ npm install @mrodrig/json-2-csv-cli
 
 ## Upgrading?
 
-Upgrading to v4 from v3? Check out the [upgrade guide](https://github.com/mrodrig/json-2-csv/blob/master/upgrade_guides/UPGRADE_3_to_4.md).
+Upgrading to v5 from v4? Check out the [upgrade guide](https://github.com/mrodrig/json-2-csv/blob/master/upgrade_guides/UPGRADE_4_to_5.md).
 
 ## Usage
 
@@ -45,9 +45,9 @@ Looking for examples? Check out the Wiki: [json-2-csv Wiki](https://github.com/m
 
 ### API
 
-#### `json2csv(array, options)` => `Promise<string>`
+#### `json2csv(array, options)` => `string`
 
-Returns a `Promise` that resolves with the CSV `string` or rejects with an `Error` if there was an issue.
+Returns the CSV `string` or rejects with an `Error` if there was an issue.
 
 * `array` - An array of JSON documents to be converted to CSV.
 * `options` - (Optional) A JSON document specifying any of the following key value pairs:
@@ -167,9 +167,9 @@ Returns a `Promise` that resolves with the CSV `string` or rejects with an `Erro
 
 For examples, please refer to the [json2csv API Documentation (Link)](https://github.com/mrodrig/json-2-csv/wiki/json2csv-Documentation)
 
-#### `csv2json(csv, options)` => Promise<object[]>
+#### `csv2json(csv, options)` => object[]
 
-Returns a `Promise` that resolves with the JSON object array (`object[]`) or rejects with an `Error` if there was an issue.
+Returns the JSON object array (`object[]`) or rejects with an `Error` if there was an issue.
 
 * `csv` - A string of CSV
 * `options` - (Optional) A JSON document specifying any of the following key value pairs:
@@ -272,7 +272,6 @@ Please find the updated list (relocated to the Wiki) here: [Frequently Asked Que
 * Allows for custom field delimiters, end of line delimiters, etc.
 * Wrapped value support for json2csv and csv2json (as of 1.3.0)
 * Support for multiple different schemas (as of 1.4.0)
-* Promisified versions of the functions are now available by default: json2csvAsync, csv2jsonAsync (as of 2.2.0)
 * RFC 4180 Compliance (as of 3.0.0)
 * CLI functionality (as of 3.0.0)
 	* `csv2json test.csv -o output.json`
@@ -280,3 +279,4 @@ Please find the updated list (relocated to the Wiki) here: [Frequently Asked Que
 	* `json2csv test.json -o output.csv -W -k arrayOfStrings -o output.csv`
 * Empty field value option (as of 3.1.0)
 * TypeScript typings included (as of 3.4.0) - thanks to [@GabrielCastro](https://github.com/GabrielCastro)!
+* Synchronous use case support (as of 5.0.0) - thanks to [@Nokel81](https://github.com/Nokel81)
