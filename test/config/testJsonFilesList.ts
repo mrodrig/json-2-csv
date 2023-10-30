@@ -41,5 +41,6 @@ export default {
     nestedDotKeysWithArrayExpandedUnwound: require('../data/json/nestedDotKeysWithArrayExpandedUnwound.json'),
     emptyColumns: require('../data/json/emptyColumns.json'),
     quotedFieldWithNewline: require('../data/json/quotedFieldWithNewline.json'),
-    falsyValues: require('../data/json/falsyValues.json')
+    falsyValues: require('../data/json/falsyValues.json'),
+    newlineWithWrapDelimiters: require('../data/json/newlineWithWrapDelimiters'),
 };

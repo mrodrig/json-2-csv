@@ -49,6 +49,7 @@ const csvFileConfig = [
     {key: 'quotedFieldWithNewline', file: '../data/csv/quotedFieldWithNewline.csv'},
     {key: 'falsyValues', file: '../data/csv/falsyValues.csv'},
     {key: 'nestedNotUnwoundObjects', file: '../data/csv/nestedNotUnwoundObjects.csv'},
+    {key: 'newlineWithWrapDelimiters', file: '../data/csv/newlineWithWrapDelimiters.csv'},
 ];
 
 function readCsvFile(filePath: string) {
