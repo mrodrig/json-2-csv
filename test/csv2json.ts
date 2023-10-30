@@ -376,6 +376,12 @@ export function runTests() {
                 });
                 assert.deepEqual(json, expectedJson);
             });
+
+            // Test case for issue #240
+            it('should handle newline characters properly when inside of a field delimiter', () => {
+                const json = csv2json(csvTestData.newlineWithWrapDelimiters);
+                assert.deepEqual(json, jsonTestData.newlineWithWrapDelimiters);
+            });
         });
     });
 
