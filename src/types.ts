@@ -99,6 +99,12 @@ export interface Json2CsvOptions extends SharedConverterOptions {
   emptyFieldValue?: unknown;
 
   /**
+   * Should dots (`.`) appearing in header keys be escaped with a preceding slash (`\`)?
+   * @default true
+   */
+  escapeHeaderNestedDots?: boolean;
+
+  /**
    *  Should nested objects be deep-converted to CSV
    *  @default true
    */
