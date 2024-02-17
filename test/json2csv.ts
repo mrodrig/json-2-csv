@@ -478,6 +478,41 @@ export function runTests() {
                 assert.equal(csv, updatedCsv);
             });
 
+            // Test case for #244
+            it('should exclude a matched key prefix from the output when unwinding arrays', () => {
+                const updatedCsv = csvTestData.unwind.replace(',data.options.name', '')
+                    .replace(/,MacBook (Pro|Air) \d+/g, '')
+                    .replace(/,(Super|Turbo)charger/g, '')
+                    .replace('5cf7ca3616c91100018844af,Computers\n', '')
+                    // Remove duplicate lines
+                    .replace('5cf7ca3616c91100018844bf,Cars\n', '');
+
+                const csv = json2csv(jsonTestData.unwind, {
+                    unwindArrays: true,
+                    expandArrayObjects: true,
+                    excludeKeys: ['data.options']
+                });
+
+                assert.equal(csv, updatedCsv);
+            });
+
+            // Test case for #244
+            it('should exclude a matched key prefix from the output when unwinding arrays', () => {
+                const updatedCsv = csvTestData.unwind.replace(',data.category,data.options.name', '')
+                    .replace(/,Computers,MacBook (Pro|Air) \d+/g, '')
+                    .replace(/,Cars,(Super|Turbo)charger/g, '')
+                    .replace('5cf7ca3616c91100018844af\n', '')
+                    // Remove duplicate lines
+                    .replace('5cf7ca3616c91100018844bf\n', '');
+
+                const csv = json2csv(jsonTestData.unwind, {
+                    unwindArrays: true,
+                    excludeKeys: ['data']
+                });
+
+                assert.equal(csv, updatedCsv);
+            });
+
             it('should use a custom value parser function when provided', () => {
                 const updatedCsv = csvTestData.trimmedFields.split('\n');
                 const textRow = 'Parsed Value,Parsed Value,Parsed Value,Parsed Value,Parsed Value';
