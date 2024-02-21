@@ -218,3 +218,14 @@ export function isInvalid(parsedJson: unknown) {
     return parsedJson === Infinity ||
         parsedJson === -Infinity;
 }
+
+/**
+ * Helper function that checks if the provided regex matches any of the provided strings
+ */
+export function anyKeysMatch(keys: string[], regex: RegExp) {
+    for (const key of keys) {
+        if (key.match(regex))
+            return key;
+    }
+    return false;
+}

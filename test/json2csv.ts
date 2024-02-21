@@ -394,6 +394,7 @@ export function runTests() {
             });
 
             it('should allow titles to be specified for certain keys, but not others when not unwinding arrays', () => {
+                console.log('START EXEC----');
                 const csv = json2csv(jsonTestData.unwind, {
                     unwindArrays: false,
                     keys: [
@@ -401,6 +402,7 @@ export function runTests() {
                         'data.options.name'
                     ]
                 });
+                console.log('END EXEC----');
                 assert.equal(csv, csvTestData.withSpecifiedKeys.replace('data.category,data.options.name', 'Category,data.options.name'));
             });
 
@@ -416,6 +418,8 @@ export function runTests() {
             });
 
             it('should allow titles to be specified', () => {
+                console.log('START EXEC----');
+
                 const csv = json2csv(jsonTestData.unwind, {
                     unwindArrays: false,
                     keys: [
@@ -423,6 +427,7 @@ export function runTests() {
                         {field: 'data.options.name', title: 'Option Name'}
                     ]
                 });
+                console.log('END EXEC----');
                 assert.equal(csv, csvTestData.withSpecifiedKeys.replace('data.category,data.options.name', 'Category,Option Name'));
             });
 
