@@ -513,6 +513,16 @@ export function runTests() {
                 assert.equal(csv, updatedCsv);
             });
 
+            // Test case for #244
+            it('should exclude a matched key prefix, but not if it is not at the start of the key path', () => {
+                const csv = json2csv(jsonTestData.excludeKeyPattern, {
+                    expandArrayObjects: true,
+                    excludeKeys: ['arr']
+                });
+
+                assert.equal(csv, csvTestData.excludeKeyPattern);
+            });
+
             it('should use a custom value parser function when provided', () => {
                 const updatedCsv = csvTestData.trimmedFields.split('\n');
                 const textRow = 'Parsed Value,Parsed Value,Parsed Value,Parsed Value,Parsed Value';
