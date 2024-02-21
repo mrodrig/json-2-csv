@@ -50,6 +50,7 @@ const csvFileConfig = [
     {key: 'falsyValues', file: '../data/csv/falsyValues.csv'},
     {key: 'nestedNotUnwoundObjects', file: '../data/csv/nestedNotUnwoundObjects.csv'},
     {key: 'newlineWithWrapDelimiters', file: '../data/csv/newlineWithWrapDelimiters.csv'},
+    {key: 'excludeKeyPattern', file: '../data/csv/excludeKeyPattern.csv'},
 ];
 
 function readCsvFile(filePath: string) {

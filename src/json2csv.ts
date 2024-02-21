@@ -82,7 +82,15 @@ export const Json2Csv = function(options: FullJson2CsvOptions) {
     function filterExcludedKeys(keyPaths: string[]) {
         if (options.excludeKeys) {
             return keyPaths.filter((keyPath) => {
-                return !options.excludeKeys.includes(keyPath);
+                for (const excludedKey of options.excludeKeys) {
+                    // Only match if the excludedKey appears at the beginning of the string so we don't accidentally match a key farther down in a key path
+                    const regex = new RegExp(`^${excludedKey}`);
+
+                    if (excludedKey === keyPath || keyPath.match(regex)) {
+                        return false; // Exclude the key
+                    }
+                }
+                return true; // Otherwise, include the key
             });
         }
 

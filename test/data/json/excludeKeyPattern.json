@@ -1,0 +1,24 @@
+[
+    {
+        "id": 1,
+        "arr": [
+            {
+                "name": "foo"
+            }
+        ],
+        "name": {
+            "arr": "this should appear"
+        }
+    },
+    {
+        "id": 2,
+        "arr": [
+            {
+                "name": "bar"
+            }
+        ],
+        "name": {
+            "arr": "this should also appear"
+        }
+    }
+]

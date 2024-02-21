@@ -63,7 +63,7 @@ Returns the CSV `string` or rejects with an `Error` if there was an issue.
   * `emptyFieldValue` - Any - Value that, if specified, will be substituted in for field values that are `undefined`, `null`, or an empty string.
     * Default: none
   * `excelBOM` - Boolean - Should a unicode character be prepended to allow Excel to open a UTF-8 encoded file with non-ASCII characters present.
-  * `excludeKeys` - Array - Specify the keys that should be excluded from the output.
+  * `excludeKeys` - Array - Specify the keys that should be excluded from the output. Provided keys will also be used as a RegExp to help exclude keys under a specified prefix, such as all keys of Objects in an Array when `expandArrayObjects` is `true`.
     * Default: `[]`
     * Note: When used with `unwindArrays`, arrays present at excluded key paths will not be unwound.
   * `expandNestedObjects` - Boolean - Should nested objects be deep-converted to CSV?

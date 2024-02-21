@@ -43,4 +43,5 @@ export default {
     quotedFieldWithNewline: require('../data/json/quotedFieldWithNewline.json'),
     falsyValues: require('../data/json/falsyValues.json'),
     newlineWithWrapDelimiters: require('../data/json/newlineWithWrapDelimiters'),
+    excludeKeyPattern: require('../data/json/excludeKeyPattern'),
 };
