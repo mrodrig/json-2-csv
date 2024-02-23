@@ -62,6 +62,27 @@ Returns the CSV `string` or rejects with an `Error` if there was an issue.
       * Default: `\n`
   * `emptyFieldValue` - Any - Value that, if specified, will be substituted in for field values that are `undefined`, `null`, or an empty string.
     * Default: none
+  * `escapeHeaderNestedDots` - Boolean - Should nested dots in header keys be escaped?
+    * Default: `true`
+    * Example:
+    ```json
+    [
+      {
+        "a.a": "1"
+      }
+    ]
+    ```
+      * `true` will generate the following CSV:
+      ```csv
+      a\.a
+      1
+      ```
+      * `false` will generate the following CSV:
+      ```csv
+      a.a
+      1
+      ```
+    * Note: This may result in CSV output that does not map back exactly to the original JSON.
   * `excelBOM` - Boolean - Should a unicode character be prepended to allow Excel to open a UTF-8 encoded file with non-ASCII characters present.
   * `excludeKeys` - Array - Specify the keys that should be excluded from the output. Provided keys will also be used as a RegExp to help exclude keys under a specified prefix, such as all keys of Objects in an Array when `expandArrayObjects` is `true`.
     * Default: `[]`
