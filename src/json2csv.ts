@@ -15,7 +15,7 @@ export const Json2Csv = function(options: FullJson2CsvOptions) {
             expandNestedObjects: options.expandNestedObjects,
             expandArrayObjects: expandingWithoutUnwinding,
             ignoreEmptyArraysWhenExpanding: expandingWithoutUnwinding,
-            escapeNestedDots: true
+            escapeNestedDots: true,
         };
 
     /** HEADER FIELD FUNCTIONS **/
@@ -144,7 +144,16 @@ export const Json2Csv = function(options: FullJson2CsvOptions) {
 
         params.header = params.headerFields
             .map(function(field) {
-                const headerKey = fieldTitleMapKeys.includes(field) ? options.fieldTitleMap[field] : field;
+                let headerKey = field;
+
+                // If a custom field title was provided for this field, use that
+                if (fieldTitleMapKeys.includes(field)) {
+                    headerKey = options.fieldTitleMap[field];
+                } else if (!options.escapeHeaderNestedDots) { 
+                    // Otherwise, if the user doesn't want nested dots in keys to be escaped, then unescape them
+                    headerKey = headerKey.replace(/\\\./g, '.');
+                }
+
                 return wrapFieldValueIfNecessary(headerKey);
             })
             .join(options.delimiter.field);

@@ -25,6 +25,7 @@ export const defaultJson2CsvOptions: DefaultJson2CsvOptions = {
         eol   : '\n'
     },
     emptyFieldValue: undefined,
+    escapeHeaderNestedDots: true,
     excelBOM: false,
     excludeKeys: [],
     expandNestedObjects: true,

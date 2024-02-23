@@ -523,6 +523,18 @@ export function runTests() {
                 assert.equal(csv, csvTestData.excludeKeyPattern);
             });
 
+            // Test case for #245
+            it('should not escape nested dots in keys with nested dots in them if turned on via the option', () => {
+                const csv = json2csv(jsonTestData.nestedDotKeys, { escapeHeaderNestedDots: true }); // Default option value
+                assert.equal(csv, csvTestData.nestedDotKeys);
+            });
+
+            // Test case for #245
+            it('should not escape nested dots in keys with nested dots in them if turned off via the option', () => {
+                const csv = json2csv(jsonTestData.nestedDotKeys, { escapeHeaderNestedDots: false });
+                assert.equal(csv, csvTestData.nestedDotKeys.replace(/\\\./g, '.'));
+            });
+
             it('should use a custom value parser function when provided', () => {
                 const updatedCsv = csvTestData.trimmedFields.split('\n');
                 const textRow = 'Parsed Value,Parsed Value,Parsed Value,Parsed Value,Parsed Value';
