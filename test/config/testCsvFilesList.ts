@@ -51,6 +51,7 @@ const csvFileConfig = [
     {key: 'nestedNotUnwoundObjects', file: '../data/csv/nestedNotUnwoundObjects.csv'},
     {key: 'newlineWithWrapDelimiters', file: '../data/csv/newlineWithWrapDelimiters.csv'},
     {key: 'excludeKeyPattern', file: '../data/csv/excludeKeyPattern.csv'},
+    {key: 'wildcardMatch', file: '../data/csv/wildcardMatch.csv'},
 ];
 
 function readCsvFile(filePath: string) {

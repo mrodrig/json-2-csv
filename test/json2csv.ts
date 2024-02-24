@@ -540,6 +540,44 @@ export function runTests() {
                 assert.equal(csv, csvTestData.nestedDotKeys.replace(/\\\./g, '.'));
             });
 
+            // Test case for #247
+            it('should not escape nested dots in keys with nested dots in them if turned off via the option', () => {
+                const csv = json2csv(jsonTestData.wildcardMatch, {
+                    keys: ['foo', 'bar', 'baz.a', 'baz.array'],
+                });
+                assert.equal(csv, csvTestData.wildcardMatch);
+            });
+
+            // Test case for #247
+            it('should not escape nested dots in keys with nested dots in them if turned off via the option', () => {
+                const csv = json2csv(jsonTestData.wildcardMatch, {
+                    keys: ['foo', 'bar', { field: 'baz.a', wildcardMatch: true }],
+                });
+                assert.equal(csv, csvTestData.wildcardMatch);
+            });
+
+            // Test case for #247
+            it('should not escape nested dots in keys with nested dots in them if turned off via the option', () => {
+                const updatedCsv = csvTestData.wildcardMatch.replace('baz.a,baz.array', 'baz.a,baz.b,baz.array')
+                    .replace('a,c', 'a,b,c');
+                
+                const csv = json2csv(jsonTestData.wildcardMatch, {
+                    keys: ['foo', 'bar', { field: 'baz', wildcardMatch: true }],
+                });
+                assert.equal(csv, updatedCsv);
+            });
+
+            // Test case for #247
+            it('should not escape nested dots in keys with nested dots in them if turned off via the option', () => {
+                const updatedCsv = csvTestData.wildcardMatch.replace('foo,bar,baz.a,baz.array', 'foo,baz.a,baz.array,bar')
+                    .replace('foo,bar,a,c', 'foo,a,c,bar');
+                
+                const csv = json2csv(jsonTestData.wildcardMatch, {
+                    keys: ['foo', { field: 'baz.a', wildcardMatch: true }, 'bar'],
+                });
+                assert.equal(csv, updatedCsv);
+            });
+
             it('should use a custom value parser function when provided', () => {
                 const updatedCsv = csvTestData.trimmedFields.split('\n');
                 const textRow = 'Parsed Value,Parsed Value,Parsed Value,Parsed Value,Parsed Value';
