@@ -12,6 +12,7 @@ interface DelimiterOptions {
 export type KeysList = (string | {
   field: string;
   title?: string;
+  wildcardMatch?: boolean;
 })[];
 
 interface SharedConverterOptions {

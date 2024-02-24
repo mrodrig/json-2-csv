@@ -172,26 +172,60 @@ export const Json2Csv = function(options: FullJson2CsvOptions) {
         });
     }
 
+    function extractWildcardMatchKeys() {
+        if (!options.keys) return [];
+
+        return options.keys.flatMap(item => {
+            if (typeof item === 'string') {
+                // Exclude plain strings that were passed in options.keys
+                return [];
+            } else if (item?.wildcardMatch) {
+                // Return "field" value for objects with wildcardMatch: true
+                return item.field;
+            } 
+            // Exclude other objects
+            return [];
+        });
+    }
+
     /**
      * Retrieve the headings for all documents and return it.
      * This checks that all documents have the same schema.
      */
     function retrieveHeaderFields(data: object[]) {
+        const wildcardMatchKeys = extractWildcardMatchKeys();
         const keyStrings = convertKeysToHeaderFields();
+        const fieldNames = getFieldNameList(data);
+        const processed = processSchemas(fieldNames);
 
         if (options.keys) {
             options.keys = keyStrings;
+            
+            const matchedKeys = keyStrings.flatMap((userProvidedKey) => {
+                // If this is not a wildcard matched key, then just return and include it in the resulting key list
+                if (!wildcardMatchKeys.includes(userProvidedKey)) {
+                    return userProvidedKey;
+                }
+
+                // Otherwise, identify all detected keys that match with the provided wildcard key:
+                const matches = [];
+                const regex = new RegExp(`^${userProvidedKey}`);
+
+                for (const detectedKey of processed) {
+                    if (userProvidedKey === detectedKey || detectedKey.match(regex)) {
+                        matches.push(detectedKey);
+                    }
+                }
+                return matches;
+            });
 
             if (!options.unwindArrays) {
-                const filtered = filterExcludedKeys(keyStrings);
-
+                const filtered = filterExcludedKeys(matchedKeys);
 
                 return sortHeaderFields(filtered);
             }
         }
 
-        const fieldNames = getFieldNameList(data);
-        const processed = processSchemas(fieldNames);
         const filtered = filterExcludedKeys(processed);
 
         return sortHeaderFields(filtered);

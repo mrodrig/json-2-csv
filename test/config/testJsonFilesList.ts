@@ -44,4 +44,5 @@ export default {
     falsyValues: require('../data/json/falsyValues.json'),
     newlineWithWrapDelimiters: require('../data/json/newlineWithWrapDelimiters'),
     excludeKeyPattern: require('../data/json/excludeKeyPattern'),
+    wildcardMatch: require('../data/json/wildcardMatch.json'),
 };

@@ -128,9 +128,19 @@ Returns the CSV `string` or rejects with an `Error` if there was an issue.
     * Note: This may result in CSV output that does not map back exactly to the original JSON. See #102 for more information.
   * `keys` - Array - Specify the keys that should be converted.
     * Default: These will be auto-detected from your data by default.
-    * Keys can either be specified as a String representing the key path that should be converted, or as an Object with the `field` property specifying the path. When specifying keys as an Object, you can also optionally specify a `title` which will be used for that column in the header. The list specified can contain a combination of Objects and Strings. 
-      * `[ 'key1', 'key2', ... ]`
-      * `[ { field: 'key1', title: 'Key 1' }, { field: 'key2' }, 'key3', ... ]`
+    * Keys can either be specified as a String representing the key path that should be converted, or as an Object of the following format:
+    ```javascript
+    {
+      "field": "string", // required
+      "title": "string", // optional
+      "wildcardMatch": false, // optional - default: false
+    }
+    ```
+      * When specifying keys as an Object, the `field` property specifies the key path, while `title` specifies a more human readable field heading. Additionally, the `wildcardMatch` option allows you to optionally specify that all auto-detected fields with the specified field prefix should be included in the CSV. The list specified can contain a combination of Objects and Strings.
+      * Examples:
+        * `[ 'key1', 'key2', ... ]`
+        * `[ 'key1', { field: 'key2', wildcardMatch: true }]`
+        * `[ { field: 'key1', title: 'Key 1' }, { field: 'key2' }, 'key3', ... ]`
     * Key Paths - If you are converting a nested object (ie. {info : {name: 'Mike'}}), then set this to ['info.name']
   * `parseValue` - Function - Specify how values should be converted into CSV format. This function is provided a single field value at a time and must return a `String`. The built-in parsing method is provided as the second argument for cases where default parsing is preferred.
     * Default: A built-in method is used to parse out a variety of different value types to well-known formats.
