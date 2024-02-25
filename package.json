@@ -39,8 +39,8 @@
         "cli"
     ],
     "dependencies": {
-        "deeks": "3.0.2",
-        "doc-path": "4.0.2"
+        "deeks": "3.1.0",
+        "doc-path": "4.1.0"
     },
     "devDependencies": {
         "@types/mocha": "10.0.1",
