@@ -45,4 +45,5 @@ export default {
     newlineWithWrapDelimiters: require('../data/json/newlineWithWrapDelimiters'),
     excludeKeyPattern: require('../data/json/excludeKeyPattern'),
     wildcardMatch: require('../data/json/wildcardMatch.json'),
+    arrayIndexesAsKeys: require('../data/json/arrayIndexesAsKeys.json'),
 };

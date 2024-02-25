@@ -1,0 +1,30 @@
+[
+    {
+        "test": {
+            "list": [
+                {
+                    "a": 1,
+                    "optionA": "ac"
+                },
+                {
+                    "a": 2,
+                    "optionB": "radio"
+                }
+            ]
+        }
+    },
+    {
+        "test": {
+            "list": [
+                {
+                    "a": 3,
+                    "optionA": "cd"
+                },
+                {
+                    "a": 4,
+                    "optionB": "heat"
+                }
+            ]
+        }
+    }
+]

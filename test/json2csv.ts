@@ -578,6 +578,14 @@ export function runTests() {
                 assert.equal(csv, updatedCsv);
             });
 
+            // Test case for #207
+            it('should include the array indexes in CSV key headers if specified via the option', () => {
+                const csv = json2csv(jsonTestData.arrayIndexesAsKeys, {
+                    arrayIndexesAsKeys: true,
+                });
+                assert.equal(csv, csvTestData.arrayIndexesAsKeys);
+            });
+
             it('should use a custom value parser function when provided', () => {
                 const updatedCsv = csvTestData.trimmedFields.split('\n');
                 const textRow = 'Parsed Value,Parsed Value,Parsed Value,Parsed Value,Parsed Value';
