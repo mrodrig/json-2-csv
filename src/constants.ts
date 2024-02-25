@@ -18,6 +18,7 @@ export const errors = {
 };
 
 export const defaultJson2CsvOptions: DefaultJson2CsvOptions = {
+    arrayIndexesAsKeys: false,
     checkSchemaDifferences: false,
     delimiter : {
         field : ',',

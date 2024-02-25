@@ -12,6 +12,7 @@ export const Json2Csv = function(options: FullJson2CsvOptions) {
         customValueParser = options.parseValue && typeof options.parseValue === 'function' ? options.parseValue : null,
         expandingWithoutUnwinding = options.expandArrayObjects && !options.unwindArrays,
         deeksOptions = {
+            arrayIndexesAsKeys: options.arrayIndexesAsKeys,
             expandNestedObjects: options.expandNestedObjects,
             expandArrayObjects: expandingWithoutUnwinding,
             ignoreEmptyArraysWhenExpanding: expandingWithoutUnwinding,

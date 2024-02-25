@@ -87,6 +87,11 @@ export interface Csv2JsonOptions extends Omit<SharedConverterOptions, 'keys'> {
 }
   
 export interface Json2CsvOptions extends SharedConverterOptions {
+  /** Should array indexes be included in the generated keys?
+   * @default false
+   */
+  arrayIndexesAsKeys?: boolean;
+
   /**
    * Should all documents have the same schema?
    * @default false
