@@ -50,6 +50,9 @@ Returns the CSV `string` or rejects with an `Error` if there was an issue.
 
 * `array` - An array of JSON documents to be converted to CSV.
 * `options` - (Optional) A JSON document specifying any of the following key value pairs:
+  * `arrayIndexesAsKeys` - Boolean - Should array indexes be included in the generated keys?
+    * Default: `false`
+    * Note: This provides a more accurate representation of the JSON in the returned CSV, but may be less human readable. See [#207](https://github.com/mrodrig/json-2-csv/issues/207) for more details.
   * `checkSchemaDifferences` - Boolean - Should all documents have the same schema?
     * Default: `false`
     * Note: An error will be thrown if some documents have differing schemas when this is set to `true`.

@@ -52,6 +52,7 @@ const csvFileConfig = [
     {key: 'newlineWithWrapDelimiters', file: '../data/csv/newlineWithWrapDelimiters.csv'},
     {key: 'excludeKeyPattern', file: '../data/csv/excludeKeyPattern.csv'},
     {key: 'wildcardMatch', file: '../data/csv/wildcardMatch.csv'},
+    {key: 'arrayIndexesAsKeys', file: '../data/csv/arrayIndexesAsKeys.csv'},
 ];
 
 function readCsvFile(filePath: string) {
