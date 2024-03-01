@@ -1,7 +1,8 @@
 'use strict';
 
 import { evaluatePath } from 'doc-path';
-import { deepKeysFromList } from 'deeks';
+import { deepKeysFromList } from '../../deeks/src/deeks';
+//console.log('dont forget to fix import above');
 import { excelBOM, errors } from './constants';
 import * as utils from './utils';
 import type { FullJson2CsvOptions, Json2CsvParams } from './types';
@@ -252,6 +253,7 @@ export const Json2Csv = function(options: FullJson2CsvOptions) {
             });
 
             const headerFields = retrieveHeaderFields(params.records);
+            console.log('HEADER FIELDS---------', headerFields);
             params.headerFields = headerFields;
 
             // If we were able to unwind more arrays, then try unwinding again...
