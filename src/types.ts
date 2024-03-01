@@ -155,7 +155,7 @@ export interface Json2CsvOptions extends SharedConverterOptions {
   /**
    * Specify the keys that should be excluded from the output.
    */
-  excludeKeys?: string[];
+  excludeKeys?: (string | RegExp)[];
 
   /**
    * Specify how values should be converted into CSV format. This function is provided a single field value at a time and must return a `String`.

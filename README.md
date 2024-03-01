@@ -87,7 +87,7 @@ Returns the CSV `string` or rejects with an `Error` if there was an issue.
       ```
     * Note: This may result in CSV output that does not map back exactly to the original JSON.
   * `excelBOM` - Boolean - Should a unicode character be prepended to allow Excel to open a UTF-8 encoded file with non-ASCII characters present.
-  * `excludeKeys` - Array - Specify the keys that should be excluded from the output. Provided keys will also be used as a RegExp to help exclude keys under a specified prefix, such as all keys of Objects in an Array when `expandArrayObjects` is `true`.
+  * `excludeKeys` - Array - Specify the `string` keys or `RegExp` patterns that should be excluded from the output. Provided `string` keys will also be used as a RegExp to help exclude keys under a specified prefix, such as all keys of Objects in an Array when `expandArrayObjects` is `true` (e.g., providing `'baz'` will exclude `'baz.a'` too).
     * Default: `[]`
     * Note: When used with `unwindArrays`, arrays present at excluded key paths will not be unwound.
   * `expandNestedObjects` - Boolean - Should nested objects be deep-converted to CSV?

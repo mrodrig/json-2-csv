@@ -578,6 +578,26 @@ export function runTests() {
                 assert.equal(csv, updatedCsv);
             });
 
+            // Test case for #252
+            it('should exclude a single key that matches a provided excludeKeys RegExp', () => {
+                const updatedCsv = csvTestData.wildcardMatch.replace(',baz.array', ',baz.b').replace(',c', ',b');
+
+                const csv = json2csv(jsonTestData.wildcardMatch, {
+                    excludeKeys: [/array/],
+                });
+                assert.equal(csv, updatedCsv);
+            });
+
+            // Test case for #252
+            it('should exclude multiple keys that match a provided excludeKeys RegExp', () => {
+                const updatedCsv = csvTestData.wildcardMatch.replace(',baz.a,baz.array', '').replace(',a,c', '');
+
+                const csv = json2csv(jsonTestData.wildcardMatch, {
+                    excludeKeys: [/baz/],
+                });
+                assert.equal(csv, updatedCsv);
+            });
+
             // Test case for #207
             it('should include the array indexes in CSV key headers if specified via the option', () => {
                 const csv = json2csv(jsonTestData.arrayIndexesAsKeys, {
