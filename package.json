@@ -9,7 +9,7 @@
     "homepage": "https://mrodrig.github.io/json-2-csv",
     "repository": {
         "type": "git",
-        "url": "https://github.com/mrodrig/json-2-csv.git"
+        "url": "git+https://github.com/mrodrig/json-2-csv.git"
     },
     "bugs": {
         "url": "https://github.com/mrodrig/json-2-csv/issues"
