@@ -166,6 +166,12 @@ export function runTests() {
                 const json = csv2json(csvTestData.quotedFieldWithNewline);
                 assert.deepEqual(json, jsonTestData.quotedFieldWithNewline);
             });
+
+            // Test case for #254
+            it('should handle keys with ending dots', () => {
+                const json = csv2json(csvTestData.keyWithEndingDot);
+                assert.deepEqual(json, jsonTestData.keyWithEndingDot);
+            });
         });
 
         describe('Error Handling', () => {

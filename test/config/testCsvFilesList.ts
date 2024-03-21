@@ -53,6 +53,7 @@ const csvFileConfig = [
     {key: 'excludeKeyPattern', file: '../data/csv/excludeKeyPattern.csv'},
     {key: 'wildcardMatch', file: '../data/csv/wildcardMatch.csv'},
     {key: 'arrayIndexesAsKeys', file: '../data/csv/arrayIndexesAsKeys.csv'},
+    {key: 'keyWithEndingDot', file:'../data/csv/keyWithEndingDot.csv'},
 ];
 
 function readCsvFile(filePath: string) {
