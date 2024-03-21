@@ -46,4 +46,5 @@ export default {
     excludeKeyPattern: require('../data/json/excludeKeyPattern'),
     wildcardMatch: require('../data/json/wildcardMatch.json'),
     arrayIndexesAsKeys: require('../data/json/arrayIndexesAsKeys.json'),
+    keyWithEndingDot: require('../data/json/keyWithEndingDot.json'),
 };
