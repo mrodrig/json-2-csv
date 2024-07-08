@@ -311,7 +311,7 @@ export const Csv2Json = function(options: FullCsv2JsonOptions) {
         // If the field starts and ends with a wrap delimiter
         if (firstChar === options.delimiter.wrap && lastChar === options.delimiter.wrap) {
             // Handle the case where the field is just a pair of wrap delimiters 
-            return fieldValue.length <= 2 ? "" : fieldValue.substring(1, lastIndex);
+            return fieldValue.length <= 2 ? '' : fieldValue.substring(1, lastIndex);
         }
         return fieldValue;
     }
