@@ -52,7 +52,6 @@ export const defaultCsv2JsonOptions: DefaultCsv2JsonOptions = {
     preventCsvInjection: false,
     trimFieldValues : false,
     trimHeaderFields: false,
-    wrapBooleans: false,
 };
 
 export const excelBOM = '\ufeff';
