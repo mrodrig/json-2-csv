@@ -114,7 +114,7 @@ export const Csv2Json = function(options: FullCsv2JsonOptions) {
                     splitLine.push('');
                 } else {
                     // Otherwise, there's a valid value, and the start index isn't the current index, grab the whole value
-                    splitLine.push(csv.substr(stateVariables.startIndex));
+                    splitLine.push(csv.substring(stateVariables.startIndex));
                 }
 
                 // Since the last character is a comma, there's still an additional implied field value trailing the comma.
@@ -310,7 +310,8 @@ export const Csv2Json = function(options: FullCsv2JsonOptions) {
             lastChar = fieldValue[lastIndex];
         // If the field starts and ends with a wrap delimiter
         if (firstChar === options.delimiter.wrap && lastChar === options.delimiter.wrap) {
-            return fieldValue.substr(1, lastIndex - 1);
+            // Handle the case where the field is just a pair of wrap delimiters 
+            return fieldValue.length <= 2 ? '' : fieldValue.substring(1, lastIndex);
         }
         return fieldValue;
     }
