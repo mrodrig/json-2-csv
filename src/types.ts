@@ -187,7 +187,7 @@ export interface DefaultCsv2JsonOptions extends
   Pick<Csv2JsonOptions, 'headerFields'>,
   Pick<Csv2JsonOptions, 'parseValue'>,
   // Then extend the types with required fields and specific fields omitted:
-  Omit<Omit<Omit<BuiltCsv2JsonOptions, 'keys'>, 'headerFields'>, 'parseValue'> {}
+  Omit<Omit<Omit<Omit<BuiltCsv2JsonOptions, 'wrapBooleans'>, 'keys'>, 'headerFields'>, 'parseValue'> {}
 
 export interface FullJson2CsvOptions extends DefaultJson2CsvOptions {
   /**
