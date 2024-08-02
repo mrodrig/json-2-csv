@@ -77,6 +77,11 @@ export function runTests() {
                 assert.equal(csv, csvTestData.quotes);
             });
 
+            it('should convert a document with header containing quotes to csv', () => {
+                const csv = json2csv(jsonTestData.quotesHeader);
+                assert.equal(csv, csvTestData.quotesHeader);
+            });
+
             it('should convert a document with fields containing quotes and commas to csv', () => {
                 const csv = json2csv(jsonTestData.quotesAndCommas);
                 assert.equal(csv, csvTestData.quotesAndCommas);
