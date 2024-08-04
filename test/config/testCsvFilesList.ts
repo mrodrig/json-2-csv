@@ -15,6 +15,7 @@ const csvFileConfig = [
     {key: 'nestedMissingField', file: '../data/csv/nestedMissingField.csv'},
     {key: 'comma', file: '../data/csv/comma.csv'},
     {key: 'quotes', file: '../data/csv/quotes.csv'},
+    {key: 'quotesHeader', file: '../data/csv/quotesHeader.csv'},
     {key: 'quotesAndCommas', file: '../data/csv/quotesAndCommas.csv'},
     {key: 'eol', file: '../data/csv/eol.csv'},
     {key: 'assortedValues', file: '../data/csv/assortedValues.csv'},

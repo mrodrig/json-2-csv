@@ -16,6 +16,7 @@ export default {
     nestedMissingField: require('../data/json/nestedMissingField'),
     comma: require('../data/json/comma'),
     quotes: require('../data/json/quotes'),
+    quotesHeader: require('../data/json/quotesHeader'),
     quotesAndCommas: require('../data/json/quotesAndCommas'),
     eol: require('../data/json/eol'),
     assortedValues: require('../data/json/assortedValues'),

@@ -155,7 +155,7 @@ export const Json2Csv = function(options: FullJson2CsvOptions) {
                     headerKey = headerKey.replace(/\\\./g, '.');
                 }
 
-                return wrapFieldValueIfNecessary(headerKey);
+                return headerKey;
             })
             .join(options.delimiter.field);
         return params;

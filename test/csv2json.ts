@@ -76,6 +76,11 @@ export function runTests() {
                 assert.deepEqual(json, jsonTestData.quotes);
             });
 
+            it('should convert csv containing a header with quotes to json', () => {
+                const json = csv2json(csvTestData.quotesHeader);
+                assert.deepEqual(json, jsonTestData.quotesHeader);
+            });
+
             it('should convert csv containing quotes and commas to json', () => {
                 const json = csv2json(csvTestData.quotesAndCommas);
                 assert.deepEqual(json, jsonTestData.quotesAndCommas);
