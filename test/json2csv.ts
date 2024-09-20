@@ -293,6 +293,13 @@ export function runTests() {
                 assert.equal(csv, csvTestData.specifiedKeys);
             });
 
+            it('should only contain a header when given an empty array and the keys option is provided', () => {
+                const csv = json2csv(jsonTestData.noData, {
+                    keys: ['arrayOfStrings', 'object.subField']
+                });
+                assert.equal(csv, csvTestData.specifiedKeysNoData);
+            });
+
             it('should use the specified empty field value, if provided', () => {
                 jsonTestData.emptyFieldValues[0].number = undefined;
 
