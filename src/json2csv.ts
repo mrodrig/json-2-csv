@@ -457,7 +457,7 @@ export const Json2Csv = function(options: FullJson2CsvOptions) {
      */
     function convert(data: object[]) {
         // Single document, not an array
-        if (utils.isObject(data) && !data.length) {
+        if (!Array.isArray(data)) {
             data = [data]; // Convert to an array of the given document
         }
 
