@@ -6,7 +6,7 @@ import { excelBOM, errors } from './constants';
 import * as utils from './utils';
 import type { FullJson2CsvOptions, Json2CsvParams } from './types';
 
-export const Json2Csv = function(options: FullJson2CsvOptions) {
+export const Json2Csv = function (options: FullJson2CsvOptions) {
     const wrapDelimiterCheckRegex = new RegExp(options.delimiter.wrap, 'g'),
         crlfSearchRegex = /\r?\n|\r/,
         customValueParser = options.parseValue && typeof options.parseValue === 'function' ? options.parseValue : null,
@@ -58,8 +58,8 @@ export const Json2Csv = function(options: FullJson2CsvOptions) {
     function checkSchemaDifferences(documentSchemas: string[][]) {
         // have multiple documents - ensure only one schema (regardless of field ordering)
         const firstDocSchema = documentSchemas[0],
-        restOfDocumentSchemas = documentSchemas.slice(1),
-        schemaDifferences = computeNumberOfSchemaDifferences(firstDocSchema, restOfDocumentSchemas);
+            restOfDocumentSchemas = documentSchemas.slice(1),
+            schemaDifferences = computeNumberOfSchemaDifferences(firstDocSchema, restOfDocumentSchemas);
 
         // If there are schema inconsistencies, throw a schema not the same error
         if (schemaDifferences) {
@@ -134,7 +134,7 @@ export const Json2Csv = function(options: FullJson2CsvOptions) {
     function wrapHeaderFields(params: Json2CsvParams) {
         // only perform this if we are actually prepending the header
         if (options.prependHeader) {
-            params.headerFields = params.headerFields.map(function(headingKey) {
+            params.headerFields = params.headerFields.map(function (headingKey) {
                 return wrapFieldValueIfNecessary(headingKey);
             });
         }
@@ -149,13 +149,13 @@ export const Json2Csv = function(options: FullJson2CsvOptions) {
         const fieldTitleMapKeys = Object.keys(options.fieldTitleMap);
 
         params.header = params.headerFields
-            .map(function(field) {
+            .map(function (field) {
                 let headerKey = field;
 
                 // If a custom field title was provided for this field, use that
                 if (fieldTitleMapKeys.includes(field)) {
                     headerKey = options.fieldTitleMap[field];
-                } else if (!options.escapeHeaderNestedDots) { 
+                } else if (!options.escapeHeaderNestedDots) {
                     // Otherwise, if the user doesn't want nested dots in keys to be escaped, then unescape them
                     headerKey = headerKey.replace(/\\\./g, '.');
                 }
@@ -188,7 +188,7 @@ export const Json2Csv = function(options: FullJson2CsvOptions) {
             } else if (item?.wildcardMatch) {
                 // Return "field" value for objects with wildcardMatch: true
                 return item.field;
-            } 
+            }
             // Exclude other objects
             return [];
         });
@@ -206,7 +206,7 @@ export const Json2Csv = function(options: FullJson2CsvOptions) {
 
         if (options.keys) {
             options.keys = keyStrings;
-            
+
             const matchedKeys = keyStrings.flatMap((userProvidedKey) => {
                 // If this is not a wildcard matched key, then just return and include it in the resulting key list
                 if (!wildcardMatchKeys.includes(userProvidedKey)) {
