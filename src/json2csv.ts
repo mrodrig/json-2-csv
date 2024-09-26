@@ -35,6 +35,11 @@ export const Json2Csv = function(options: FullJson2CsvOptions) {
      * list of field names.
      */
     function processSchemas(documentSchemas: string[][]) {
+        // If there are no document schemas then there is nothing to diff and no unqiue fields to get
+        if (documentSchemas.length === 0) {
+            return [];
+        }
+
         // If the user wants to check for the same schema (regardless of schema ordering)
         if (options.checkSchemaDifferences) {
             return checkSchemaDifferences(documentSchemas);
@@ -53,8 +58,8 @@ export const Json2Csv = function(options: FullJson2CsvOptions) {
     function checkSchemaDifferences(documentSchemas: string[][]) {
         // have multiple documents - ensure only one schema (regardless of field ordering)
         const firstDocSchema = documentSchemas[0],
-            restOfDocumentSchemas = documentSchemas.slice(1),
-            schemaDifferences = computeNumberOfSchemaDifferences(firstDocSchema, restOfDocumentSchemas);
+        restOfDocumentSchemas = documentSchemas.slice(1),
+        schemaDifferences = computeNumberOfSchemaDifferences(firstDocSchema, restOfDocumentSchemas);
 
         // If there are schema inconsistencies, throw a schema not the same error
         if (schemaDifferences) {
@@ -457,7 +462,7 @@ export const Json2Csv = function(options: FullJson2CsvOptions) {
      */
     function convert(data: object[]) {
         // Single document, not an array
-        if (utils.isObject(data) && !data.length) {
+        if (!Array.isArray(data)) {
             data = [data]; // Convert to an array of the given document
         }
 

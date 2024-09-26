@@ -25,6 +25,7 @@ const csvFileConfig = [
     {key: 'trimmedHeader', file: '../data/csv/trimmedHeader.csv'},
     {key: 'excelBOM', file: '../data/csv/excelBOM.csv'},
     {key: 'specifiedKeys', file: '../data/csv/specifiedKeys.csv'},
+    {key: 'specifiedKeysNoData', file: '../data/csv/specifiedKeysNoData.csv'},
     {key: 'extraLine', file: '../data/csv/extraLine.csv'},
     {key: 'noHeader', file: '../data/csv/noHeader.csv'},
     {key: 'sortedHeader', file: '../data/csv/sortedHeader.csv'},
