@@ -35,7 +35,7 @@ export const Json2Csv = function (options: FullJson2CsvOptions) {
      * list of field names.
      */
     function processSchemas(documentSchemas: string[][]) {
-        // If there are no document schemas then there is nothing to diff and no unqiue fields to get
+        // If there are no document schemas then there is nothing to diff and no unique fields to get
         if (documentSchemas.length === 0) {
             return [];
         }
