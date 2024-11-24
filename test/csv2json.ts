@@ -62,7 +62,7 @@ export function runTests() {
 
             it('should convert csv representing nested json with a missing field to the correct json structure', () => {
                 const json = csv2json(csvTestData.nestedMissingField);
-                jsonTestData.nestedMissingField[0].level1.level2.level3 = {level: null};
+                jsonTestData.nestedMissingField[0].level1.level2.level3 = { level: null };
                 assert.deepEqual(json, jsonTestData.nestedMissingField);
             });
 
@@ -176,6 +176,12 @@ export function runTests() {
             it('should handle keys with ending dots', () => {
                 const json = csv2json(csvTestData.keyWithEndingDot);
                 assert.deepEqual(json, jsonTestData.keyWithEndingDot);
+            });
+
+            // Test case for #265
+            it('should handle fields starting with an EOL delimiter', () => {
+                const json = csv2json(csvTestData.fieldEolAtStart);
+                assert.deepEqual(json, jsonTestData.fieldEolAtStart);
             });
         });
 
