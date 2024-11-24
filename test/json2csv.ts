@@ -398,7 +398,7 @@ export function runTests() {
                 const csv = json2csv(jsonTestData.unwind, {
                     unwindArrays: true,
                     keys: [
-                        {field: 'data.category'},
+                        { field: 'data.category' },
                         'data.options.name'
                     ]
                 });
@@ -406,15 +406,13 @@ export function runTests() {
             });
 
             it('should allow titles to be specified for certain keys, but not others when not unwinding arrays', () => {
-                console.log('START EXEC----');
                 const csv = json2csv(jsonTestData.unwind, {
                     unwindArrays: false,
                     keys: [
-                        {field: 'data.category', title: 'Category'},
+                        { field: 'data.category', title: 'Category' },
                         'data.options.name'
                     ]
                 });
-                console.log('END EXEC----');
                 assert.equal(csv, csvTestData.withSpecifiedKeys.replace('data.category,data.options.name', 'Category,data.options.name'));
             });
 
@@ -422,7 +420,7 @@ export function runTests() {
                 const csv = json2csv(jsonTestData.unwind, {
                     unwindArrays: true,
                     keys: [
-                        {field: 'data.category', title: 'Category'},
+                        { field: 'data.category', title: 'Category' },
                         'data.options.name'
                     ]
                 });
@@ -430,16 +428,14 @@ export function runTests() {
             });
 
             it('should allow titles to be specified', () => {
-                console.log('START EXEC----');
 
                 const csv = json2csv(jsonTestData.unwind, {
                     unwindArrays: false,
                     keys: [
-                        {field: 'data.category', title: 'Category'},
-                        {field: 'data.options.name', title: 'Option Name'}
+                        { field: 'data.category', title: 'Category' },
+                        { field: 'data.options.name', title: 'Option Name' }
                     ]
                 });
-                console.log('END EXEC----');
                 assert.equal(csv, csvTestData.withSpecifiedKeys.replace('data.category,data.options.name', 'Category,Option Name'));
             });
 
@@ -447,8 +443,8 @@ export function runTests() {
                 const csv = json2csv(jsonTestData.unwind, {
                     unwindArrays: true,
                     keys: [
-                        {field: 'data.category', title: 'Category'},
-                        {field: 'data.options.name', title: 'Option Name'}
+                        { field: 'data.category', title: 'Category' },
+                        { field: 'data.options.name', title: 'Option Name' }
                     ]
                 });
                 assert.equal(csv, csvTestData.unwindWithSpecifiedKeys.replace('data.category,data.options.name', 'Category,Option Name'));
@@ -472,7 +468,7 @@ export function runTests() {
                 const updatedCsv = csvTestData.unwind.replace(',data.options.name', '')
                     .replace(/,MacBook (Pro|Air) \d+/g, '')
                     .replace(/,(Super|Turbo)charger/g, '')
-                // De-duplicate the lines since the field isn't unwound due to being excluded
+                    // De-duplicate the lines since the field isn't unwound due to being excluded
                     .replace('5cf7ca3616c91100018844af,Computers\n', '')
                     .replace('5cf7ca3616c91100018844bf,Cars\n', '');
 
@@ -572,7 +568,7 @@ export function runTests() {
             it('should not escape nested dots in keys with nested dots in them if turned off via the option', () => {
                 const updatedCsv = csvTestData.wildcardMatch.replace('baz.a,baz.array', 'baz.a,baz.b,baz.array')
                     .replace('a,c', 'a,b,c');
-                
+
                 const csv = json2csv(jsonTestData.wildcardMatch, {
                     keys: ['foo', 'bar', { field: 'baz', wildcardMatch: true }],
                 });
@@ -583,7 +579,7 @@ export function runTests() {
             it('should not escape nested dots in keys with nested dots in them if turned off via the option', () => {
                 const updatedCsv = csvTestData.wildcardMatch.replace('foo,bar,baz.a,baz.array', 'foo,baz.a,baz.array,bar')
                     .replace('foo,bar,a,c', 'foo,a,c,bar');
-                
+
                 const csv = json2csv(jsonTestData.wildcardMatch, {
                     keys: ['foo', { field: 'baz.a', wildcardMatch: true }, 'bar'],
                 });
@@ -656,7 +652,7 @@ export function runTests() {
 
             // Test cases for https://github.com/mrodrig/json-2-csv/issues/209
             it('should left trim equals (=) if preventCsvInjection is specified', () => {
-                const csv = json2csv([{name: '=Bob'}], {
+                const csv = json2csv([{ name: '=Bob' }], {
                     preventCsvInjection: true
                 });
 
@@ -666,7 +662,7 @@ export function runTests() {
             });
 
             it('should left trim plus (+) if preventCsvInjection is specified', () => {
-                const csv = json2csv([{name: '+Bob'}], {
+                const csv = json2csv([{ name: '+Bob' }], {
                     preventCsvInjection: true
                 });
 
@@ -676,7 +672,7 @@ export function runTests() {
             });
 
             it('should left trim minus (-) if preventCsvInjection is specified', () => {
-                const csv = json2csv([{name: '-Bob'}], {
+                const csv = json2csv([{ name: '-Bob' }], {
                     preventCsvInjection: true
                 });
 
@@ -686,7 +682,7 @@ export function runTests() {
             });
 
             it('should left trim at (@) if preventCsvInjection is specified', () => {
-                const csv = json2csv([{name: '@Bob'}], {
+                const csv = json2csv([{ name: '@Bob' }], {
                     preventCsvInjection: true
                 });
 
@@ -696,7 +692,7 @@ export function runTests() {
             });
 
             it('should left trim tab (0x09) if preventCsvInjection is specified', () => {
-                const csv = json2csv([{name: String.fromCharCode(9) + 'Bob'}], {
+                const csv = json2csv([{ name: String.fromCharCode(9) + 'Bob' }], {
                     preventCsvInjection: true
                 });
 
@@ -706,7 +702,7 @@ export function runTests() {
             });
 
             it('should left trim carriage return (0x0D) if preventCsvInjection is specified', () => {
-                const csv = json2csv([{name: String.fromCharCode(13) + 'Bob'}], {
+                const csv = json2csv([{ name: String.fromCharCode(13) + 'Bob' }], {
                     preventCsvInjection: true
                 });
 
@@ -716,7 +712,7 @@ export function runTests() {
             });
 
             it('should left trim a combination of csv injection characters if preventCsvInjection is specified', () => {
-                const csv = json2csv([{name: String.fromCharCode(9) + String.fromCharCode(13) + '=+-@Bob'}], {
+                const csv = json2csv([{ name: String.fromCharCode(9) + String.fromCharCode(13) + '=+-@Bob' }], {
                     preventCsvInjection: true
                 });
 
@@ -726,7 +722,7 @@ export function runTests() {
             });
 
             it('should not alter numbers by removing minus (-) even if preventCsvInjection is specified', () => {
-                const csv = json2csv([{temperature: -10}], {
+                const csv = json2csv([{ temperature: -10 }], {
                     preventCsvInjection: true
                 });
 
@@ -737,7 +733,7 @@ export function runTests() {
 
             it('should not left trim a combination of csv injection characters if preventCsvInjection is not specified', () => {
                 const originalValue = String.fromCharCode(9) + String.fromCharCode(13) + '=+-@Bob';
-                const csv = json2csv([{name: originalValue}], {});
+                const csv = json2csv([{ name: originalValue }], {});
 
                 const expectedCsv = `name\n"${originalValue}"`;
 
