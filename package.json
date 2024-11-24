@@ -21,6 +21,7 @@
         "compile": "tsc -p tsconfig.build.json",
         "coverage": "nyc npm run test",
         "lint": "eslint --ext .js,.ts src test",
+        "lint:fix": "eslint --fix --ext .js,.ts src test",
         "prepublishOnly": "npm run build",
         "test": "mocha -r ts-node/register test/index.ts"
     },
