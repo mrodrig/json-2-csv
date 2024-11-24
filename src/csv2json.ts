@@ -5,7 +5,7 @@ import { excelBOM } from './constants';
 import type { Csv2JsonParams, FullCsv2JsonOptions, HeaderField } from './types';
 import * as utils from './utils';
 
-export const Csv2Json = function(options: FullCsv2JsonOptions) {
+export const Csv2Json = function (options: FullCsv2JsonOptions) {
     const escapedWrapDelimiterRegex = new RegExp(options.delimiter.wrap + options.delimiter.wrap, 'g'),
         excelBOMRegex = new RegExp('^' + excelBOM),
         valueParserFn = options.parseValue && typeof options.parseValue === 'function' ? options.parseValue : JSON.parse;
@@ -166,9 +166,18 @@ export const Csv2Json = function(options: FullCsv2JsonOptions) {
                 if (utils.getNCharacters(csv, index + 1, eolDelimiterLength) === options.delimiter.eol) {
                     index += options.delimiter.eol.length + 1; // Skip past EOL
                 }
-            }
-            
-            else if ((charBefore !== options.delimiter.wrap || stateVariables.justParsedDoubleQuote && charBefore === options.delimiter.wrap) &&
+            } else if (charBefore === options.delimiter.field && character === options.delimiter.wrap && charAfter === options.delimiter.eol) {
+                // We reached the start of a wrapped new field that begins with an EOL delimiter
+
+                // Retrieve the remaining value and add it to the split line list of values
+                splitLine.push(csv.substring(stateVariables.startIndex, index - 1));
+
+                stateVariables.startIndex = index;
+                stateVariables.parsingValue = true;
+                stateVariables.insideWrapDelimiter = true;
+                stateVariables.justParsedDoubleQuote = true;
+                index += 1;
+            } else if ((charBefore !== options.delimiter.wrap || stateVariables.justParsedDoubleQuote && charBefore === options.delimiter.wrap) &&
                 character === options.delimiter.wrap && utils.getNCharacters(csv, index + 1, eolDelimiterLength) === options.delimiter.eol) {
                 // If we reach a wrap which is not preceded by a wrap delim and the next character is an EOL delim (ie. *"\n)
 
