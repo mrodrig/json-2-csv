@@ -48,4 +48,5 @@ export default {
     wildcardMatch: require('../data/json/wildcardMatch.json'),
     arrayIndexesAsKeys: require('../data/json/arrayIndexesAsKeys.json'),
     keyWithEndingDot: require('../data/json/keyWithEndingDot.json'),
+    fieldEolAtStart: require('../data/json/fieldEolAtStart.json'),
 };
