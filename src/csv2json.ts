@@ -190,7 +190,7 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
                 stateVariables.insideWrapDelimiter = true;
                 stateVariables.parsingValue = true;
                 stateVariables.startIndex = index;
-            } else if (character === options.delimiter.wrap && charAfter === options.delimiter.field) {
+            } else if (character === options.delimiter.wrap && charAfter === options.delimiter.field && stateVariables.insideWrapDelimiter) {
                 // If we reached a wrap delimiter with a field delimiter after it (ie. *",)
 
                 splitLine.push(csv.substring(stateVariables.startIndex, index + 1));
