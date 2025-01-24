@@ -71,6 +71,11 @@ export function runTests() {
                 assert.deepEqual(json, jsonTestData.comma);
             });
 
+            it('should convert csv containing a field with a comma after an opening wrap to json', () => {
+                const json = csv2json(csvTestData.commaAfterOpeningWrap);
+                assert.deepEqual(json, jsonTestData.commaAfterOpeningWrap);
+            });
+
             it('should convert csv containing a field with quotes to json', () => {
                 const json = csv2json(csvTestData.quotes);
                 assert.deepEqual(json, jsonTestData.quotes);

@@ -15,6 +15,7 @@ export default {
     nested: require('../data/json/nested'),
     nestedMissingField: require('../data/json/nestedMissingField'),
     comma: require('../data/json/comma'),
+    commaAfterOpeningWrap: require('../data/json/commaAfterOpeningWrap'),
     quotes: require('../data/json/quotes'),
     quotesHeader: require('../data/json/quotesHeader'),
     quotesAndCommas: require('../data/json/quotesAndCommas'),
