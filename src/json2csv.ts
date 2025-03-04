@@ -239,6 +239,20 @@ export const Json2Csv = function (options: FullJson2CsvOptions) {
 
     /** RECORD FIELD FUNCTIONS **/
 
+    function stillNeedsUnwind(params: Json2CsvParams): boolean{
+        for (const record of params.records) {
+            for (const field of params.headerFields) {
+                const value = evaluatePath(record, field);
+
+                if (Array.isArray(value)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Unwinds objects in arrays within record objects if the user specifies the
      * expandArrayObjects option. If not specified, this passes the params
@@ -249,21 +263,17 @@ export const Json2Csv = function (options: FullJson2CsvOptions) {
      */
     function unwindRecordsIfNecessary(params: Json2CsvParams, finalPass = false): Json2CsvParams {
         if (options.unwindArrays) {
-            const originalRecordsLength = params.records.length;
-
-            // Unwind each of the documents at the given headerField
+            // Unwind each document at each header field
             params.headerFields.forEach((headerField) => {
                 params.records = utils.unwind(params.records, headerField);
             });
 
-            const headerFields = retrieveHeaderFields(params.records);
-            params.headerFields = headerFields;
+            params.headerFields = retrieveHeaderFields(params.records);
 
-            // If we were able to unwind more arrays, then try unwinding again...
-            if (originalRecordsLength !== params.records.length) {
-                return unwindRecordsIfNecessary(params);
+            // Continue unwinding if any nested arrays remain
+            if (stillNeedsUnwind(params)) {
+                return unwindRecordsIfNecessary(params, finalPass);
             }
-            // Otherwise, we didn't unwind any additional arrays, so continue...
 
             // Run a final time in case the earlier unwinding exposed additional
             // arrays to unwind...

@@ -50,4 +50,5 @@ export default {
     arrayIndexesAsKeys: require('../data/json/arrayIndexesAsKeys.json'),
     keyWithEndingDot: require('../data/json/keyWithEndingDot.json'),
     fieldEolAtStart: require('../data/json/fieldEolAtStart.json'),
+    deepNestedArrays: require('../data/json/deepNestedArrays.json'),
 };

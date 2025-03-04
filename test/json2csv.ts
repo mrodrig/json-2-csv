@@ -760,6 +760,40 @@ export function runTests() {
 
                 assert.equal(csv, csvTestData.nestedNotUnwoundObjects);
             });
+
+            it('should unwind all found arrays', () => {
+                const options = {
+                    expandArrayObjects: true,
+                    unwindArrays: true,
+                    emptyFieldValue: '---'
+                };
+
+                let expectedCSV = 'Countries.Cities.Streets.Name,Countries.Cities.Streets.Number,Countries.Cities.field\n' +
+                    'Road 1,1,---\n' +
+                    'Road 2,2,---\n' +
+                    '---,---,value';
+                let csv = json2csv(jsonTestData.deepNestedArrays.was_already_working, options);
+                assert.equal(csv, expectedCSV);
+
+                expectedCSV = 'Countries.Cities.Streets.Name,Countries.Cities.Streets.Number\n' +
+                    'Road 1,1\n' +
+                    'Road 2,2';
+                csv = json2csv(jsonTestData.deepNestedArrays.was_not_working_1, options);
+                assert.equal(csv, expectedCSV);
+
+                expectedCSV = 'Continents.Countries.Cities.Streets.Name,Continents.Countries.Cities.Streets.Number,Continents.Countries.Cities.field\n' +
+                    'Road 1,1,---\n' +
+                    'Road 2,2,---\n' +
+                    '---,---,value';
+                csv = json2csv(jsonTestData.deepNestedArrays.was_not_working_2, options);
+                assert.equal(csv, expectedCSV);
+
+                expectedCSV = 'SolarSystems.Planets.Hemispheres.Continents.Countries.Cities.Streets.Name,SolarSystems.Planets.Hemispheres.Continents.Countries.Cities.Streets.Number\n' +
+                    'Road 1,1\n' +
+                    'Road 2,2';
+                csv = json2csv(jsonTestData.deepNestedArrays.seven_levels_deep, options);
+                assert.equal(csv, expectedCSV);
+            });
         });
     });
 
