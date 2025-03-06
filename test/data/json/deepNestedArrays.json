@@ -1,0 +1,116 @@
+{
+  "was_already_working": [
+    {
+      "Countries": [
+        {
+          "Cities": [
+            {
+              "Streets": [
+                {
+                  "Name": "Road 1",
+                  "Number": 1
+                },
+                {
+                  "Name": "Road 2",
+                  "Number": 2
+                }
+              ]
+            },
+            {
+              "field": "value"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "was_not_working_1": [
+    {
+      "Countries": [
+        {
+          "Cities": [
+            {
+              "Streets": [
+                {
+                  "Name": "Road 1",
+                  "Number": 1
+                },
+                {
+                  "Name": "Road 2",
+                  "Number": 2
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "was_not_working_2": [
+    {
+      "Continents": [
+        {
+          "Countries": [
+            {
+              "Cities": [
+                {
+                  "Streets": [
+                    {
+                      "Name": "Road 1",
+                      "Number": 1
+                    },
+                    {
+                      "Name": "Road 2",
+                      "Number": 2
+                    }
+                  ]
+                },
+                {
+                  "field": "value"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "seven_levels_deep": [
+    {
+      "SolarSystems": [
+        {
+          "Planets": [
+            {
+              "Hemispheres": [
+                {
+                  "Continents": [
+                    {
+                      "Countries": [
+                        {
+                          "Cities": [
+                            {
+                              "Streets": [
+                                {
+                                  "Name": "Road 1",
+                                  "Number": 1
+                                },
+                                {
+                                  "Name": "Road 2",
+                                  "Number": 2
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
