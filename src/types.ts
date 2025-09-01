@@ -194,13 +194,6 @@ export interface DefaultCsv2JsonOptions extends
   // Then extend the types with required fields and specific fields omitted:
   Omit<Omit<Omit<Omit<BuiltCsv2JsonOptions, 'wrapBooleans'>, 'keys'>, 'headerFields'>, 'parseValue'> {}
 
-export interface FullJson2CsvOptions extends DefaultJson2CsvOptions {
-  /**
-   * Internal field that is used to map keys to user provided titles.
-   */
-  fieldTitleMap: Record<string, string>;
-}
-
 export type FullCsv2JsonOptions = DefaultCsv2JsonOptions
 
 export interface HeaderField {
