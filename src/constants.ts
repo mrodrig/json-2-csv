@@ -40,6 +40,7 @@ export const defaultJson2CsvOptions: DefaultJson2CsvOptions = {
     useDateIso8601Format: false,
     useLocaleFormat: false,
     wrapBooleans: false,
+    fieldTitleMap: Object.create({}),
 };
 
 export const defaultCsv2JsonOptions: DefaultCsv2JsonOptions = {

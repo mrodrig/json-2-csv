@@ -2,7 +2,7 @@
 
 import { evaluatePath, setPath } from 'doc-path';
 import { defaultJson2CsvOptions, defaultCsv2JsonOptions } from './constants';
-import type { Json2CsvOptions, Csv2JsonOptions, FullJson2CsvOptions, FullCsv2JsonOptions } from './types';
+import type { Json2CsvOptions, Csv2JsonOptions, DefaultJson2CsvOptions, FullCsv2JsonOptions } from './types';
 
 const dateStringRegex = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/,
     MAX_ARRAY_LENGTH = 100000;
@@ -12,7 +12,7 @@ const dateStringRegex = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/,
  * If a user does not provide custom options, then we use our default
  * If options are provided, then we set each valid key that was passed
  */
-export function buildJ2COptions(opts: Json2CsvOptions): FullJson2CsvOptions {
+export function buildJ2COptions(opts: Json2CsvOptions): DefaultJson2CsvOptions {
     return {
         ...defaultJson2CsvOptions,
         ...opts,
@@ -21,7 +21,7 @@ export function buildJ2COptions(opts: Json2CsvOptions): FullJson2CsvOptions {
             wrap: opts?.delimiter?.wrap || defaultJson2CsvOptions.delimiter.wrap,
             eol: opts?.delimiter?.eol || defaultJson2CsvOptions.delimiter.eol,
         },
-        fieldTitleMap: Object.create({}),
+        fieldTitleMap: opts?.fieldTitleMap || Object.create({}),
     };
 }
 
@@ -60,7 +60,7 @@ export function deepCopy<T>(obj: T): T {
  *   of a string. Given the RFC4180 requirements, that means that the value is
  *   wrapped in value wrap delimiters (usually a quotation mark on each side).
  */
-export function isStringRepresentation(fieldValue: string, options: FullJson2CsvOptions | FullCsv2JsonOptions) {
+export function isStringRepresentation(fieldValue: string, options: DefaultJson2CsvOptions | FullCsv2JsonOptions) {
     const firstChar = fieldValue[0],
         lastIndex = fieldValue.length - 1,
         lastChar = fieldValue[lastIndex];

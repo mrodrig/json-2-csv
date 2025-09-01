@@ -58,6 +58,7 @@ const csvFileConfig = [
     { key: 'arrayIndexesAsKeys', file: '../data/csv/arrayIndexesAsKeys.csv' },
     { key: 'keyWithEndingDot', file: '../data/csv/keyWithEndingDot.csv' },
     { key: 'fieldEolAtStart', file: '../data/csv/fieldEolAtStart.csv' },
+    { key: 'renamedHeaderField', file: '../data/csv/renamedHeaderField.csv' },
 ];
 
 function readCsvFile(filePath: string) {

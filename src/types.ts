@@ -158,6 +158,11 @@ export interface Json2CsvOptions extends SharedConverterOptions {
   excludeKeys?: (string | RegExp)[];
 
   /**
+   * Map keys to user provided titles.
+   */
+  fieldTitleMap?: Record<string, string>;
+
+  /**
    * Specify how values should be converted into CSV format. This function is provided a single field value at a time and must return a `String`.
    * Note: Using this option may override other options, including `useDateIso8601Format` and `useLocaleFormat`.
    */
