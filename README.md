@@ -129,6 +129,9 @@ Returns the CSV `string` or rejects with an `Error` if there was an issue.
   	* `false` uses the following keys:
   		* `['specifications']`
     * Note: This may result in CSV output that does not map back exactly to the original JSON. See #102 for more information.
+  * `fieldTitleMap` - Object - Specify field titles that should be renamed.
+    * Default: `{}`
+    * Example: `{ "key1": "Key 1", "key2": "Key 2"}`
   * `keys` - Array - Specify the keys that should be converted.
     * Default: These will be auto-detected from your data by default.
     * Keys can either be specified as a String representing the key path that should be converted, or as an Object of the following format:
