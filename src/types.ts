@@ -214,4 +214,6 @@ export interface Csv2JsonParams {
   headerFields: HeaderField[];
   lines: string[][];
   recordLines: string[][];
+  /** Optional precomputed accessors for setting values on created documents */
+  headerAccessors?: Array<(document: any, line: string[]) => void>;
 }

@@ -19,6 +19,13 @@ export const Json2Csv = function (options: FullJson2CsvOptions) {
             escapeNestedDots: true,
         };
 
+    // Precompile commonly used regexes and exclusion tests to avoid recreating them repeatedly
+    const preventCsvInjectionRegex = /^[=+\-@\t\r]+/g;
+    const excludeKeyTests = options.excludeKeys ? options.excludeKeys.map((k) => ({
+        original: k,
+        regex: k instanceof RegExp ? k : new RegExp(`^${k}`),
+    })) : null;
+
     /** HEADER FIELD FUNCTIONS **/
 
     /**
@@ -86,21 +93,16 @@ export const Json2Csv = function (options: FullJson2CsvOptions) {
      * If so specified, this filters the detected key paths to exclude any keys that have been specified
      */
     function filterExcludedKeys(keyPaths: string[]) {
-        if (options.excludeKeys) {
-            return keyPaths.filter((keyPath) => {
-                for (const excludedKey of options.excludeKeys) {
-                    // Only match if the excludedKey appears at the beginning of the string so we don't accidentally match a key farther down in a key path
-                    const regex = excludedKey instanceof RegExp ? excludedKey : new RegExp(`^${excludedKey}`);
+        if (!excludeKeyTests) return keyPaths;
 
-                    if (excludedKey === keyPath || keyPath.match(regex)) {
-                        return false; // Exclude the key
-                    }
+        return keyPaths.filter((keyPath) => {
+            for (const test of excludeKeyTests) {
+                if (test.original === keyPath || keyPath.match(test.regex)) {
+                    return false; // Exclude the key
                 }
-                return true; // Otherwise, include the key
-            });
-        }
-
-        return keyPaths;
+            }
+            return true; // Otherwise, include the key
+        });
     }
 
     /**
@@ -239,14 +241,12 @@ export const Json2Csv = function (options: FullJson2CsvOptions) {
 
     /** RECORD FIELD FUNCTIONS **/
 
-    function stillNeedsUnwind(params: Json2CsvParams): boolean{
-        for (const record of params.records) {
-            for (const field of params.headerFields) {
+    function stillNeedsUnwind(params: Json2CsvParams): boolean {
+        // Iterate fields first to increase chance of short-circuiting on common array fields
+        for (const field of params.headerFields) {
+            for (const record of params.records) {
                 const value = evaluatePath(record, field);
-
-                if (Array.isArray(value)) {
-                    return true;
-                }
+                if (Array.isArray(value)) return true;
             }
         }
 
@@ -304,21 +304,33 @@ export const Json2Csv = function (options: FullJson2CsvOptions) {
      * - Combine values for each line (by joining by field delimiter)
      */
     function processRecords(params: Json2CsvParams) {
+        // Pre-build accessors for header fields to avoid repeated evaluationPath calls and option checks
+        const accessors = params.headerFields.map((field) => {
+            return (record: object) => {
+                let recordFieldValue = evaluatePath(record, field);
+
+                if (!utils.isUndefined(options.emptyFieldValue) && utils.isEmptyField(recordFieldValue)) {
+                    recordFieldValue = options.emptyFieldValue;
+                } else if (options.expandArrayObjects && Array.isArray(recordFieldValue)) {
+                    recordFieldValue = processRecordFieldDataForExpandedArrayObject(recordFieldValue);
+                }
+
+                return recordFieldValue;
+            };
+        });
+
         params.recordString = params.records.map((record) => {
-            // Retrieve data for each of the headerFields from this record
-            const recordFieldData = retrieveRecordFieldData(record, params.headerFields),
+            const recordFieldData = accessors.map((get) => get(record));
 
-                // Process the data in this record and return the
-                processedRecordData = recordFieldData.map((fieldValue) => {
-                    fieldValue = trimRecordFieldValue(fieldValue);
-                    fieldValue = preventCsvInjection(fieldValue);
-                    let stringified = customValueParser ? customValueParser(fieldValue, recordFieldValueToString) : recordFieldValueToString(fieldValue);
-                    stringified = wrapFieldValueIfNecessary(stringified);
+            const processedRecordData = recordFieldData.map((fieldValue) => {
+                fieldValue = trimRecordFieldValue(fieldValue);
+                fieldValue = preventCsvInjection(fieldValue);
+                let stringified = customValueParser ? customValueParser(fieldValue, recordFieldValueToString) : recordFieldValueToString(fieldValue);
+                stringified = wrapFieldValueIfNecessary(stringified);
 
-                    return stringified;
-                });
+                return stringified;
+            });
 
-            // Join the record data by the field delimiter
             return generateCsvRowFromRecord(processedRecordData);
         }).join(options.delimiter.eol);
 
@@ -343,26 +355,7 @@ export const Json2Csv = function (options: FullJson2CsvOptions) {
         return recordFieldValue;
     }
 
-    /**
-     * Gets all field values from a particular record for the given list of fields
-     */
-    function retrieveRecordFieldData(record: object, fields: string[]) {
-        const recordValues: unknown[] = [];
 
-        fields.forEach((field) => {
-            let recordFieldValue = evaluatePath(record, field);
-
-            if (!utils.isUndefined(options.emptyFieldValue) && utils.isEmptyField(recordFieldValue)) {
-                recordFieldValue = options.emptyFieldValue;
-            } else if (options.expandArrayObjects && Array.isArray(recordFieldValue)) {
-                recordFieldValue = processRecordFieldDataForExpandedArrayObject(recordFieldValue);
-            }
-
-            recordValues.push(recordFieldValue);
-        });
-
-        return recordValues;
-    }
 
     /**
      * Converts a record field value to its string representation
@@ -403,14 +396,14 @@ export const Json2Csv = function (options: FullJson2CsvOptions) {
      * More info: https://owasp.org/www-community/attacks/CSV_Injection
      */
     function preventCsvInjection(fieldValue: unknown): unknown {
-        if (options.preventCsvInjection) {
-            if (Array.isArray(fieldValue)) {
-                return fieldValue.map(preventCsvInjection);
-            } else if (typeof fieldValue === 'string' && !utils.isNumber(fieldValue)) {
-                return fieldValue.replace(/^[=+\-@\t\r]+/g, '');
-            }
-            return fieldValue;
+        if (!options.preventCsvInjection) return fieldValue;
+
+        if (Array.isArray(fieldValue)) {
+            return fieldValue.map(preventCsvInjection);
+        } else if (typeof fieldValue === 'string' && !utils.isNumber(fieldValue)) {
+            return fieldValue.replace(preventCsvInjectionRegex, '');
         }
+
         return fieldValue;
     }
 

@@ -9,16 +9,28 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
     const escapedWrapDelimiterRegex = new RegExp(options.delimiter.wrap + options.delimiter.wrap, 'g'),
         excelBOMRegex = new RegExp('^' + excelBOM),
         valueParserFn = options.parseValue && typeof options.parseValue === 'function' ? options.parseValue : JSON.parse;
+    // micro-optimization: cache delimiter and commonly read options locally for hot paths
+    const delimiter = options.delimiter;
+    const trimHeaderFields = options.trimHeaderFields;
+    const headerFieldsOption = options.headerFields;
+    const keysOption = options.keys;
+    const excelBOMOption = options.excelBOM;
+    const trimFieldValues = options.trimFieldValues;
+    // Cache hot utility references to avoid repeated property lookups in hot paths
+    const getNCharacters = utils.getNCharacters;
+    const isStringRepresentation = utils.isStringRepresentation;
+    const isDateRepresentation = utils.isDateRepresentation;
+    const isError = utils.isError;
+    const isInvalid = utils.isInvalid;
+    const setPathLocal = setPath;
 
     /**
      * Trims the header key, if specified by the user via the provided options
      */
     function processHeaderKey(headerKey: string) {
         headerKey = removeWrapDelimitersFromValue(headerKey);
-        if (options.trimHeaderFields) {
-            return headerKey.split('.')
-                .map((component) => component.trim())
-                .join('.');
+        if (trimHeaderFields) {
+            return headerKey.split('.').map((component) => component.trim()).join('.');
         }
         return headerKey;
     }
@@ -29,8 +41,8 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
     function retrieveHeading(lines: string[][]): Csv2JsonParams {
         let headerFields: HeaderField[] = [];
 
-        if (options.headerFields) {
-            headerFields = options.headerFields.map((headerField, index): HeaderField => ({
+        if (headerFieldsOption) {
+            headerFields = headerFieldsOption.map((headerField, index): HeaderField => ({
                 value: processHeaderKey(headerField),
                 index
             }));
@@ -43,8 +55,8 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
             }));
 
             // If the user provided keys, filter the generated keys to just the user provided keys so we also have the key index
-            if (options.keys) {
-                const keys = options.keys; // TypeScript type checking work around to get it to recognize the option is not undefined
+            if (keysOption) {
+                const keys = keysOption; // TypeScript type checking work around to get it to recognize the option is not undefined
                 headerFields = headerFields.filter((headerKey) => keys.includes(headerKey.value));
             }
         }
@@ -52,6 +64,19 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
         return {
             lines,
             headerFields,
+            // precompute accessors for each header to speed up document creation
+            headerAccessors: headerFields.map((hf) => {
+                const idx = hf.index;
+                const path = hf.value;
+                return function setField(document: any, line: string[]) {
+                    try {
+                        const value = processRecordValue(line[idx]);
+                        setPathLocal(document, path, value);
+                    } catch (err) {
+                        // ignore invalid paths
+                    }
+                };
+            }),
             recordLines: [] as string[][],
         };
     }
@@ -60,7 +85,7 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
      * Removes the Excel BOM value, if specified by the options object
      */
     function stripExcelBOM(csv: string) {
-        if (options.excelBOM) {
+        if (excelBOMOption) {
             return csv.replace(excelBOMRegex, '');
         }
         return csv;
@@ -73,7 +98,7 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
         // Parse out the line...
         const lines = [],
             lastCharacterIndex = csv.length - 1,
-            eolDelimiterLength = options.delimiter.eol.length,
+            eolDelimiterLength = delimiter.eol.length,
             stateVariables = {
                 insideWrapDelimiter: false,
                 parsingValue: true,
@@ -98,7 +123,7 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
             charAfter = index < lastCharacterIndex ? csv[index + 1] : '';
             // Next n characters, including the current character, where n = length(EOL delimiter)
             // This allows for the checking of an EOL delimiter when if it is more than a single character (eg. '\r\n')
-            nextNChar = utils.getNCharacters(csv, index, eolDelimiterLength);
+            nextNChar = getNCharacters(csv, index, eolDelimiterLength);
 
             if ((nextNChar === options.delimiter.eol && !stateVariables.insideWrapDelimiter ||
                 index === lastCharacterIndex) && charBefore === options.delimiter.field) {
@@ -163,8 +188,8 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
                 stateVariables.parsingValue = true;
 
                 // If the next character(s) are an EOL delimiter, then skip them so we don't parse what we've seen as another value
-                if (utils.getNCharacters(csv, index + 1, eolDelimiterLength) === options.delimiter.eol) {
-                    index += options.delimiter.eol.length + 1; // Skip past EOL
+                if (getNCharacters(csv, index + 1, eolDelimiterLength) === delimiter.eol) {
+                    index += delimiter.eol.length + 1; // Skip past EOL
                 }
             } else if (charBefore === options.delimiter.field && character === options.delimiter.wrap && charAfter === options.delimiter.eol) {
                 // We reached the start of a wrapped new field that begins with an EOL delimiter
@@ -177,27 +202,27 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
                 stateVariables.insideWrapDelimiter = true;
                 stateVariables.justParsedDoubleQuote = true;
                 index += 1;
-            } else if ((charBefore !== options.delimiter.wrap || stateVariables.justParsedDoubleQuote && charBefore === options.delimiter.wrap) &&
-                character === options.delimiter.wrap && utils.getNCharacters(csv, index + 1, eolDelimiterLength) === options.delimiter.eol) {
+            } else if ((charBefore !== delimiter.wrap || stateVariables.justParsedDoubleQuote && charBefore === delimiter.wrap) &&
+                character === delimiter.wrap && getNCharacters(csv, index + 1, eolDelimiterLength) === delimiter.eol) {
                 // If we reach a wrap which is not preceded by a wrap delim and the next character is an EOL delim (ie. *"\n)
 
                 stateVariables.insideWrapDelimiter = false;
                 stateVariables.parsingValue = false;
                 // Next iteration will substring, add the value to the line, and push the line onto the array of lines
-            } else if (character === options.delimiter.wrap && (index === 0 || utils.getNCharacters(csv, index - eolDelimiterLength, eolDelimiterLength) === options.delimiter.eol && !stateVariables.insideWrapDelimiter)) {
+            } else if (character === delimiter.wrap && (index === 0 || getNCharacters(csv, index - eolDelimiterLength, eolDelimiterLength) === delimiter.eol && !stateVariables.insideWrapDelimiter)) {
                 // If the line starts with a wrap delimiter (ie. "*)
 
                 stateVariables.insideWrapDelimiter = true;
                 stateVariables.parsingValue = true;
                 stateVariables.startIndex = index;
-            } else if (character === options.delimiter.wrap && charAfter === options.delimiter.field && stateVariables.insideWrapDelimiter) {
+            } else if (character === delimiter.wrap && charAfter === delimiter.field && stateVariables.insideWrapDelimiter) {
                 // If we reached a wrap delimiter with a field delimiter after it (ie. *",)
 
                 splitLine.push(csv.substring(stateVariables.startIndex, index + 1));
                 stateVariables.startIndex = index + 2; // next value starts after the field delimiter
                 stateVariables.insideWrapDelimiter = false;
                 stateVariables.parsingValue = false;
-            } else if (character === options.delimiter.wrap && charBefore === options.delimiter.field &&
+            } else if (character === delimiter.wrap && charBefore === delimiter.field &&
                 !stateVariables.insideWrapDelimiter && stateVariables.parsingValue) {
                 // If we reached a wrap delimiter with a field delimiter after it (ie. ,"*)
 
@@ -205,21 +230,21 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
                 stateVariables.insideWrapDelimiter = true;
                 stateVariables.parsingValue = true;
                 stateVariables.startIndex = index;
-            } else if (character === options.delimiter.wrap && charAfter === options.delimiter.wrap && index !== stateVariables.startIndex) {
+            } else if (character === delimiter.wrap && charAfter === delimiter.wrap && index !== stateVariables.startIndex) {
                 // If we run into an escaped quote (ie. "") skip past the second quote
 
                 index += 2;
                 stateVariables.justParsedDoubleQuote = true;
                 continue;
-            } else if (character === options.delimiter.field && charBefore !== options.delimiter.wrap &&
-                charAfter !== options.delimiter.wrap && !stateVariables.insideWrapDelimiter &&
+            } else if (character === delimiter.field && charBefore !== delimiter.wrap &&
+                charAfter !== delimiter.wrap && !stateVariables.insideWrapDelimiter &&
                 stateVariables.parsingValue) {
                 // If we reached a field delimiter and are not inside the wrap delimiters (ie. *,*)
 
                 splitLine.push(csv.substring(stateVariables.startIndex, index));
                 stateVariables.startIndex = index + 1;
-            } else if (character === options.delimiter.field && charBefore === options.delimiter.wrap &&
-                charAfter !== options.delimiter.wrap && !stateVariables.parsingValue) {
+            } else if (character === delimiter.field && charBefore === delimiter.wrap &&
+                charAfter !== delimiter.wrap && !stateVariables.parsingValue) {
                 // If we reached a field delimiter, the previous character was a wrap delimiter, and the
                 //   next character is not a wrap delimiter (ie. ",*)
 
@@ -240,7 +265,7 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
      * Retrieves the record lines from the split CSV lines and sets it on the params object
      */
     function retrieveRecordLines(params: Csv2JsonParams) {
-        if (options.headerFields) { // This option is passed for instances where the CSV has no header line
+        if (headerFieldsOption) { // This option is passed for instances where the CSV has no header line
             params.recordLines = params.lines;
         } else { // All lines except for the header line
             params.recordLines = params.lines.splice(1);
@@ -269,7 +294,7 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
         const parsedJson = parseValue(fieldValue);
         // If parsedJson is anything aside from an error, then we want to use the parsed value
         // This allows us to interpret values like 'null' --> null, 'false' --> false
-        if (!utils.isError(parsedJson) && !utils.isInvalid(parsedJson)) {
+        if (!isError(parsedJson) && !isInvalid(parsedJson)) {
             return parsedJson;
         } else if (fieldValue === 'undefined') {
             return undefined;
@@ -282,7 +307,7 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
      * Trims the record value, if specified by the user via the options object
      */
     function trimRecordValue(fieldValue: string) {
-        if (options.trimFieldValues && fieldValue !== null) {
+        if (trimFieldValues && fieldValue !== null) {
             return fieldValue.trim();
         }
         return fieldValue;
@@ -294,19 +319,19 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
      * @returns {Object} created json document
      */
     function createDocument(headerFields: HeaderField[], line: string[]) {
-        // Reduce the keys into a JSON document representing the given line
-        return headerFields.reduce((document, headerField) => {
-            // If there is a value at the key's index in the line, set the value; otherwise null
-            const value = retrieveRecordValueFromLine(headerField, line);
+        const document: any = {};
 
+        for (let i = 0; i < headerFields.length; i++) {
+            const headerField = headerFields[i];
             try {
-                // Otherwise add the key and value to the document
-                return setPath(document, headerField.value, value);
-            } catch (error) {
-                // Catch any errors where key paths are null or '' and continue
-                return document;
+                const value = retrieveRecordValueFromLine(headerField, line);
+                setPathLocal(document, headerField.value, value);
+            } catch (err) {
+                // ignore errors when setting invalid paths
             }
-        }, {});
+        }
+
+        return document;
     }
 
     /**
@@ -318,7 +343,7 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
             lastIndex = fieldValue.length - 1,
             lastChar = fieldValue[lastIndex];
         // If the field starts and ends with a wrap delimiter
-        if (firstChar === options.delimiter.wrap && lastChar === options.delimiter.wrap) {
+        if (firstChar === delimiter.wrap && lastChar === delimiter.wrap) {
             // Handle the case where the field is just a pair of wrap delimiters 
             return fieldValue.length <= 2 ? '' : fieldValue.substring(1, lastIndex);
         }
@@ -330,29 +355,41 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
      * This is done in order to parse RFC 4180 compliant CSV back to JSON
      */
     function unescapeWrapDelimiterInField(fieldValue: string) {
-        return fieldValue.replace(escapedWrapDelimiterRegex, options.delimiter.wrap);
+        return fieldValue.replace(escapedWrapDelimiterRegex, delimiter.wrap);
     }
 
     /**
      * Main helper function to convert the CSV to the JSON document array
      */
     function transformRecordLines(params: Csv2JsonParams) {
-        // For each line, create the document and add it to the array of documents
-        return params.recordLines.reduce((generatedJsonObjects: object[], line: string[]) => {
+        const results: object[] = [];
 
-            line = line.map((fieldValue: string) => {
-                // Perform the necessary operations on each line
+        const accessors = params.headerAccessors;
+
+        for (let i = 0; i < params.recordLines.length; i++) {
+            let line = params.recordLines[i];
+
+            for (let j = 0; j < line.length; j++) {
+                let fieldValue = line[j];
                 fieldValue = removeWrapDelimitersFromValue(fieldValue);
                 fieldValue = unescapeWrapDelimiterInField(fieldValue);
                 fieldValue = trimRecordValue(fieldValue);
+                line[j] = fieldValue;
+            }
 
-                return fieldValue;
-            });
+            if (accessors && accessors.length) {
+                const document: any = {};
+                for (let a = 0; a < accessors.length; a++) {
+                    accessors[a](document, line);
+                }
+                results.push(document);
+            } else {
+                const generatedDocument = createDocument(params.headerFields, line);
+                results.push(generatedDocument);
+            }
+        }
 
-            const generatedDocument = createDocument(params.headerFields, line);
-            return generatedJsonObjects.concat(generatedDocument);
-
-        }, []);
+        return results;
     }
 
     /**
@@ -360,7 +397,7 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
      */
     function parseValue(value: string) {
         try {
-            if (utils.isStringRepresentation(value, options) && !utils.isDateRepresentation(value)) {
+            if (isStringRepresentation(value, options) && !isDateRepresentation(value)) {
                 return value;
             }
 
