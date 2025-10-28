@@ -4,9 +4,9 @@ import { evaluatePath } from 'doc-path';
 import { deepKeysFromList } from 'deeks';
 import { excelBOM, errors } from './constants';
 import * as utils from './utils';
-import type { FullJson2CsvOptions, Json2CsvParams } from './types';
+import type { DefaultJson2CsvOptions, Json2CsvParams } from './types';
 
-export const Json2Csv = function (options: FullJson2CsvOptions) {
+export const Json2Csv = function (options: DefaultJson2CsvOptions) {
     const wrapDelimiterCheckRegex = new RegExp(options.delimiter.wrap, 'g'),
         crlfSearchRegex = /\r?\n|\r/,
         customValueParser = options.parseValue && typeof options.parseValue === 'function' ? options.parseValue : null,

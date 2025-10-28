@@ -794,6 +794,17 @@ export function runTests() {
                 csv = json2csv(jsonTestData.deepNestedArrays.seven_levels_deep, options);
                 assert.equal(csv, expectedCSV);
             });
+
+            it('should rename the header fields according to options', () => {
+                const csv = json2csv(jsonTestData.assortedValues, {
+                    fieldTitleMap: {
+                        'optionalField': 'renamedOptionalField',
+                        'object.subField': 'renamedSubField',
+                    },
+                });
+
+                assert.equal(csv, csvTestData.renamedHeaderField);
+            });
         });
     });
 
