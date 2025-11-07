@@ -40,7 +40,7 @@
         "cli"
     ],
     "dependencies": {
-        "deeks": "3.1.0",
+        "deeks": "3.2.0",
         "doc-path": "4.1.1"
     },
     "devDependencies": {
