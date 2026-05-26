@@ -721,6 +721,26 @@ export function runTests() {
                 assert.equal(csv, expectedCsv);
             });
 
+            it('should left trim csv injection characters after leading whitespace if preventCsvInjection is specified', () => {
+                const csv = json2csv([{ name: '   =SUM(B1:B2)' }], {
+                    preventCsvInjection: true
+                });
+
+                const expectedCsv = 'name\nSUM(B1:B2)';
+
+                assert.equal(csv, expectedCsv);
+            });
+
+            it('should not left trim leading spaces without csv injection characters if preventCsvInjection is specified', () => {
+                const csv = json2csv([{ name: '   Bob' }], {
+                    preventCsvInjection: true
+                });
+
+                const expectedCsv = 'name\n   Bob';
+
+                assert.equal(csv, expectedCsv);
+            });
+
             it('should not alter numbers by removing minus (-) even if preventCsvInjection is specified', () => {
                 const csv = json2csv([{ temperature: -10 }], {
                     preventCsvInjection: true
