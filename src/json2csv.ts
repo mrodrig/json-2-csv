@@ -407,7 +407,7 @@ export const Json2Csv = function (options: DefaultJson2CsvOptions) {
             if (Array.isArray(fieldValue)) {
                 return fieldValue.map(preventCsvInjection);
             } else if (typeof fieldValue === 'string' && !utils.isNumber(fieldValue)) {
-                return fieldValue.replace(/^[=+\-@\t\r]+/g, '');
+                return fieldValue.replace(/^[ \t\r]*[=+\-@\t\r]+/g, '');
             }
             return fieldValue;
         }

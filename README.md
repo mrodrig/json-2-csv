@@ -197,7 +197,7 @@ Returns the CSV `string` or rejects with an `Error` if there was an issue.
     * Note: If selected, values will be converted using `toLocaleString()` rather than `toString()`
   * `wrapBooleans` - Boolean - Should boolean values be wrapped in wrap delimiters to prevent Excel from converting them to Excel's TRUE/FALSE Boolean values.
     * Default: `false`
-  * `preventCsvInjection` - Boolean - Should CSV injection be prevented by left trimming these characters: Equals (=), Plus (+), Minus (-), At (@), Tab (0x09), Carriage return (0x0D).
+  * `preventCsvInjection` - Boolean - Should CSV injection be prevented by left trimming these characters, including when they appear after leading spaces: Equals (=), Plus (+), Minus (-), At (@), Tab (0x09), Carriage return (0x0D).
     * Default: `false`
 
 
