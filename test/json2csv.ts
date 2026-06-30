@@ -450,6 +450,16 @@ export function runTests() {
                 assert.equal(csv, csvTestData.unwindWithSpecifiedKeys.replace('data.category,data.options.name', 'Category,Option Name'));
             });
 
+            it('should wrap a title that contains the field delimiter', () => {
+                const csv = json2csv([{ price: 100, qty: 2 }], {
+                    keys: [
+                        { field: 'price', title: 'Price, USD' },
+                        { field: 'qty', title: 'Qty' }
+                    ]
+                });
+                assert.equal(csv, '"Price, USD",Qty\n100,2');
+            });
+
             it('should exclude specified keys from the output', () => {
                 // Change the features array to be empty
                 const updatedCsvPerOptions = csvTestData.arrayObjects.replace('features.cons,', '')
