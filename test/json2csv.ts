@@ -450,6 +450,16 @@ export function runTests() {
                 assert.equal(csv, csvTestData.unwindWithSpecifiedKeys.replace('data.category,data.options.name', 'Category,Option Name'));
             });
 
+            it('should wrap a title that contains the field delimiter', () => {
+                const csv = json2csv([{ price: 100, qty: 2 }], {
+                    keys: [
+                        { field: 'price', title: 'Price, USD' },
+                        { field: 'qty', title: 'Qty' }
+                    ]
+                });
+                assert.equal(csv, '"Price, USD",Qty\n100,2');
+            });
+
             it('should exclude specified keys from the output', () => {
                 // Change the features array to be empty
                 const updatedCsvPerOptions = csvTestData.arrayObjects.replace('features.cons,', '')
@@ -717,6 +727,26 @@ export function runTests() {
                 });
 
                 const expectedCsv = 'name\nBob';
+
+                assert.equal(csv, expectedCsv);
+            });
+
+            it('should left trim csv injection characters after leading whitespace if preventCsvInjection is specified', () => {
+                const csv = json2csv([{ name: '   =SUM(B1:B2)' }], {
+                    preventCsvInjection: true
+                });
+
+                const expectedCsv = 'name\nSUM(B1:B2)';
+
+                assert.equal(csv, expectedCsv);
+            });
+
+            it('should not left trim leading spaces without csv injection characters if preventCsvInjection is specified', () => {
+                const csv = json2csv([{ name: '   Bob' }], {
+                    preventCsvInjection: true
+                });
+
+                const expectedCsv = 'name\n   Bob';
 
                 assert.equal(csv, expectedCsv);
             });

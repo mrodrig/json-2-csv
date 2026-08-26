@@ -57,7 +57,8 @@ interface SharedConverterOptions {
 
   /**
    * Should CSV injection be prevented by left trimming these characters:
-   * Equals (=), Plus (+), Minus (-), At (@), Tab (0x09), Carriage return (0x0D).
+   * Equals (=), Plus (+), Minus (-), At (@), Tab (0x09), Carriage return (0x0D),
+   * including when they appear after leading spaces.
    * @default false
    */
   preventCsvInjection?: boolean;

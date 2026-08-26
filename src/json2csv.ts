@@ -154,7 +154,9 @@ export const Json2Csv = function (options: DefaultJson2CsvOptions) {
 
                 // If a custom field title was provided for this field, use that
                 if (fieldTitleMapKeys.includes(field)) {
-                    headerKey = options.fieldTitleMap[field];
+                    // Wrap the title the same way field names and record values are wrapped,
+                    // since a title may contain the field delimiter, wrap delimiter, or a line break.
+                    headerKey = wrapFieldValueIfNecessary(options.fieldTitleMap[field]);
                 } else if (!options.escapeHeaderNestedDots) {
                     // Otherwise, if the user doesn't want nested dots in keys to be escaped, then unescape them
                     headerKey = headerKey.replace(/\\\./g, '.');
@@ -407,7 +409,7 @@ export const Json2Csv = function (options: DefaultJson2CsvOptions) {
             if (Array.isArray(fieldValue)) {
                 return fieldValue.map(preventCsvInjection);
             } else if (typeof fieldValue === 'string' && !utils.isNumber(fieldValue)) {
-                return fieldValue.replace(/^[=+\-@\t\r]+/g, '');
+                return fieldValue.replace(/^[ \t\r]*[=+\-@\t\r]+/g, '');
             }
             return fieldValue;
         }
