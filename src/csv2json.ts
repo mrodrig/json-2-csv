@@ -16,10 +16,15 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
     function processHeaderKey(headerKey: string) {
         headerKey = removeWrapDelimitersFromValue(headerKey);
         if (options.trimHeaderFields) {
-            return headerKey.split('.')
+            headerKey = headerKey.split('.')
                 .map((component) => component.trim())
                 .join('.');
         }
+
+        if (options.escapeHeaderNestedDots) {
+            headerKey = headerKey.replace(/\\?\./g, (match) => match === '\\.' ? match : '\\.');
+        }
+
         return headerKey;
     }
 

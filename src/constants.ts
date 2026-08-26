@@ -20,10 +20,10 @@ export const errors = {
 export const defaultJson2CsvOptions: DefaultJson2CsvOptions = {
     arrayIndexesAsKeys: false,
     checkSchemaDifferences: false,
-    delimiter : {
-        field : ',',
-        wrap  : '"',
-        eol   : '\n'
+    delimiter: {
+        field: ',',
+        wrap: '"',
+        eol: '\n'
     },
     emptyFieldValue: undefined,
     escapeHeaderNestedDots: true,
@@ -31,10 +31,10 @@ export const defaultJson2CsvOptions: DefaultJson2CsvOptions = {
     excludeKeys: [],
     expandNestedObjects: true,
     expandArrayObjects: false,
-    prependHeader : true,
+    prependHeader: true,
     preventCsvInjection: false,
-    sortHeader : false,
-    trimFieldValues : false,
+    sortHeader: false,
+    trimFieldValues: false,
     trimHeaderFields: false,
     unwindArrays: false,
     useDateIso8601Format: false,
@@ -44,14 +44,15 @@ export const defaultJson2CsvOptions: DefaultJson2CsvOptions = {
 };
 
 export const defaultCsv2JsonOptions: DefaultCsv2JsonOptions = {
-    delimiter : {
-        field : ',',
-        wrap  : '"',
-        eol   : '\n'
+    delimiter: {
+        field: ',',
+        wrap: '"',
+        eol: '\n'
     },
+    escapeHeaderNestedDots: false,
     excelBOM: false,
     preventCsvInjection: false,
-    trimFieldValues : false,
+    trimFieldValues: false,
     trimHeaderFields: false,
 };
 

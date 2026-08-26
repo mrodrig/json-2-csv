@@ -216,6 +216,9 @@ Returns the JSON object array (`object[]`) or rejects with an `Error` if there w
       * Default: `\n`
   * `excelBOM` - Boolean - Does the CSV contain a unicode character prepended in order to allow Excel to open a UTF-8 encoded file with non-ASCII characters present?
     * Default: `false`
+  * `escapeHeaderNestedDots` - Boolean - Should dots (`.`) in header fields be treated as literal key characters instead of nested path separators?
+    * Default: `false`
+    * Note: When enabled, a header such as `product.metafields.custom.og` is returned as a flat key rather than a nested object. Existing escaped dots (`\\.`) are preserved.
   * `headerFields` - Array - Specify the field names (as strings) in place of a header line in the CSV itself.
     * Default: Parses the header fields directly from the CSV string
     * If you want to generate a nested object (ie. `{info : {name: 'Mike'}}`), then use `.` characters in the string to denote a nested field, like ['info.name']

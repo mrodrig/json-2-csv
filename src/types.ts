@@ -63,8 +63,15 @@ interface SharedConverterOptions {
    */
   preventCsvInjection?: boolean;
 }
-  
+
 export interface Csv2JsonOptions extends Omit<SharedConverterOptions, 'keys'> {
+  /**
+   * Should dots (`.`) appearing in header fields be treated as literal key
+   * characters instead of nested path separators?
+   * @default false
+   */
+  escapeHeaderNestedDots?: boolean;
+
   /**
    * Specify the keys that should be converted
    *
@@ -86,7 +93,7 @@ export interface Csv2JsonOptions extends Omit<SharedConverterOptions, 'keys'> {
    */
   parseValue?: (fieldValue: string) => unknown;
 }
-  
+
 export interface Json2CsvOptions extends SharedConverterOptions {
   /** Should array indexes be included in the generated keys?
    * @default false
@@ -133,7 +140,7 @@ export interface Json2CsvOptions extends SharedConverterOptions {
    * Should the header keys be sorted in alphabetical order
    * @default false
    */
-  sortHeader?: boolean|((a: string, b: string) => number);
+  sortHeader?: boolean | ((a: string, b: string) => number);
 
   /**
    * Should array values be "unwound" such that there is one line per value in the array?
@@ -185,7 +192,7 @@ export interface DefaultJson2CsvOptions extends
   Pick<SharedConverterOptions, 'keys'>,
   Pick<Json2CsvOptions, 'parseValue'>,
   // Then extend the types with required fields and specific fields omitted:
-  Omit<Omit<BuiltJson2CsvOptions, 'keys'>, 'parseValue'> {}
+  Omit<Omit<BuiltJson2CsvOptions, 'keys'>, 'parseValue'> { }
 
 export interface DefaultCsv2JsonOptions extends
   // Pick optional fields since there are no defaults set:
@@ -193,7 +200,7 @@ export interface DefaultCsv2JsonOptions extends
   Pick<Csv2JsonOptions, 'headerFields'>,
   Pick<Csv2JsonOptions, 'parseValue'>,
   // Then extend the types with required fields and specific fields omitted:
-  Omit<Omit<Omit<Omit<BuiltCsv2JsonOptions, 'wrapBooleans'>, 'keys'>, 'headerFields'>, 'parseValue'> {}
+  Omit<Omit<Omit<Omit<BuiltCsv2JsonOptions, 'wrapBooleans'>, 'keys'>, 'headerFields'>, 'parseValue'> { }
 
 export type FullCsv2JsonOptions = DefaultCsv2JsonOptions
 

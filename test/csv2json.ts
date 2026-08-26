@@ -303,6 +303,20 @@ export function runTests() {
                 assert.deepEqual(json, jsonTestData.comma);
             });
 
+            it('should treat dots in header fields as literal key characters when specified', () => {
+                const csv = 'product.metafields.custom.og\nvalue';
+                const json = csv2json(csv, { escapeHeaderNestedDots: true });
+
+                assert.deepEqual(json, [{ 'product.metafields.custom.og': 'value' }]);
+            });
+
+            it('should preserve nested header fields by default', () => {
+                const csv = 'product.metafields.custom.og\nvalue';
+                const json = csv2json(csv);
+
+                assert.deepEqual(json, [{ product: { metafields: { custom: { og: 'value' } } } }]);
+            });
+
             // Test case for #153
             it('should wrap first column with crlf line break', () => {
                 const json = csv2json(csvTestData.firstColumnWrapCRLF, {
@@ -353,6 +367,15 @@ export function runTests() {
                     parseValue: () => 'Parsed Value'
                 });
                 assert.deepEqual(json, updatedJson);
+            });
+
+            it('should treat dots in headerFields as literal key characters when specified', () => {
+                const json = csv2json('value', {
+                    headerFields: ['product.metafields.custom.og'],
+                    escapeHeaderNestedDots: true
+                });
+
+                assert.deepEqual(json, [{ 'product.metafields.custom.og': 'value' }]);
             });
 
             it('should be able to parse CSV with no header line provided', () => {
