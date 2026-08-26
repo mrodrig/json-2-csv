@@ -59,5 +59,6 @@
     "engines": {
         "node": ">= 16"
     },
-    "license": "MIT"
+    "license": "MIT",
+    "sideEffects": false
 }
