@@ -28,6 +28,8 @@ const csvFileConfig = [
     { key: 'specifiedKeys', file: '../data/csv/specifiedKeys.csv' },
     { key: 'specifiedKeysNoData', file: '../data/csv/specifiedKeysNoData.csv' },
     { key: 'extraLine', file: '../data/csv/extraLine.csv' },
+    { key: 'trailingEol', file: '../data/csv/trailingEol.csv' },
+    { key: 'trailingEolCRLF', file: '../data/csv/trailingEolCRLF.csv' },
     { key: 'noHeader', file: '../data/csv/noHeader.csv' },
     { key: 'sortedHeader', file: '../data/csv/sortedHeader.csv' },
     { key: 'sortedHeaderCustom', file: '../data/csv/sortedHeaderCustom.csv' },
