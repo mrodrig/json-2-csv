@@ -111,6 +111,18 @@ export function runTests() {
                 assert.deepEqual(json, jsonTestData.assortedValues);
             });
 
+            it('should not include the trailing eol delimiter in the last field value', () => {
+                const json = csv2json(csvTestData.trailingEol);
+                assert.deepEqual(json, jsonTestData.trailingEol);
+            });
+
+            it('should not include a trailing multi-character eol delimiter in the last field value', () => {
+                const json = csv2json(csvTestData.trailingEolCRLF, {
+                    delimiter: { eol: '\r\n' }
+                });
+                assert.deepEqual(json, jsonTestData.trailingEolCRLF);
+            });
+
             // Test case for #109
             it('should properly handle the cases involving an empty field value', () => {
                 const json = csv2json(csvTestData.csvEmptyLastValue);

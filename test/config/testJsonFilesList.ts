@@ -21,6 +21,8 @@ export default {
     quotesAndCommas: require('../data/json/quotesAndCommas'),
     eol: require('../data/json/eol'),
     assortedValues: require('../data/json/assortedValues'),
+    trailingEol: require('../data/json/trailingEol'),
+    trailingEolCRLF: require('../data/json/trailingEolCRLF'),
     trimFields: require('../data/json/trimFields'),
     trimmedFields: require('../data/json/trimmedFields'),
     trimHeader: require('../data/json/trimHeader'),

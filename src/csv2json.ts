@@ -137,13 +137,13 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
                 // Then add an empty string to the line since the last character being a field delimiter indicates an empty field
                 splitLine.push('');
                 lines.push(splitLine);
-            } else if (index === lastCharacterIndex || nextNChar === options.delimiter.eol &&
+            } else if ((index === lastCharacterIndex && stateVariables.startIndex <= index) || nextNChar === options.delimiter.eol &&
                 // if we aren't inside wrap delimiters or if we are but the character before was a wrap delimiter and we didn't just see two
                 (!stateVariables.insideWrapDelimiter ||
                     stateVariables.insideWrapDelimiter && charBefore === options.delimiter.wrap && !stateVariables.justParsedDoubleQuote)) {
                 // Otherwise if we reached the end of the line or csv (and current character is not a field delimiter)
 
-                const toIndex = index !== lastCharacterIndex || charBefore === options.delimiter.wrap ? index : undefined;
+                const toIndex = index !== lastCharacterIndex || nextNChar === options.delimiter.eol || charBefore === options.delimiter.wrap ? index : undefined;
 
                 // Retrieve the remaining value and add it to the split line list of values
                 splitLine.push(csv.substring(stateVariables.startIndex, toIndex));
