@@ -337,8 +337,8 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
      * Main helper function to convert the CSV to the JSON document array
      */
     function transformRecordLines(params: Csv2JsonParams) {
-        // For each line, create the document and add it to the array of documents
-        return params.recordLines.reduce((generatedJsonObjects: object[], line: string[]) => {
+        // For each line, create the document representing that line
+        return params.recordLines.map((line: string[]) => {
 
             line = line.map((fieldValue: string) => {
                 // Perform the necessary operations on each line
@@ -349,10 +349,8 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
                 return fieldValue;
             });
 
-            const generatedDocument = createDocument(params.headerFields, line);
-            return generatedJsonObjects.concat(generatedDocument);
-
-        }, []);
+            return createDocument(params.headerFields, line);
+        });
     }
 
     /**

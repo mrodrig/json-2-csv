@@ -188,6 +188,19 @@ export function runTests() {
                 const json = csv2json(csvTestData.fieldEolAtStart);
                 assert.deepEqual(json, jsonTestData.fieldEolAtStart);
             });
+
+            // Test case for #292
+            // Building the result with `concat` copied the whole array once per record,
+            //   so 100,000 records took longer than the default 2 second mocha timeout
+            it('should convert a large number of records within the default timeout', () => {
+                const recordCount = 100000,
+                    csv = 'value\n' + Array.from({ length: recordCount }, (_, index) => index).join('\n');
+
+                const json = csv2json(csv);
+                assert.equal(json.length, recordCount);
+                assert.deepEqual(json[0], { value: 0 });
+                assert.deepEqual(json[recordCount - 1], { value: recordCount - 1 });
+            });
         });
 
         describe('Error Handling', () => {
