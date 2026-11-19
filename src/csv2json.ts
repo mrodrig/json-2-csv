@@ -8,7 +8,8 @@ import * as utils from './utils';
 export const Csv2Json = function (options: FullCsv2JsonOptions) {
     const escapedWrapDelimiterRegex = new RegExp(options.delimiter.wrap + options.delimiter.wrap, 'g'),
         excelBOMRegex = new RegExp('^' + excelBOM),
-        valueParserFn = options.parseValue && typeof options.parseValue === 'function' ? options.parseValue : JSON.parse;
+        valueParserFn = options.parseValue && typeof options.parseValue === 'function' ? options.parseValue : JSON.parse,
+        notJsonError = new SyntaxError('Value is not valid JSON');
 
     /**
      * Trims the header key, if specified by the user via the provided options
@@ -356,12 +357,26 @@ export const Csv2Json = function (options: FullCsv2JsonOptions) {
     }
 
     /**
+     * Returns whether the first non-whitespace character of the value can begin a JSON text
+     */
+    function canStartJsonText(value: string) {
+        const match = /[^ \t\n\r]/.exec(value);
+        return match !== null && '{["-0123456789tfn'.includes(match[0]);
+    }
+
+    /**
      * Attempts to parse the provided value. If it is not parsable, then an error is returned
      */
     function parseValue(value: string) {
         try {
             if (utils.isStringRepresentation(value, options) && !utils.isDateRepresentation(value)) {
                 return value;
+            }
+
+            // JSON.parse throws for any value that cannot start a JSON text, and building that error is costly.
+            //   Skip the call for those values and return the same kind of result the throw would have produced.
+            if (valueParserFn === JSON.parse && !canStartJsonText(value)) {
+                return notJsonError;
             }
 
             const parsedJson = valueParserFn(value);
