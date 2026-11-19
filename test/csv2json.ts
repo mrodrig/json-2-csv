@@ -188,6 +188,22 @@ export function runTests() {
                 const json = csv2json(csvTestData.fieldEolAtStart);
                 assert.deepEqual(json, jsonTestData.fieldEolAtStart);
             });
+
+            // Test case for #294
+            // Values that cannot start a JSON text skip JSON.parse, so they must still come back unchanged
+            it('should parse JSON values and keep other values as strings', () => {
+                const json = csv2json('a,b,c,d,e,f,g,h\nabc, 1,"[1, 2]",undefined,,tru,-,1e3');
+                assert.deepEqual(json, [{
+                    a: 'abc',
+                    b: 1,
+                    c: [1, 2],
+                    d: undefined,
+                    e: '',
+                    f: 'tru',
+                    g: '-',
+                    h: 1000
+                }]);
+            });
         });
 
         describe('Error Handling', () => {
